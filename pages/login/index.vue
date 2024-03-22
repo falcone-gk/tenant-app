@@ -1,32 +1,14 @@
-<template>
-  <div class="mx-auto">
-    <UCard>
-      <template #header>
-        <h2 class="text-center">Iniciar sesión</h2>
-      </template>
-      <UForm ref="form" class="space-y-4" :state="body" :schema="loginSchema">
-        <UFormGroup label="Nombre de usuario" name="username">
-          <UInput v-model="body.username" placeholder="admin" icon="i-heroicons-user-solid" />
-        </UFormGroup>
-        <UFormGroup label="Contraseña" name="password">
-          <UInput type="password" v-model="body.password" placeholder="************" icon="i-heroicons-lock-closed-solid" />
-        </UFormGroup>
-        <UButton type="submit" label="Ingresar" @click="login" :loading="loading" block />
-      </UForm>
-    </UCard>
-  </div>
-</template>
 
 <script lang="ts" setup>
 import { z } from 'zod'
 import { loginSchema } from '~/schemas'
 import { reactive, ref } from 'vue'
-import type { Form, FormSubmitEvent } from '#ui/types'
+import { useToast } from 'primevue/usetoast';
 
 type LoginUser = z.infer<typeof loginSchema>
 type DataResponse = ApiResponse<UserData>
 
-const form = ref<Form<LoginUser> | undefined>()
+const toast = useToast()
 const body = reactive<LoginUser>({
   username: '',
   password: ''
@@ -44,14 +26,9 @@ const { data: response, error, execute } = await useLazyFetch<DataResponse>('/ap
   immediate: false,
   watch: false
 })
-const login = async (event: FormSubmitEvent<LoginUser>) => {
-
-  if (!form.value) {
-    return
-  }
-
+const login = async () => {
   try {
-    await form.value?.validate()
+    //await form.value?.validate()
   } catch (e) {
     return
   }
@@ -60,8 +37,9 @@ const login = async (event: FormSubmitEvent<LoginUser>) => {
   await execute()
   loading.value = false
 
+  console.log(error.value)
   if (error.value) {
-    form.value?.setErrors([{ message: 'Credenciales incorrectas', path: 'password' }])
+    toast.add({ severity: 'error', summary: 'Error', detail: 'Credenciales incorrectas', life: 3000 })
   } else {
     token.value = response.value?.data?.token
     navigateTo('/')
@@ -69,3 +47,56 @@ const login = async (event: FormSubmitEvent<LoginUser>) => {
 
 }
 </script>
+
+<template>
+  <div class="login-card">
+    <Toast />
+    <Card>
+      <template #title>Iniciar sesión</template>
+      <template #content>
+        <form id="form" ref="form">
+          <div class="form-group">
+            <label for="username">Nombre de usuario</label>
+            <InputGroup>
+              <InputGroupAddon>
+                <i class="pi pi-user"></i>
+              </InputGroupAddon>
+              <InputText id="username" v-model="body.username" placeholder="Username" />
+            </InputGroup>
+          </div>
+  
+          <div class="form-group">
+            <label for="password">Nombre de usuario</label>
+            <InputGroup>
+              <InputGroupAddon>
+                <i class="pi pi-lock"></i>
+              </InputGroupAddon>
+              <InputText id="password" v-model="body.password" type="password" placeholder="**********" />
+            </InputGroup>
+          </div>
+  
+          <Button type="submit" label="Ingresar" @click.prevent="login" :loading="loading" block />
+        </form>
+      </template>
+    </Card>
+  </div>
+</template>
+
+<style scoped>
+#form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.login-card {
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>

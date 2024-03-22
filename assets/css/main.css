@@ -1,16 +1,12 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+:root {
+  --primary-color: #192745;
+  --secondary-color: #b29400;
+  --accent-color: #081233
+}
 
-@layer base {
-
-  :root {
-    --primary-color: #192745;
-    --secondary-color: #b29400;
-    --accent-color: #081233
-  }
-
-  body {
-    @apply min-h-screen bg-accent-color
-  }
+body {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
 }
