@@ -1,6 +1,6 @@
 <template>
   <div class="flex min-h-screen">
-    <aside class="w-64 overflow-y-auto bg-primary-color">
+    <aside class="min-w-[250px] overflow-y-auto bg-primary-color">
       <UCard :ui="{
         base: 'flex flex-col h-screen',
         background: 'dark:bg-primary-950',
@@ -19,9 +19,11 @@
         </template>
       </UCard>
     </aside>
-      <main>
+    <section class="flex w-full" id="content">
+      <main class="w-[900px] mx-auto my-8">
         <slot />
       </main>
+    </section>
   </div>
 </template>
 

@@ -6,7 +6,7 @@ const prisma = new PrismaClient()
 export default defineEventHandler(async (event) => {
 
     const from = getRequestURL(event).pathname
-    if (from.startsWith('/api/tenant') || from.startsWith('/api/auth/logout')) {
+    if (!from.startsWith('/api/auth/login') && from.startsWith('/api')) {
         const config = useRuntimeConfig()
         const userTokenHeader = getCookie(event, 'token')
 

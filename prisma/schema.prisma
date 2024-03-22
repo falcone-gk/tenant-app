@@ -29,26 +29,26 @@ model User {
   @@map("users")
 }
 
-model Tenant {
-  id           Int         @id @default(autoincrement())
-  code         String      @unique
-  reference    String      @db.VarChar(150)
-  floor        Int
-  tenantUser   TenantUser? @relation(fields: [tenantUserId], references: [id])
-  tenantUserId Int?        @map("tenant_user_id")
+model Room {
+  id        Int     @id @default(autoincrement())
+  code      String  @unique
+  reference String  @db.VarChar(150)
+  floor     Int
+  tenant    Tenant? @relation(fields: [tenantId], references: [id])
+  tenantId  Int?    @map("tenant_id")
 
-  @@map("tenants")
+  @@map("rooms")
 }
 
-model TenantUser {
-  id             Int              @id @default(autoincrement())
-  name           String           @db.VarChar(150)
-  createdAt      DateTime         @default(now()) @map("created_at")
-  tenant         Tenant[]
-  Payment        Payment[]
-  TenantUserDebt TenantUserDebt[]
+model Tenant {
+  id         Int          @id @default(autoincrement())
+  name       String       @db.VarChar(150)
+  createdAt  DateTime     @default(now()) @map("created_at")
+  room       Room[]
+  Payment    Payment[]
+  TenantDebt TenantDebt[]
 
-  @@map("tenant_users")
+  @@map("tenants")
 }
 
 model Service {
@@ -60,25 +60,25 @@ model Service {
 }
 
 model Payment {
-  id           Int        @id @default(autoincrement())
-  amount       Int
-  isPaid       Boolean    @default(false)
-  paidAt       DateTime?  @map("paid_at")
-  createdAt    DateTime   @default(now()) @map("created_at")
-  service      Service    @relation(fields: [serviceId], references: [id])
-  serviceId    Int        @map("service_id")
-  tenantUser   TenantUser @relation(fields: [tenantUserId], references: [id])
-  tenantUserId Int        @map("tenant_user_id")
+  id        Int       @id @default(autoincrement())
+  amount    Int
+  isPaid    Boolean   @default(false)
+  paidAt    DateTime? @map("paid_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  service   Service   @relation(fields: [serviceId], references: [id])
+  serviceId Int       @map("service_id")
+  tenant    Tenant    @relation(fields: [tenantId], references: [id])
+  tenantId  Int       @map("tenant_id")
 
   @@map("payments")
 }
 
-model TenantUserDebt {
-  id           Int        @id @default(autoincrement())
-  amount       Int        @default(0)
-  lastUpdate   DateTime?  @map("last_update")
-  tenanUser    TenantUser @relation(fields: [tenantUserId], references: [id])
-  tenantUserId Int        @map("tenant_user_id")
+model TenantDebt {
+  id         Int       @id @default(autoincrement())
+  amount     Int       @default(0)
+  lastUpdate DateTime? @map("last_update")
+  tenant     Tenant    @relation(fields: [tenantId], references: [id])
+  tenantId   Int       @map("tenant_id")
 
-  @@map("tenant_user_debts")
+  @@map("tenant_debts")
 }

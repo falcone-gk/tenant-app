@@ -71,7 +71,7 @@ async function main() {
     ]
 
     tenantsData.forEach(async (tenant) => {
-        await prisma.tenant.upsert({
+        await prisma.room.upsert({
             where: {
                 id: tenant.id
             },
