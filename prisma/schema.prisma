@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  admin
+  guest
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique @db.VarChar(25)
+  password  String
+  role      Role     @default(guest)
+  createdAt DateTime @default(now()) @map("created_at")
+  token     String?  @db.VarChar(200)
+
+  @@map("users")
+}
+
+model Tenant {
+  id           Int         @id @default(autoincrement())
+  code         String      @unique
+  reference    String      @db.VarChar(150)
+  floor        Int
+  tenantUser   TenantUser? @relation(fields: [tenantUserId], references: [id])
+  tenantUserId Int?        @map("tenant_user_id")
+
+  @@map("tenants")
+}
+
+model TenantUser {
+  id             Int              @id @default(autoincrement())
+  name           String           @db.VarChar(150)
+  createdAt      DateTime         @default(now()) @map("created_at")
+  tenant         Tenant[]
+  Payment        Payment[]
+  TenantUserDebt TenantUserDebt[]
+
+  @@map("tenant_users")
+}
+
+model Service {
+  id      Int       @id @default(autoincrement())
+  name    String    @db.VarChar(50)
+  Payment Payment[]
+
+  @@map("services")
+}
+
+model Payment {
+  id           Int        @id @default(autoincrement())
+  amount       Int
+  isPaid       Boolean    @default(false)
+  paidAt       DateTime?  @map("paid_at")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  service      Service    @relation(fields: [serviceId], references: [id])
+  serviceId    Int        @map("service_id")
+  tenantUser   TenantUser @relation(fields: [tenantUserId], references: [id])
+  tenantUserId Int        @map("tenant_user_id")
+
+  @@map("payments")
+}
+
+model TenantUserDebt {
+  id           Int        @id @default(autoincrement())
+  amount       Int        @default(0)
+  lastUpdate   DateTime?  @map("last_update")
+  tenanUser    TenantUser @relation(fields: [tenantUserId], references: [id])
+  tenantUserId Int        @map("tenant_user_id")
+
+  @@map("tenant_user_debts")
+}

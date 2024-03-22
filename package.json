@@ -1,0 +1,31 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@nuxt/ui": "^2.14.2",
+    "@prisma/client": "^5.11.0",
+    "jsonwebtoken": "^9.0.2",
+    "nuxt": "^3.11.1",
+    "primeicons": "^6.0.1",
+    "tsx": "^4.7.1",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.6",
+    "nuxt-primevue": "^0.3.1",
+    "prisma": "^5.11.0",
+    "zod": "^3.22.4"
+  }
+}
