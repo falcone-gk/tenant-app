@@ -89,6 +89,45 @@ async function main() {
         })
         console.log(`- tenant ${tenant.id} '${tenant.code}' has been created or updated.`)
     })
+
+    const servicesData = [
+        {
+            id: 1,
+            name: 'Luz'
+        },
+        {
+            id: 2,
+            name: 'Agua'
+        },
+        {
+            id: 3,
+            name: 'Internet'
+        },
+        {
+            id: 4,
+            name: 'Cable'
+        },
+        {
+            id: 5,
+            name: 'Renta'
+        }
+    ]
+
+    servicesData.forEach(async (service) => {
+        await prisma.service.upsert({
+            where: {
+                id: service.id
+            },
+            create: {
+                id: service.id,
+                name: service.name,
+            },
+            update: {
+                name: service.name,
+            }
+        })
+        console.log(`- Servicio ${service.id} '${service.name}' has been created or updated.`)
+    })
 }
 
 main()

@@ -41,20 +41,20 @@ model Room {
 }
 
 model Tenant {
-  id         Int          @id @default(autoincrement())
-  name       String       @db.VarChar(150)
-  createdAt  DateTime     @default(now()) @map("created_at")
-  room       Room[]
-  Payment    Payment[]
-  TenantDebt TenantDebt[]
+  id        Int          @id @default(autoincrement())
+  name      String       @db.VarChar(150)
+  createdAt DateTime     @default(now()) @map("created_at")
+  rooms     Room[]
+  payments  Payment[]
+  debts     TenantDebt[]
 
   @@map("tenants")
 }
 
 model Service {
-  id      Int       @id @default(autoincrement())
-  name    String    @db.VarChar(50)
-  Payment Payment[]
+  id       Int       @id @default(autoincrement())
+  name     String    @db.VarChar(50)
+  payments Payment[]
 
   @@map("services")
 }

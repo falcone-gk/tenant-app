@@ -2,7 +2,7 @@
 const route = useRoute()
 
 const links = ref([
-  { label: 'Inicio', icon: 'pi pi-home', route: '/' },
+  { label: 'Administración', icon: 'pi pi-file-edit', route: '/' },
   { label: 'Inquilinos', icon: 'pi pi-users', route: '/tenants' },
   { label: 'Historial', icon: 'pi pi-history', route: '/history' },
   { label: 'Servicios', icon: 'pi pi-bolt', route: '/services' },
@@ -25,7 +25,7 @@ const logout = async () => {
 </script>
 
 <template>
-  <div class="main-container">
+  <div id="container">
     <aside id="sidebar">
       <Card>
         <template #title>App Falcón</template>
@@ -47,7 +47,7 @@ const logout = async () => {
       </Card>
     </aside>
     <section id="content">
-      <main class="w-[900px] mx-auto my-8">
+      <main id="main-content">
         <slot />
       </main>
     </section>
@@ -56,42 +56,66 @@ const logout = async () => {
 
 <style>
 /** Layout styles */
-.main-container {
+#content {
+  margin-left: calc(300px + 2rem);
+  margin-top: 2rem;
   display: flex;
-	width: 100%;
-	min-height: 100vh;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: .5rem 1.5rem;
+  transition: margin-left .2s;
+  min-height: calc(100vh - 4rem);
 }
 
 #sidebar {
-  display: flex;
+  position: fixed;
+  width: 300px;
+  height: calc(100vh - 4rem);
+  z-index: 999;
+  top: 2rem;
+  left: 2rem;
+  transition: transform .2s,left .2s;
+  border-radius: 12px;
+  padding: .5rem 1.5rem;
 }
 
-#content {
+#main-content {
   display: flex;
+  flex-direction: column;
   flex: 1;
+  border-radius: 5px;
+}
+
+.p-panel-header {
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.p-panel-title {
+  font-size: x-large;
 }
 
 /** Sidebar Card styles */
-.p-card {
-  min-width: 300px;
+
+#sidebar > .p-card {
+  height: 100%;
 }
 
-.p-card-body {
+#sidebar .p-card-body {
   display: flex;
   height: 100%;
   padding: 1.5rem .5rem;
 }
 
-.p-card-title, .p-card-footer {
+#sidebar .p-card-title, #sidebar .p-card-footer {
   display: flex;
   justify-content: center;
 }
 
-.p-card-footer {
+#sidebar .p-card-footer {
   margin-top: auto;
 }
 
-.p-button {
+#sidebar .p-button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -99,17 +123,17 @@ const logout = async () => {
 }
 
 /** Menu styles */
-.p-menu {
+#sidebar .p-menu {
   border: none;
 }
-.p-menuitem-link {
+#sidebar .p-menuitem-link {
   display: flex;
   align-items: center;
 }
-.menu-label {
+#sidebar .menu-label {
   margin-left: 10px;
 }
-.active-menu {
+#sidebar .active-menu {
   background-color: var(--primary-color);
   color: var(--primary-color-text);
 }

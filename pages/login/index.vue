@@ -37,7 +37,6 @@ const login = async () => {
   await execute()
   loading.value = false
 
-  console.log(error.value)
   if (error.value) {
     toast.add({ severity: 'error', summary: 'Error', detail: 'Credenciales incorrectas', life: 3000 })
   } else {

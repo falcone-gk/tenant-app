@@ -1,35 +1,20 @@
 <template>
-  <UCard :ui="{
-    base: 'h-full',
-    background: 'dark:bg-primary-950',
-    divide: 'divide-y divide-gray-200 dark:divide-gray-500',
-  }">
-    <template #header>
-      <h1>Cuartos</h1>
-    </template>
+  <Panel header="Cuartos">
     <div>
-      <UAccordion
-      multiple
-      color="secondary"
-      variant="solid"
-      size="xl"
-      :items="items">
-        <template #item="{ item }">
-          <ul class="px-2.5">
-            <li>
-              <p><span class="font-bold">Descripción:</span> {{ item.description }}</p>
-            </li>
-            <li>
-              <p><span class="font-bold">Piso:</span> {{ item.floor }}</p>
-            </li>
-            <li>
-              <p><span class="font-bold">Propietario:</span> {{ item.tenant ? item.tenant : 'Habilitado' }}</p>
-            </li>
+      <div v-if="!rooms">
+        <p>No content u.u</p>
+      </div>
+      <Accordion v-else :multiple="true">
+        <AccordionTab v-for="room in rooms.data" :key="room.id" :header="'Cuarto ' + room.code">
+          <ul>
+            <li><p><span class="subtitle">Descripcion: </span>{{ room.reference }}</p></li>
+            <li><p><span class="subtitle">Piso: </span>{{ room.floor }}</p></li>
+            <li><p><span class="subtitle">Inquilino: </span>{{ room.tenantId ? room.tenantId : 'Sin inquilino' }}</p></li>
           </ul>
-        </template>
-      </UAccordion>
+        </AccordionTab>
+      </Accordion>
     </div>
-  </UCard>
+  </Panel>
 </template>
 
 <script lang="ts" setup>
@@ -41,18 +26,5 @@ definePageMeta({
 
 type RoomResponse = ApiResponse<Room[]>
 const { data: rooms } = await useLazyFetch<RoomResponse>('/api/rooms')
-
-const items = computed(() => {
-  if (!rooms.value?.data) return []
-  const accordiondata = rooms.value.data.map((room) => {
-    return {
-      label: `${room.id}. Cuarto ${room.code}`,
-      floor: room.floor,
-      description: room.reference,
-      tenant: room.tenantId
-    }
-  })
-  return accordiondata
-})
 
 </script>

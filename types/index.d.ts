@@ -26,3 +26,10 @@ interface Room {
     floor: number;
     tenantId: number | null;
 }
+
+interface Tenant {
+    id: number
+    name: string
+    createdAt: Date
+    rooms: Omit<Room, 'tenantId'>[]
+}

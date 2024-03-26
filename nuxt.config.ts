@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['nuxt-primevue',],
   css: [
-    'primevue/resources/themes/aura-dark-teal/theme.css',
+    'primevue/resources/themes/aura-light-teal/theme.css',
     'primeicons/primeicons.css',
     '~/assets/css/main.css'
   ],
