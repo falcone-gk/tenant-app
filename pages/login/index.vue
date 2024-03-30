@@ -48,7 +48,7 @@ const login = async () => {
 </script>
 
 <template>
-  <div class="login-card">
+  <div class="mx-auto">
     <Toast />
     <Card>
       <template #title>Iniciar sesión</template>
@@ -65,7 +65,7 @@ const login = async () => {
           </div>
   
           <div class="form-group">
-            <label for="password">Nombre de usuario</label>
+            <label for="password">Contraseña</label>
             <InputGroup>
               <InputGroupAddon>
                 <i class="pi pi-lock"></i>
@@ -80,22 +80,3 @@ const login = async () => {
     </Card>
   </div>
 </template>
-
-<style scoped>
-#form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.login-card {
-  margin-left: auto;
-  margin-right: auto;
-}
-</style>
