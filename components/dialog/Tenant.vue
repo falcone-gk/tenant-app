@@ -11,24 +11,12 @@
       </div>
       <div class="form-group">
         <label for="rooms">Cuartos:</label>
-        <MultiSelect
-        id="rooms"
-        style="width: 20rem;"
-        display="comma"
-        :selectAll="false"
-        :showToggleAll="false"
-        v-model="body.rooms"
-        :options="roomsOptions"
-        :maxSelectedLabels="2"
-        :selectedItemsLabel="`${body.rooms.length} cuartos seleccionados`"
-        optionLabel="label"
-        optionValue="value" />
+        <MultiSelect id="rooms" style="width: 20rem;" display="comma" :selectAll="false" :showToggleAll="false"
+          v-model="body.rooms" :options="roomsOptions" :maxSelectedLabels="2"
+          :selectedItemsLabel="`${body.rooms.length} cuartos seleccionados`" optionLabel="label" optionValue="value" />
       </div>
 
-      <Button
-      type="submit"
-      @click.prevent="dialogRef?.close(body)"
-      :label="dialogMethod === 'update' ? 'Actualizar' : 'Crear'"/>
+      <Button type="submit" @click.prevent="onSubmit" :label="dialogMethod === 'update' ? 'Actualizar' : 'Crear'" />
     </form>
   </div>
 </template>
@@ -39,23 +27,31 @@ import type { TenantData } from '~/types/admin';
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef')
 
+const emits = defineEmits(['send'])
 const body = ref<Omit<TenantData, 'id'>>({
   name: '',
   createdAt: new Date(),
   rooms: []
 })
+const sendError = ref()
 const roomsOptions = ref([])
 const dialogMethod = ref<'create' | 'update'>()
 
+const onSubmit = () => {
+  emits('send', body.value)
+  if (sendError.value) return
+  dialogRef?.value.close()
+}
+
 onMounted(() => {
-  const { roomsOpt, method, ...bodyData } = dialogRef?.value.data
+  const { roomsOpt, method, error, ...bodyData } = dialogRef?.value.data
   body.value = {
     ...bodyData,
     rooms: bodyData.rooms.map((room: { id: number, code: string }) => room.id)
   }
-  console.log(body.value.rooms)
   roomsOptions.value = roomsOpt
   dialogMethod.value = method
+  sendError.value = error
 })
 
 </script>

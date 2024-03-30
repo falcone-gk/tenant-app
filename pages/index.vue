@@ -1,6 +1,7 @@
 <template>
   <div>
-    <DynamicDialog :draggable="false" />
+    <Toast />
+    <DynamicDialog ref="dynamicDialog" :draggable="false" />
     <div>
       <h1>Administración</h1>
     </div>
@@ -115,19 +116,17 @@ const tenantOptions = computed(() => {
 })
 
 // CRUD methods
-const { execute: createTenant } = await useLazyFetch('/api/tenants', {
+const { error: createTenantError, execute: createTenant } = await useLazyFetch(
+  '/api/tenants', {
   key: 'createTenant',
   body: tenantBody,
   method: 'POST',
   server: false,
   immediate: false,
   watch: false,
-  onResponse: async () => {
-    await refresh()
-  }
 })
 
-const { execute: updateTenant } = await useLazyFetch<TenantApiResponse>(
+const { error: updateTenantError, execute: updateTenant } = await useLazyFetch<TenantApiResponse>(
   () => `/api/tenants/${tenantSelectedId.value}`, {
   key: 'updateTenant',
   body: tenantBody,
@@ -135,14 +134,15 @@ const { execute: updateTenant } = await useLazyFetch<TenantApiResponse>(
   server: false,
   immediate: false,
   watch: false,
-  onResponse: async () => {
-    await refresh()
-  }
 })
+
+// Toast
+const toast = useToast()
 
 // Dialog methods
 const DialogTenant = defineAsyncComponent(() => import('~/components/dialog/Tenant.vue'));
 const DialogRoom = defineAsyncComponent(() => import('~/components/dialog/Room.vue'));
+const dynamicDialog = ref()
 const dialog = useDialog();
 const showTenantDialog = (method: 'update' | 'create') => {
   dialog.open(DialogTenant, {
@@ -150,24 +150,29 @@ const showTenantDialog = (method: 'update' | 'create') => {
       header: 'Inquilino',
       modal: true,
     },
-    data: {
-      name: method === 'update' ? tenants.value[tenantSelectedId.value!-1].name : '',
-      createdAt: method === 'update' ? tenants.value[tenantSelectedId.value!-1].createdAt : '',
-      rooms: method === 'update' ? tenants.value[tenantSelectedId.value!-1].rooms : [],
-      roomsOpt: roomsOptions.value,
-      method: method
-    },
-    onClose: async (options: any) => {
-      const data: Omit<TenantData, 'id'> | undefined = options.data
-      if (!data) return
+    emits: {
+      onSend: async (data: Omit<TenantData, 'id'>) => {
+        tenantBody.value = data
+        const sendMethod = method === 'update' ? updateTenant : createTenant
+        const message = method === 'update' ? 'actualizar' : 'crear'
+        await sendMethod()
 
-      tenantBody.value = data
-      if (method === 'update') {
-        await updateTenant()
-      } else {
-        await createTenant()
+        if (updateTenantError.value || createTenantError.value) {
+          toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudo ' + message + ' el inquilino', life: 3000 })
+          return
+        }
+        await refresh()
+        toast.add({ severity: 'success', summary: 'Exito', detail: 'Inquilino actualizado', life: 3000 })
       }
     },
+    data: {
+      name: method === 'update' ? tenants.value[tenantSelectedId.value! - 1].name : '',
+      createdAt: method === 'update' ? tenants.value[tenantSelectedId.value! - 1].createdAt : '',
+      rooms: method === 'update' ? tenants.value[tenantSelectedId.value! - 1].rooms : [],
+      roomsOpt: roomsOptions.value,
+      method: method,
+      error: method === 'update' ? updateTenantError.value : createTenantError.value
+    }
   });
 }
 
