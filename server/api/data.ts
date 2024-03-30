@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
       createdAt: true,
       rooms: {
         select: {
+          id: true,
           code: true,
         }
       }
@@ -19,7 +20,19 @@ export default defineEventHandler(async (event) => {
   })
 
   const rooms = await prisma.room.findMany({
-    orderBy: [{ id: 'asc' }]
+    orderBy: [{ id: 'asc' }],
+    select: {
+      id: true,
+      code: true,
+      reference: true,
+      floor: true,
+      tenant: {
+        select: {
+          id: true,
+          name: true
+        }
+      }
+    }
   })
 
   const data = {
