@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-import type { Tenant } from "~/types"
+import type { TenantData } from "~/types/admin"
 
 const prisma = new PrismaClient()
 
@@ -21,5 +21,5 @@ export default defineEventHandler(async (event) => {
       }
     }
   })
-  return createResponse<Tenant[]>(event, 'success', 200, tenants)
+  return createResponse<TenantData[]>(event, 'success', 200, tenants)
 })

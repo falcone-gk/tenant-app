@@ -10,3 +10,10 @@ export const tenantSchema = z.object({
     createdAt: z.string().min(1, { message: 'Campo requerido' }),
     rooms: z.array(z.number()),
 })
+
+export const roomSchema = z.object({
+    code: z.string().min(1, { message: 'Campo requerido' }),
+    reference: z.string().min(1, { message: 'Campo requerido' }),
+    floor: z.number(),
+    tenant: z.array(z.number()),
+})
