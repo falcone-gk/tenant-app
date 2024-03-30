@@ -2,12 +2,12 @@
   <Card>
     <template #title>{{ props.title }}</template>
     <template #content>
-      <DataTable v-model:selection="selection" dataKey="id" :value="props.data">
+      <DataTable v-model:selection="selection" dataKey="id" :value="props.data" stripedRows>
         <template #header>
           <div class="table-header">
             <div class="left-btns">
-              <Button class="add-btn" type="button" icon="pi pi-plus" label="Agregar" outlined />
-              <Button type="button" icon="pi pi-pencil" label="Editar" outlined severity="info" :disabled="!selection" />
+              <Button class="add-btn" type="button" icon="pi pi-plus" label="Agregar" outlined @click="emits('openCreateDialog')" />
+              <Button type="button" icon="pi pi-pencil" label="Editar" outlined severity="info" :disabled="!selection" @click="emits('openUpdateDialog')" />
             </div>
             <div>
               <Button type="button" icon="pi pi-trash" label="Eliminar" severity="danger" outlined :disabled="!selection" />
@@ -30,7 +30,8 @@ const props = defineProps<{
   columns: { [key: string]: string }
 }>()
 
-const selection = ref()
+const emits = defineEmits(['openCreateDialog', 'openUpdateDialog'])
+const selection = defineModel('selection')
 </script>
 
 <style scoped>
