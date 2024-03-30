@@ -73,3 +73,31 @@ bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+## TODO
+
+- Agregar evento para el botón del DynamicDialog en **~/pages/index.vue** dentro del método **open** se agrega la llave **emits** para agregar eventos.
+
+Ejemplo de código
+
+```js
+// ~/page/index.vue
+dialog.open(Component, {
+    props: {...},
+    emits: {
+        onTest: () => console.log('hola')
+    }
+})
+```
+
+```html
+<!--~/components/dialog/*-->
+<template>
+    <Button @click.prevent="emits('test')"><Button/>
+<template />
+```
+
+```js
+// ~/components/dialog/*
+const emits = defineEmits(['test'])
+```
