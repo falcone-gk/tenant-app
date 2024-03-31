@@ -11,20 +11,22 @@ async function main() {
     console.log('###################################')
     console.log('\n')
 
+    const adminUser = process.env.ADMIN_USER as string
+    const adminPassword = process.env.ADMIN_PASSWORD as string
     // create admin user
     await prisma.user.upsert({
         where: {
-            id: 1
+            username: adminUser
         },
         update: {
-            username: process.env.ADMIN_USER as string,
-            password: await hashPassword(process.env.ADMIN_PASSWORD as string),
+            username: adminUser,
+            password: await hashPassword(adminPassword),
             role: 'admin'
         },
         create: {
             id: 1,
-            username: process.env.ADMIN_USER as string,
-            password: await hashPassword(process.env.ADMIN_PASSWORD as string),
+            username: adminUser,
+            password: await hashPassword(adminPassword),
             role: 'admin'
         }
     })
@@ -33,37 +35,30 @@ async function main() {
     // create tenants
     const tenantsData = [
         {
-            id: 1,
             code: 'p1_a1',
             reference: 'Cuarto de la tienda.',
             floor: 1
-        },        {
-            id: 2,
+        }, {
             code: 'p1_a2',
             reference: 'Cuarto entre la cocina y la tienda.',
             floor: 1
-        },        {
-            id: 3,
+        }, {
             code: 'p2_a1',
             reference: 'Primer cuarto al subir las escaleras.',
             floor: 2
-        },        {
-            id: 4,
+        }, {
             code: 'p2_a2',
             reference: 'Cuarto al frente de la lavandería del segundo piso.',
             floor: 2
-        },        {
-            id: 5,
+        }, {
             code: 'p2_a3',
             reference: 'Cuarto que está encima de la cocina.',
             floor: 2
-        },        {
-            id: 6,
+        }, {
             code: 'p3_a1',
             reference: 'Cuarto de la derecha del tercer piso.',
             floor: 3
-        },        {
-            id: 7,
+        }, {
             code: 'p3_a2',
             reference: 'Cuarto de la izquierda del tercer piso.',
             floor: 3
@@ -73,10 +68,9 @@ async function main() {
     tenantsData.forEach(async (tenant) => {
         await prisma.room.upsert({
             where: {
-                id: tenant.id
+                code: tenant.code
             },
             create: {
-                id: tenant.id,
                 code: tenant.code,
                 reference: tenant.reference,
                 floor: tenant.floor
@@ -87,7 +81,7 @@ async function main() {
                 floor: tenant.floor
             }
         })
-        console.log(`- tenant ${tenant.id} '${tenant.code}' has been created or updated.`)
+        console.log(`- tenant '${tenant.code}' has been created or updated.`)
     })
 
     const servicesData = [
