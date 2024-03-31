@@ -1,11 +1,13 @@
 import { z } from 'zod'
 import { PrismaClient } from "@prisma/client"
 import { tenantSchema } from "~/schemas"
+import type { TenantData } from '~/types/admin'
 
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event)
+  type Tenant = z.infer<typeof tenantSchema>
+  const body = await readBody<Tenant>(event)
 
   try {
     tenantSchema.parse(body)
@@ -24,7 +26,7 @@ export default defineEventHandler(async (event) => {
       name: body.name,
       createdAt: body.createdAt,
       rooms: {
-        connect: body.rooms
+        connect: body.rooms.map((value) => { return { id: value } })
       }
     },
     select: {
@@ -34,10 +36,11 @@ export default defineEventHandler(async (event) => {
       rooms: {
         select: {
           id: true,
+          code: true,
         }
       }
     }
   })
 
-  return createResponse(event, 'success', 200, tenant)
+  return createResponse<TenantData>(event, 'success', 200, tenant)
 })

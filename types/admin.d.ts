@@ -3,7 +3,8 @@ export interface RoomData {
     code: string;
     reference: string;
     floor: number | null;
-    tenant: { id: number, name: string } | null;
+    tenant?: { id: number, name: string } | null;
+    tenantId?: number | null;
 }
 
 export interface RoomDataTable {

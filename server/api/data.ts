@@ -26,6 +26,7 @@ export default defineEventHandler(async (event) => {
       code: true,
       reference: true,
       floor: true,
+      tenantId: true,
       tenant: {
         select: {
           id: true,

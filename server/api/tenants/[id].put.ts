@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { PrismaClient } from "@prisma/client"
 import { tenantSchema } from "~/schemas"
-import { TenantData } from '~/types/admin'
+import type { TenantData } from '~/types/admin'
 
 const prisma = new PrismaClient()
 
