@@ -13,7 +13,7 @@
             </div>
             <div>
               <Button type="button" icon="pi pi-trash" label="Eliminar" severity="danger" outlined
-                :disabled="!selection" />
+                :disabled="!selection" @click="emits('openDeleteDialog')" />
             </div>
           </div>
         </template>
@@ -33,7 +33,12 @@ const props = defineProps<{
   columns: { [key: string]: string }
 }>()
 
-const emits = defineEmits(['openCreateDialog', 'openUpdateDialog'])
+const emits = defineEmits([
+  'openCreateDialog', 'openUpdateDialog',
+  'openDeleteDialog'
+])
+
+// TODO: Unselect row when deleted button is clicked
 const selection = defineModel('selection')
 </script>
 

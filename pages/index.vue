@@ -1,6 +1,7 @@
 <template>
   <div>
     <Toast />
+    <ConfirmDialog></ConfirmDialog>
     <DynamicDialog ref="dynamicDialog" :draggable="false" />
     <div>
       <h1>Administración</h1>
@@ -8,12 +9,12 @@
     <p v-if="status !== 'success'">Cargando...</p>
     <div v-else class="data-crud">
       <DataCrud title="Inquilinos" @open-create-dialog="showTenantDialog('create')"
-        @open-update-dialog="showTenantDialog('update')" v-model:selection="tenantSelection" :data="tenantsData"
-        :columns="tenantColumns" />
+        @open-update-dialog="showTenantDialog('update')" @open-delete-dialog="confirmDeleteTenant"
+        v-model:selection="tenantSelection" :data="tenantsData" :columns="tenantColumns" />
 
       <DataCrud title="Cuartos" @open-create-dialog="showRoomDialog('create')"
-        @open-update-dialog="showRoomDialog('update')" v-model:selection="roomSelection" :data="roomsData"
-        :columns="roomColumns" />
+        @open-update-dialog="showRoomDialog('update')" @open-delete-dialog="confirmDeleteRoom"
+        v-model:selection="roomSelection" :data="roomsData" :columns="roomColumns" />
     </div>
   </div>
 </template>
@@ -137,6 +138,15 @@ const { error: updateTenantError, execute: updateTenant } = await useLazyFetch<T
   watch: false,
 })
 
+const { execute: deleteTenant } = await useLazyFetch(
+  () => `/api/tenants/${tenantSelectedId.value}`, {
+  key: 'deleteTenant',
+  method: 'DELETE',
+  server: false,
+  immediate: false,
+  watch: false,
+})
+
 // CRUD methods (Room)
 const { error: createRoomError, execute: createRoom } = await useLazyFetch(
   '/api/rooms', {
@@ -158,8 +168,44 @@ const { error: updateRoomError, execute: updateRoom } = await useLazyFetch(
   watch: false,
 })
 
+const { execute: deleteRoom } = await useLazyFetch(
+  () => `/api/rooms/${roomSelectedId.value}`, {
+  key: 'deleteRoom',
+  method: 'DELETE',
+  server: false,
+  immediate: false,
+  watch: false,
+})
+
 // Toast
 const toast = useToast()
+
+// Confirm dialog for delete
+const confirm = useConfirm();
+const confirmDeleteTenant = (id: number) => {
+  confirm.require({
+    message: '¿Seguro que desea eliminar este inquilino?',
+    header: 'Confirmar eliminación',
+    icon: 'pi pi-exclamation-triangle',
+    accept: async () => {
+      await deleteTenant()
+      await refresh()
+      toast.add({ severity: 'success', summary: 'Exito', detail: 'Inquilino eliminado', life: 3000 })
+    }
+  })
+}
+const confirmDeleteRoom = (id: number) => {
+  confirm.require({
+    message: '¿Seguro que desea eliminar este cuarto?',
+    header: 'Confirmar eliminación',
+    icon: 'pi pi-exclamation-triangle',
+    accept: async () => {
+      await deleteRoom()
+      await refresh()
+      toast.add({ severity: 'success', summary: 'Exito', detail: 'Cuarto eliminado', life: 3000 })
+    }
+  })
+}
 
 // Dialog methods
 const DialogTenant = defineAsyncComponent(() => import('~/components/dialog/Tenant.vue'));
