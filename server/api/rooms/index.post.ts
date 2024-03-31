@@ -24,7 +24,8 @@ export default defineEventHandler(async (event) => {
     data: {
       code: body.code,
       reference: body.reference,
-      floor: body.floor
+      floor: body.floor,
+      tenantId: body.tenantId
     },
     select: {
       id: true,
