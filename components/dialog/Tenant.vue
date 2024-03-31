@@ -33,25 +33,21 @@ const body = ref<Omit<TenantData, 'id'>>({
   createdAt: new Date(),
   rooms: []
 })
-const sendError = ref()
 const roomsOptions = ref([])
 const dialogMethod = ref<'create' | 'update'>()
 
 const onSubmit = () => {
-  emits('send', body.value)
-  if (sendError.value) return
-  dialogRef?.value.close()
+  emits('send', body.value, dialogRef?.value)
 }
 
 onMounted(() => {
-  const { roomsOpt, method, error, ...bodyData } = dialogRef?.value.data
+  const { roomsOpt, method, ...bodyData } = dialogRef?.value.data
   body.value = {
     ...bodyData,
     rooms: bodyData.rooms.map((room: { id: number, code: string }) => room.id)
   }
   roomsOptions.value = roomsOpt
   dialogMethod.value = method
-  sendError.value = error
 })
 
 </script>

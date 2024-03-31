@@ -23,6 +23,7 @@ import type {
   RoomDataTable, RoomData,
   TenantDataTable, TenantData, DataAdmin
 } from '~/types/admin';
+import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions'
 
 definePageMeta({
   middleware: 'auth'
@@ -85,10 +86,10 @@ const roomBody = ref<Omit<RoomData, 'id'>>({
   code: '',
   reference: '',
   floor: null,
-  tenant: null
+  tenantId: null
 })
 const roomSelection = ref()
-const roomSelectedId = computed(() => roomSelection.value?.id! - 1)
+const roomSelectedId = computed(() => roomSelection.value?.id!)
 const roomsOptions = computed(() => {
   if (!roomsData.value) return
   const opts = roomsData.value.map((room) => ({
@@ -115,7 +116,7 @@ const tenantOptions = computed(() => {
   return opts
 })
 
-// CRUD methods
+// CRUD methods (Tenant)
 const { error: createTenantError, execute: createTenant } = await useLazyFetch(
   '/api/tenants', {
   key: 'createTenant',
@@ -130,7 +131,28 @@ const { error: updateTenantError, execute: updateTenant } = await useLazyFetch<T
   () => `/api/tenants/${tenantSelectedId.value}`, {
   key: 'updateTenant',
   body: tenantBody,
-  method: 'put',
+  method: 'PUT',
+  server: false,
+  immediate: false,
+  watch: false,
+})
+
+// CRUD methods (Room)
+const { error: createRoomError, execute: createRoom } = await useLazyFetch(
+  '/api/rooms', {
+  key: 'createRoom',
+  body: roomBody,
+  method: 'POST',
+  server: false,
+  immediate: false,
+  watch: false,
+})
+
+const { error: updateRoomError, execute: updateRoom } = await useLazyFetch(
+  () => `/api/rooms/${roomSelectedId.value}`, {
+  key: 'updateRoom',
+  body: roomBody,
+  method: 'PUT',
   server: false,
   immediate: false,
   watch: false,
@@ -151,7 +173,7 @@ const showTenantDialog = (method: 'update' | 'create') => {
       modal: true,
     },
     emits: {
-      onSend: async (data: Omit<TenantData, 'id'>) => {
+      onSend: async (data: Omit<TenantData, 'id'>, dialogModal: DynamicDialogInstance) => {
         tenantBody.value = data
         const sendMethod = method === 'update' ? updateTenant : createTenant
         const message = method === 'update' ? 'actualizar' : 'crear'
@@ -159,10 +181,11 @@ const showTenantDialog = (method: 'update' | 'create') => {
 
         if (updateTenantError.value || createTenantError.value) {
           toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudo ' + message + ' el inquilino', life: 3000 })
-          return
+        } else {
+          await refresh()
+          dialogModal.close()
+          toast.add({ severity: 'success', summary: 'Exito', detail: 'Inquilino actualizado', life: 3000 })
         }
-        await refresh()
-        toast.add({ severity: 'success', summary: 'Exito', detail: 'Inquilino actualizado', life: 3000 })
       }
     },
     data: {
@@ -182,13 +205,31 @@ const showRoomDialog = (method: 'update' | 'create') => {
       header: 'Cuartos',
       modal: true,
     },
+    emits: {
+      // TODO: Add new paramater dialog ref in all dialogs
+      onSend: async (data: Omit<RoomData, 'id'>, dialogModal: DynamicDialogInstance) => {
+        roomBody.value = data
+        const sendMethod = method === 'update' ? updateRoom : createRoom
+        const message = method === 'update' ? 'actualizar' : 'crear'
+        await sendMethod()
+
+        if (updateRoomError.value || createRoomError.value) {
+          toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudo ' + message + ' el cuarto', life: 3000 })
+          return
+        }
+        await refresh()
+        dialogModal.close()
+        toast.add({ severity: 'success', summary: 'Exito', detail: 'Cuarto actualizado', life: 3000 })
+      }
+    },
     data: {
-      code: method === 'update' ? rooms.value[roomSelectedId.value!].code : '',
-      reference: method === 'update' ? rooms.value[roomSelectedId.value!].reference : '',
-      floor: method === 'update' ? rooms.value[roomSelectedId.value!].floor : null,
-      tenant: method === 'update' ? rooms.value[roomSelectedId.value!].tenant : null,
+      code: method === 'update' ? rooms.value[roomSelectedId.value! - 1].code : '',
+      reference: method === 'update' ? rooms.value[roomSelectedId.value! - 1].reference : '',
+      floor: method === 'update' ? rooms.value[roomSelectedId.value! - 1].floor : null,
+      tenantId: method === 'update' ? rooms.value[roomSelectedId.value! - 1].tenantId : null,
       tenantsOpt: tenantOptions.value,
       method: method,
+      error: method === 'update' ? updateRoomError.value : createRoomError.value
     }
   });
 }

@@ -2,15 +2,18 @@
   <Card>
     <template #title>{{ props.title }}</template>
     <template #content>
-      <DataTable v-model:selection="selection" dataKey="id" :value="props.data" stripedRows>
+      <DataTable v-model:selection="selection" selectionMode="single" dataKey="id" :value="props.data" stripedRows>
         <template #header>
           <div class="table-header">
             <div class="left-btns">
-              <Button class="add-btn" type="button" icon="pi pi-plus" label="Agregar" outlined @click="emits('openCreateDialog')" />
-              <Button type="button" icon="pi pi-pencil" label="Editar" outlined severity="info" :disabled="!selection" @click="emits('openUpdateDialog')" />
+              <Button class="add-btn" type="button" icon="pi pi-plus" label="Agregar" outlined
+                @click="emits('openCreateDialog')" />
+              <Button type="button" icon="pi pi-pencil" label="Editar" outlined severity="info" :disabled="!selection"
+                @click="emits('openUpdateDialog')" />
             </div>
             <div>
-              <Button type="button" icon="pi pi-trash" label="Eliminar" severity="danger" outlined :disabled="!selection" />
+              <Button type="button" icon="pi pi-trash" label="Eliminar" severity="danger" outlined
+                :disabled="!selection" />
             </div>
           </div>
         </template>
