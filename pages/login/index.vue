@@ -1,4 +1,3 @@
-
 <script lang="ts" setup>
 import { z } from 'zod'
 import { loginSchema } from '~/schemas'
@@ -27,12 +26,6 @@ const { data: response, error, execute } = await useLazyFetch<DataResponse>('/ap
   watch: false
 })
 const login = async () => {
-  try {
-    //await form.value?.validate()
-  } catch (e) {
-    return
-  }
-
   loading.value = true
   await execute()
   loading.value = false
@@ -63,7 +56,7 @@ const login = async () => {
               <InputText id="username" v-model="body.username" placeholder="Username" />
             </InputGroup>
           </div>
-  
+
           <div class="form-group">
             <label for="password">Contraseña</label>
             <InputGroup>
@@ -73,7 +66,7 @@ const login = async () => {
               <InputText id="password" v-model="body.password" type="password" placeholder="**********" />
             </InputGroup>
           </div>
-  
+
           <Button type="submit" label="Ingresar" @click.prevent="login" :loading="loading" block />
         </form>
       </template>
