@@ -2,7 +2,7 @@
   <div>
     <Toast />
     <ConfirmDialog></ConfirmDialog>
-    <DynamicDialog ref="dynamicDialog" :draggable="false" />
+    <DynamicDialog :draggable="false" />
     <div>
       <h1>Administración</h1>
     </div>
@@ -212,7 +212,6 @@ const confirmDeleteRoom = (id: number) => {
 // Dialog methods
 const DialogTenant = defineAsyncComponent(() => import('~/components/dialog/Tenant.vue'));
 const DialogRoom = defineAsyncComponent(() => import('~/components/dialog/Room.vue'));
-const dynamicDialog = ref()
 const dialog = useDialog();
 const showTenantDialog = (method: 'update' | 'create') => {
   dialog.open(DialogTenant, {
