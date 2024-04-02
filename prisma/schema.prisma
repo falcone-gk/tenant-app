@@ -18,35 +18,52 @@ enum Role {
   guest
 }
 
+enum Month {
+  ENERO
+  FEBRERO
+  MARZO
+  ABRIL
+  MAYO
+  JUNIO
+  JULIO
+  AGOSTO
+  SEPTIEMBRE
+  OCTUBRE
+  NOVIEMBRE
+  DICIEMBRE
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   username  String   @unique @db.VarChar(25)
   password  String
   role      Role     @default(guest)
   createdAt DateTime @default(now()) @map("created_at")
-  token     String?  @db.VarChar(200)
+  token     String?  @default("") @db.VarChar(200)
 
   @@map("users")
 }
 
 model Room {
-  id        Int     @id @default(autoincrement())
-  code      String  @unique
-  reference String  @db.VarChar(150)
+  id        Int       @id @default(autoincrement())
+  code      String    @unique
+  reference String    @db.VarChar(150)
   floor     Int
-  tenant    Tenant? @relation(fields: [tenantId], references: [id])
-  tenantId  Int?    @map("tenant_id")
+  tenant    Tenant?   @relation(fields: [tenantId], references: [id])
+  tenantId  Int?      @map("tenant_id")
+  Payment   Payment[]
 
   @@map("rooms")
 }
 
 model Tenant {
-  id        Int          @id @default(autoincrement())
-  name      String       @db.VarChar(150)
-  createdAt DateTime     @default(now()) @map("created_at")
-  rooms     Room[]
-  payments  Payment[]
-  debts     TenantDebt[]
+  id       Int          @id @default(autoincrement())
+  name     String       @db.VarChar(150)
+  joinDate DateTime     @default(now()) @map("join_date")
+  dayToPay Int          @map("day_to_pay")
+  rooms    Room[]
+  payments Payment[]
+  debts    TenantDebt[]
 
   @@map("tenants")
 }
@@ -60,17 +77,33 @@ model Service {
 }
 
 model Payment {
-  id        Int       @id @default(autoincrement())
-  amount    Int
-  isPaid    Boolean   @default(false)
-  paidAt    DateTime? @map("paid_at")
-  createdAt DateTime  @default(now()) @map("created_at")
-  service   Service   @relation(fields: [serviceId], references: [id])
-  serviceId Int       @map("service_id")
-  tenant    Tenant    @relation(fields: [tenantId], references: [id])
-  tenantId  Int       @map("tenant_id")
+  id           Int       @id @default(autoincrement())
+  amount       Int
+  paidMount    Int       @default(0)
+  consume      String    @default("")
+  isPaid       Boolean   @default(false)
+  lastDatePaid DateTime? @map("last_date_paid")
+  dateToPay    DateTime  @default(now()) @map("date_to_pay")
+  service      Service   @relation(fields: [serviceId], references: [id])
+  serviceId    Int       @map("service_id")
+  tenant       Tenant    @relation(fields: [tenantId], references: [id])
+  tenantId     Int       @map("tenant_id")
+  room         Room      @relation(fields: [roomId], references: [id])
+  roomId       Int       @map("room_id")
 
   @@map("payments")
+}
+
+model TotalPayment {
+  id           Int      @id @default(autoincrement())
+  month        Month
+  registerDate DateTime
+  amount       Int
+  consume      String   @default("")
+  isPaid       Boolean  @default(false)
+  outageDate   DateTime
+
+  @@map("total_payments")
 }
 
 model TenantDebt {
