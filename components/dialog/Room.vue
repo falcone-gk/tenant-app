@@ -28,8 +28,8 @@
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions'
 import type { RoomData } from '~/types/admin';
 
-const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef')
-
+/* const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef')
+ */
 const emits = defineEmits(['send'])
 const selectedTenant = ref()
 const body = ref<Omit<RoomData, 'id'>>({
@@ -43,15 +43,15 @@ const tenantOptions = ref([])
 const dialogMethod = ref<'create' | 'update'>()
 
 const onSubmit = () => {
-  emits('send', body.value, dialogRef?.value)
+  //emits('send', body.value, dialogRef?.value)
 }
 
-onMounted(() => {
+/* onMounted(() => {
   const { tenantsOpt, method, ...bodyData } = dialogRef?.value.data
   body.value = bodyData
   tenantOptions.value = tenantsOpt
   dialogMethod.value = method
   selectedTenant.value = body.value.tenant?.id
-})
+}) */
 
 </script>

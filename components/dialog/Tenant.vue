@@ -38,6 +38,7 @@ const body = ref<Omit<TenantData, 'id'>>({
   joinDate: new Date(),
   rooms: []
 })
+const extra = ref()
 const roomsOptions = ref([])
 const dialogMethod = ref<'create' | 'update'>()
 
@@ -46,13 +47,13 @@ const onSubmit = () => {
 }
 
 onMounted(() => {
-  const { roomsOpt, method, ...bodyData } = dialogRef?.value.data
+  const { bodyData, extraData } = dialogRef?.value.data
   body.value = {
     ...bodyData,
     rooms: bodyData.rooms.map((room: { id: number, code: string }) => room.id)
   }
-  roomsOptions.value = roomsOpt
-  dialogMethod.value = method
+  roomsOptions.value = extraData.roomsOpt
+  dialogMethod.value = extraData.method
 })
 
 </script>
