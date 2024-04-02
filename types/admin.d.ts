@@ -18,14 +18,16 @@ export interface RoomDataTable {
 export interface TenantData {
     id: number
     name: string
-    createdAt: Date
+    dayToPay: number | null
+    joinDate: Date
     rooms: { id: number, code: string }[]
 }
 
 export interface TenantDataTable {
     id: number
     name: string
-    createdAt: string
+    joinDate: string
+    dayToPay: number | null
     rooms: string
 }
 

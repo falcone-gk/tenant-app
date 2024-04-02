@@ -13,7 +13,8 @@ export default defineEventHandler({
       select: {
         id: true,
         name: true,
-        createdAt: true,
+        dayToPay: true,
+        joinDate: true,
         rooms: {
           select: {
             id: true,

@@ -7,7 +7,8 @@ export const loginSchema = z.object({
 
 export const tenantSchema = z.object({
     name: z.string().min(1, { message: 'Campo requerido' }),
-    createdAt: z.string().min(1, { message: 'Campo requerido' }),
+    dayToPay: z.number().min(1, { message: 'Campo debe ser mayor que 1' }).max(31, { message: 'Campo debe ser menor que 31' }),
+    joinDate: z.string().min(1, { message: 'Campo requerido' }),
     rooms: z.array(z.number()),
 })
 

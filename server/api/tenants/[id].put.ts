@@ -17,7 +17,8 @@ export default defineEventHandler({
       },
       data: {
         name: body.name,
-        createdAt: body.createdAt,
+        joinDate: body.joinDate,
+        dayToPay: body.dayToPay,
         rooms: {
           set: body.rooms.map((value) => { return { id: value } })
         }
@@ -25,7 +26,8 @@ export default defineEventHandler({
       select: {
         id: true,
         name: true,
-        createdAt: true,
+        joinDate: true,
+        dayToPay: true,
         rooms: {
           select: {
             id: true,

@@ -6,8 +6,12 @@
         <InputText id="name" v-model="body.name" />
       </div>
       <div class="form-group">
-        <label for="createdAt">Fecha de ingreso:</label>
-        <Calendar v-model="body.createdAt" showIcon iconDisplay="input" />
+        <label for="joinDate">Fecha de ingreso:</label>
+        <Calendar v-model="body.joinDate" showIcon iconDisplay="input" />
+      </div>
+      <div class="form-group">
+        <label for="dayToPay">Días de pago:</label>
+        <InputNumber v-model="body.dayToPay" showButtons :min="1" :max="30" />
       </div>
       <div class="form-group">
         <label for="rooms">Cuartos:</label>
@@ -30,7 +34,8 @@ const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef')
 const emits = defineEmits(['send'])
 const body = ref<Omit<TenantData, 'id'>>({
   name: '',
-  createdAt: new Date(),
+  dayToPay: null,
+  joinDate: new Date(),
   rooms: []
 })
 const roomsOptions = ref([])

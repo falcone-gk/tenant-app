@@ -13,7 +13,8 @@ export default defineEventHandler({
     const tenant = await prisma.tenant.create({
       data: {
         name: body.name,
-        createdAt: body.createdAt,
+        joinDate: body.joinDate,
+        dayToPay: body.dayToPay,
         rooms: {
           connect: body.rooms.map((value) => { return { id: value } })
         }
@@ -21,7 +22,8 @@ export default defineEventHandler({
       select: {
         id: true,
         name: true,
-        createdAt: true,
+        dayToPay: true,
+        joinDate: true,
         rooms: {
           select: {
             id: true,

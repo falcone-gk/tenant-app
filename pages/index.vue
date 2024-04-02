@@ -52,7 +52,7 @@ const { data: response, status, refresh } = await useLazyFetch<DataAdminResponse
       const roomsCodes = tenant.rooms.map((room) => room.code)
       return {
         ...tenant,
-        createdAt: new Date(tenant.createdAt).toLocaleDateString('es-ES'),
+        joinDate: new Date(tenant.joinDate).toLocaleDateString('es-ES'),
         rooms: new Intl.ListFormat('es-ES').format(roomsCodes)
       }
     })
@@ -60,7 +60,8 @@ const { data: response, status, refresh } = await useLazyFetch<DataAdminResponse
     tenantColumns.value = {
       id: 'ID',
       rooms: 'Cuartos',
-      createdAt: 'Ingresó',
+      joinDate: 'Ingresó',
+      dayToPay: 'Días de pago',
       name: 'Nombre'
     }
 
@@ -103,7 +104,8 @@ const roomsOptions = computed(() => {
 // Values needed for the dialog components (Tenant)
 const tenantBody = ref<Omit<TenantData, 'id'>>({
   name: '',
-  createdAt: new Date(),
+  dayToPay: null,
+  joinDate: new Date(),
   rooms: []
 })
 const tenantSelection = ref<TenantDataTable>()
@@ -236,7 +238,8 @@ const showTenantDialog = (method: 'update' | 'create') => {
     },
     data: {
       name: method === 'update' ? tenants.value[tenantSelectedId.value! - 1].name : '',
-      createdAt: method === 'update' ? tenants.value[tenantSelectedId.value! - 1].createdAt : '',
+      dayToPay: method === 'update' ? tenants.value[tenantSelectedId.value! - 1].dayToPay : null,
+      joinDate: method === 'update' ? tenants.value[tenantSelectedId.value! - 1].joinDate : '',
       rooms: method === 'update' ? tenants.value[tenantSelectedId.value! - 1].rooms : [],
       roomsOpt: roomsOptions.value,
       method: method,
