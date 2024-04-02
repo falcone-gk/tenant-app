@@ -118,7 +118,7 @@ Segundo historial donde muestra los pagos realizados y a realizar de los servici
 TODO: Crear una tabla de historial de pagos de servicios o Adaptarlo a la tabla de Payment ya creada.
 -->
 
-Servicio | Mes | Fecha de registro | Monto | Consumo
---- | --- | --- | --- | ---
-Agua | Enero | 2024/01/01 | 300 | 100m3
-Luz | Enero | 2024/01/01 | 600 | 500kw
+Servicio | Mes | Fecha de registro | Monto | Consumo | Pago Completado
+--- | --- | --- | --- | --- | ---
+Agua | Enero | 2024/01/01 | 300 | 100m3 | Si
+Luz | Enero | 2024/01/01 | 600 | 500kw | No
