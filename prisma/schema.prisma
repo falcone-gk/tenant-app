@@ -39,7 +39,7 @@ model User {
   password  String
   role      Role     @default(guest)
   createdAt DateTime @default(now()) @map("created_at")
-  token     String?  @default("") @db.VarChar(200)
+  token     String   @default("") @db.VarChar(200)
 
   @@map("users")
 }
