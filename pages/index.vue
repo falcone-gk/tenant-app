@@ -242,7 +242,6 @@ const showTenantDialog = (method: 'update' | 'create') => {
       rooms: method === 'update' ? tenants.value[tenantSelectedId.value! - 1].rooms : [],
       roomsOpt: roomsOptions.value,
       method: method,
-      error: method === 'update' ? updateTenantError.value : createTenantError.value
     }
   });
 }
@@ -277,7 +276,6 @@ const showRoomDialog = (method: 'update' | 'create') => {
       tenantId: method === 'update' ? rooms.value[roomSelectedId.value! - 1].tenantId : null,
       tenantsOpt: tenantOptions.value,
       method: method,
-      error: method === 'update' ? updateRoomError.value : createRoomError.value
     }
   });
 }
