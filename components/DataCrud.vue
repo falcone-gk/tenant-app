@@ -106,6 +106,8 @@ const confirmDeleteTenant = () => {
     message: '¿Seguro que desea eliminar este inquilino?',
     header: 'Confirmar eliminación',
     icon: 'pi pi-exclamation-triangle',
+    rejectLabel: 'Cancelar',
+    acceptLabel: 'Eliminar',
     accept: async () => {
       await deleteData()
       emits('onSuccess')
