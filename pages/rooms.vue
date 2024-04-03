@@ -1,30 +1,54 @@
 <template>
-  <Panel header="Cuartos">
+  <div>
     <div>
-      <div v-if="!rooms">
-        <p>No content u.u</p>
-      </div>
-      <Accordion v-else :multiple="true">
-        <AccordionTab v-for="room in rooms.data" :key="room.id" :header="'Cuarto ' + room.code">
-          <ul>
-            <li><p><span class="subtitle">Descripcion: </span>{{ room.reference }}</p></li>
-            <li><p><span class="subtitle">Piso: </span>{{ room.floor }}</p></li>
-            <li><p><span class="subtitle">Inquilino: </span>{{ room.tenantId ? room.tenantId : 'Sin inquilino' }}</p></li>
-          </ul>
-        </AccordionTab>
-      </Accordion>
+      <h1>Cuartos</h1>
     </div>
-  </Panel>
+    <LoadingScreen v-if="status !== 'success'" :status="status" />
+    <div v-else>
+      <DataCrud title="Cuartos" :data="rooms ? rooms.data : []" :data-table="roomsDataTable" :columns="roomColumns"
+        api-route="/api/rooms" :form="markRaw(roomForm)" :extra="{ tenantsOpt: tenantOpts }" @on-success="refresh" />
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import type { Room } from '~/types';
+import type { RoomData, RoomDataTable, TenantData } from '~/types/admin';
+
+const roomForm = defineAsyncComponent(() => import('~/components/dialog/Room.vue'))
 
 definePageMeta({
   middleware: 'auth'
 })
 
-type RoomResponse = ApiResponse<Room[]>
-const { data: rooms } = await useLazyFetch<RoomResponse>('/api/rooms')
+const roomColumns = {
+  id: 'ID',
+  code: 'Código',
+  reference: 'Referencia',
+  floor: 'Piso',
+  tenant: 'Inquilino',
+}
+
+type RoomResponse = ApiResponse<RoomData[]>
+type TenantResponse = ApiResponse<TenantData[]>
+
+const { data: tenantOpts } = await useFetch('/api/tenants', {
+  transform: (data: TenantResponse) => {
+    return data.data?.map((tenant) => ({ label: tenant.name, value: tenant.id }))
+  }
+})
+
+const { data: rooms, pending, status, refresh } = await useLazyFetch<RoomResponse>('/api/rooms', {
+  server: false
+})
+
+const roomsDataTable = computed<RoomDataTable[]>(() => {
+  if (!rooms.value) return []
+  if (!rooms.value.data) return []
+
+  return rooms.value.data.map((room) => ({
+    ...room,
+    tenant: room.tenant ? room.tenant.name : 'Sin inquilino'
+  }))
+})
 
 </script>

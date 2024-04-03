@@ -1,6 +1,6 @@
 <template>
   <Card>
-    <template #title>{{ props.title }}</template>
+    <template v-if="props.showTitle === undefined || props.showTitle" #title>{{ props.title }}</template>
     <template #content>
       <DataTable v-model:selection="selection" selectionMode="single" dataKey="id" :value="props.dataTable" stripedRows>
         <template #header>
@@ -17,7 +17,7 @@
             </div>
           </div>
         </template>
-        <template #empty> No customers found. </template>
+        <template #empty> No hay datos. </template>
         <Column selectionMode="single" headerStyle="width: 3rem" />
         <Column v-for="([key, value], index) in Object.entries(props.columns)" :key="index" :field="key"
           :header="value" />
@@ -27,7 +27,6 @@
 </template>
 
 <script lang="ts" setup>
-import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions'
 
 const props = defineProps<{
   title: string
@@ -36,7 +35,8 @@ const props = defineProps<{
   extra?: { [key: string]: any },
   columns: { [key: string]: string },
   apiRoute: string
-  form: any
+  form: any,
+  showTitle?: boolean
 }>()
 
 const emits = defineEmits(['onSuccess', 'onError'])
@@ -72,6 +72,7 @@ const { execute: deleteData } = await useLazyFetch(
   watch: false
 })
 
+const toast = useToast()
 const dialog = useDialog()
 const showDialog = (method: 'create' | 'update') => {
   const dialogRef = dialog.open(props.form, {
@@ -87,8 +88,10 @@ const showDialog = (method: 'create' | 'update') => {
 
         if (updateError.value || createError.value) {
           emits('onError')
+          toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudo realizar la operación', life: 3000 })
         } else {
           emits('onSuccess')
+          toast.add({ severity: 'success', summary: 'Exito', detail: 'Operación exitosa', life: 3000 })
           dialogRef.close()
         }
       }
