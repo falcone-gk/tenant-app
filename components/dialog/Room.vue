@@ -19,7 +19,7 @@
           :options="tenantOptions" option-label="label" option-value="value" placeholder="Seleccione un inquilino" />
       </div>
 
-      <Button @click.prevent="onSubmit" type="submit" :label="dialogMethod === 'update' ? 'Actualizar' : 'Crear'" />
+      <Button @click.prevent="onSubmit" type="submit" label="Enviar" />
     </form>
   </div>
 </template>
@@ -28,10 +28,9 @@
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions'
 import type { RoomData } from '~/types/admin';
 
-/* const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef')
- */
+const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef')
+
 const emits = defineEmits(['send'])
-const selectedTenant = ref()
 const body = ref<Omit<RoomData, 'id'>>({
   code: '',
   reference: '',
@@ -40,18 +39,17 @@ const body = ref<Omit<RoomData, 'id'>>({
 })
 
 const tenantOptions = ref([])
-const dialogMethod = ref<'create' | 'update'>()
 
 const onSubmit = () => {
-  //emits('send', body.value, dialogRef?.value)
+  emits('send', body.value)
 }
 
-/* onMounted(() => {
-  const { tenantsOpt, method, ...bodyData } = dialogRef?.value.data
-  body.value = bodyData
-  tenantOptions.value = tenantsOpt
-  dialogMethod.value = method
-  selectedTenant.value = body.value.tenant?.id
-}) */
+onMounted(() => {
+  const { bodyData, extraData } = dialogRef?.value.data
+  if (bodyData) {
+    body.value = bodyData
+  }
+  tenantOptions.value = extraData.tenantsOpt
+})
 
 </script>

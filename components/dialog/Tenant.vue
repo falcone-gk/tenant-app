@@ -20,7 +20,7 @@
           :selectedItemsLabel="`${body.rooms.length} cuartos seleccionados`" optionLabel="label" optionValue="value" />
       </div>
 
-      <Button type="submit" @click.prevent="onSubmit" :label="dialogMethod === 'update' ? 'Actualizar' : 'Crear'" />
+      <Button type="submit" @click.prevent="onSubmit" label="Enviar" />
     </form>
   </div>
 </template>
@@ -38,22 +38,21 @@ const body = ref<Omit<TenantData, 'id'>>({
   joinDate: new Date(),
   rooms: []
 })
-const extra = ref()
 const roomsOptions = ref([])
-const dialogMethod = ref<'create' | 'update'>()
 
 const onSubmit = () => {
-  emits('send', body.value, dialogRef?.value)
+  emits('send', body.value)
 }
 
 onMounted(() => {
   const { bodyData, extraData } = dialogRef?.value.data
-  body.value = {
-    ...bodyData,
-    rooms: bodyData.rooms.map((room: { id: number, code: string }) => room.id)
+  if (bodyData) {
+    body.value = {
+      ...bodyData,
+      rooms: bodyData.rooms.map((room: { id: number, code: string }) => room.id)
+    }
   }
   roomsOptions.value = extraData.roomsOpt
-  dialogMethod.value = extraData.method
 })
 
 </script>

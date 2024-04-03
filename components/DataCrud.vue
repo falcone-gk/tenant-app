@@ -1,33 +1,29 @@
 <template>
-  <div>
-    <DynamicDialog />
-    <ConfirmDialog />
-    <Card>
-      <template #title>{{ props.title }}</template>
-      <template #content>
-        <DataTable v-model:selection="selection" selectionMode="single" dataKey="id" :value="props.data" stripedRows>
-          <template #header>
-            <div class="table-header">
-              <div class="left-btns">
-                <Button class="add-btn" type="button" icon="pi pi-plus" label="Agregar" outlined
-                  @click="showDialog('create')" />
-                <Button type="button" icon="pi pi-pencil" label="Editar" outlined severity="info" :disabled="!selection"
-                  @click="showDialog('update')" />
-              </div>
-              <div>
-                <Button type="button" icon="pi pi-trash" label="Eliminar" severity="danger" outlined
-                  :disabled="!selection" @click="confirmDeleteTenant" />
-              </div>
+  <Card>
+    <template #title>{{ props.title }}</template>
+    <template #content>
+      <DataTable v-model:selection="selection" selectionMode="single" dataKey="id" :value="props.dataTable" stripedRows>
+        <template #header>
+          <div class="table-header">
+            <div class="left-btns">
+              <Button class="add-btn" type="button" icon="pi pi-plus" label="Agregar" outlined
+                @click="showDialog('create')" />
+              <Button type="button" icon="pi pi-pencil" label="Editar" outlined severity="info"
+                :disabled="selectedIndex === -1" @click="showDialog('update')" />
             </div>
-          </template>
-          <template #empty> No customers found. </template>
-          <Column selectionMode="single" headerStyle="width: 3rem" />
-          <Column v-for="([key, value], index) in Object.entries(props.columns)" :key="index" :field="key"
-            :header="value" />
-        </DataTable>
-      </template>
-    </Card>
-  </div>
+            <div>
+              <Button type="button" icon="pi pi-trash" label="Eliminar" severity="danger" outlined
+                :disabled="selectedIndex === -1" @click="confirmDeleteTenant" />
+            </div>
+          </div>
+        </template>
+        <template #empty> No customers found. </template>
+        <Column selectionMode="single" headerStyle="width: 3rem" />
+        <Column v-for="([key, value], index) in Object.entries(props.columns)" :key="index" :field="key"
+          :header="value" />
+      </DataTable>
+    </template>
+  </Card>
 </template>
 
 <script lang="ts" setup>
@@ -35,6 +31,7 @@ import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions'
 
 const props = defineProps<{
   title: string
+  dataTable: any,
   data: any,
   extra?: { [key: string]: any },
   columns: { [key: string]: string },
@@ -46,7 +43,11 @@ const emits = defineEmits(['onSuccess', 'onError'])
 
 const body = ref()
 // TODO: Unselect row when deleted button is clicked
-const selection = ref({ id: 0 })
+const selection = ref({ id: -1 })
+const selectedIndex = computed(() => {
+  if (!selection.value) return -1
+  return props.data.findIndex((item: any) => item.id === selection.value.id)
+})
 
 const { error: createError, execute: createData } = await useLazyFetch(props.apiRoute, {
   method: 'POST',
@@ -73,13 +74,13 @@ const { execute: deleteData } = await useLazyFetch(
 
 const dialog = useDialog()
 const showDialog = (method: 'create' | 'update') => {
-  dialog.open(props.form, {
+  const dialogRef = dialog.open(props.form, {
     props: {
       header: props.title,
       modal: true,
     },
     emits: {
-      onSend: async (data: any, dialogModal: DynamicDialogInstance) => {
+      onSend: async (data: any) => {
         body.value = data
         const sendMethod = method === 'update' ? updateData : createData
         await sendMethod()
@@ -88,12 +89,12 @@ const showDialog = (method: 'create' | 'update') => {
           emits('onError')
         } else {
           emits('onSuccess')
-          dialogModal.close()
+          dialogRef.close()
         }
       }
     },
     data: {
-      bodyData: props.data[selection.value.id],
+      bodyData: method === 'update' ? props.data[selectedIndex.value] : null,
       extraData: props.extra
     }
   })

@@ -1,17 +1,16 @@
 <template>
   <div>
-    <Toast />
-    <ConfirmDialog></ConfirmDialog>
-    <DynamicDialog :draggable="false" />
     <div>
       <h1>Administración</h1>
     </div>
     <p v-if="status !== 'success'">Cargando...</p>
     <div v-else class="data-crud">
-      <DataCrud title="Inquilinos" :data="tenantsData" :columns="tenantColumns" api-route="/api/tenants"
-        :form="markRaw(tenanForm)" @on-error="afterError" @on-success="afterSuccess" />
-      <DataCrud title="Cuartos" :data="roomsData" :columns="roomColumns" api-route="/api/rooms" @on-error="afterError"
-        :form="markRaw(roomForm)" @on-success="afterSuccess" />
+      <DataCrud title="Inquilinos" :data="tenants" :data-table="tenantsData" :columns="tenantColumns"
+        api-route="/api/tenants" :form="markRaw(tenanForm)" :extra="{ roomsOpt: roomsOpt }" @on-error="afterError"
+        @on-success="afterSuccess" />
+      <DataCrud title="Cuartos" :data="rooms" :data-table="roomsData" :columns="roomColumns" api-route="/api/rooms"
+        @on-error="afterError" :form="markRaw(roomForm)" :extra="{ tenantsOpt: tenantsOpt }"
+        @on-success="afterSuccess" />
     </div>
   </div>
 </template>
@@ -34,9 +33,28 @@ const roomForm = defineAsyncComponent(() => import('~/components/dialog/Room.vue
 const tenants = ref<TenantData[]>([])
 const tenantsData = ref<TenantDataTable[]>([])
 const tenantColumns = ref()
+
 const rooms = ref<RoomData[]>([])
 const roomsData = ref<RoomDataTable[]>([])
 const roomColumns = ref()
+
+const tenantsOpt = computed(() => {
+  if (!tenantsData.value) return
+  const opts = tenantsData.value.map((tenant) => ({
+    value: tenant.id,
+    label: tenant.name
+  }))
+  return opts
+})
+
+const roomsOpt = computed(() => {
+  if (!roomsData.value) return
+  const opts = roomsData.value.map((room) => ({
+    value: room.id,
+    label: room.code
+  }))
+  return opts
+})
 
 // Fetch all admin data
 const { status, refresh } = await useLazyFetch<DataAdminResponse>('/api/data', {
@@ -81,6 +99,7 @@ const { status, refresh } = await useLazyFetch<DataAdminResponse>('/api/data', {
 })
 
 const toast = useToast()
+
 const afterSuccess = async () => {
   toast.add({ severity: 'success', summary: 'Exito', detail: 'Operación exitosa', life: 3000 })
   await refresh()

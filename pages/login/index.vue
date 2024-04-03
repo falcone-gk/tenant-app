@@ -42,7 +42,6 @@ const login = async () => {
 
 <template>
   <div class="mx-auto">
-    <Toast />
     <Card>
       <template #title>Iniciar sesión</template>
       <template #content>
