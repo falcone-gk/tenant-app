@@ -21,7 +21,6 @@ definePageMeta({
 })
 
 const roomColumns = {
-  id: 'ID',
   code: 'Código',
   reference: 'Referencia',
   floor: 'Piso',

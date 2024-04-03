@@ -22,10 +22,10 @@ definePageMeta({
 })
 
 const tenantColumns = {
-  rooms: 'Cuartos',
+  name: 'Nombre',
   joinDate: 'Ingresó',
+  rooms: 'Cuartos',
   dayToPay: 'Días de pago',
-  name: 'Nombre'
 }
 
 type TenantResponse = ApiResponse<TenantData[]>
