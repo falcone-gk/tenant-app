@@ -37,7 +37,7 @@ const { data: tenantOpts } = await useFetch('/api/tenants', {
   }
 })
 
-const { data: rooms, pending, status, refresh } = await useLazyFetch<RoomResponse>('/api/rooms', {
+const { data: rooms, status, refresh } = await useLazyFetch<RoomResponse>('/api/rooms', {
   server: false
 })
 
