@@ -15,6 +15,7 @@ export default defineEventHandler({
         code: true,
         reference: true,
         floor: true,
+        tenantId: true,
         tenant: {
           select: {
             id: true,
