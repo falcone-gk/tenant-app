@@ -34,7 +34,7 @@ const login = async () => {
     toast.add({ severity: 'error', summary: 'Error', detail: 'Credenciales incorrectas', life: 3000 })
   } else {
     token.value = response.value?.data?.token
-    navigateTo('/')
+    navigateTo('/tenants')
   }
 
 }
