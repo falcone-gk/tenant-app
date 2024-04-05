@@ -7,7 +7,7 @@
       </div>
       <div class="form-group">
         <label for="joinDate">Fecha de ingreso:</label>
-        <Calendar v-model="body.joinDate" showIcon iconDisplay="input" />
+        <Calendar date-format="yy-mm-dd" v-model="body.joinDate" showIcon iconDisplay="input" />
       </div>
       <div class="form-group">
         <label for="dayToPay">Días de pago:</label>
@@ -27,12 +27,11 @@
 
 <script lang="ts" setup>
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions'
-import type { TenantData } from '~/types/admin';
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef')
 
 const emits = defineEmits(['send'])
-const body = ref<Omit<TenantData, 'id'>>({
+const body = ref({
   name: '',
   dayToPay: null,
   joinDate: new Date(),
@@ -49,7 +48,8 @@ onMounted(() => {
   if (bodyData) {
     body.value = {
       ...bodyData,
-      rooms: bodyData.rooms.map((room: { id: number, code: string }) => room.id)
+      rooms: bodyData.rooms.map((room: { id: number, code: string }) => room.id),
+      joinDate: new Date(bodyData.joinDate)
     }
   }
   roomsOptions.value = extraData.roomsOpt

@@ -49,7 +49,7 @@ const tenantsDataTable = computed<TenantDataTable[]>(() => {
     const roomsCodes = tenants.rooms.map((room) => room.code)
     return {
       ...tenants,
-      joinDate: new Date(tenants.joinDate).toLocaleDateString('es-ES'),
+      joinDate: calendarFormat(new Date(tenants.joinDate)),
       rooms: new Intl.ListFormat('es-ES').format(roomsCodes)
     }
   })
