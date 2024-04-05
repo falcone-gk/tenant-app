@@ -4,6 +4,7 @@
       <div class="form-group">
         <label for="code">Código:</label>
         <InputText id="code" v-model="body.code" />
+        <span class="p-error">{{ getError("code") }}</span>
       </div>
       <div class="form-group">
         <label for="reference">Referencia:</label>
@@ -11,7 +12,8 @@
       </div>
       <div class="form-group">
         <label for="floor">Piso:</label>
-        <InputNumber id="floor" v-model="body.floor" />
+        <InputNumber id="floor" v-model="body.floor" showButtons :min="1" />
+        <span class="p-error">{{ getError("floor") }}</span>
       </div>
       <div class="form-group">
         <label for="tenants">Inquilinos:</label>
@@ -26,6 +28,7 @@
 
 <script lang="ts" setup>
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions'
+import { roomSchema } from '~/schemas';
 import type { RoomData } from '~/types/admin';
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef')
@@ -40,8 +43,16 @@ const body = ref<Omit<RoomData, 'id'>>({
 
 const tenantOptions = ref([])
 
-const onSubmit = () => {
-  emits('send', body.value)
+const { validate, errors, isValid, clearErrors, getError } = useValidation(
+  roomSchema, body, {
+  mode: 'lazy',
+});
+
+const onSubmit = async () => {
+  await validate()
+  if (isValid.value) {
+    emits('send', body.value)
+  }
 }
 
 onMounted(() => {

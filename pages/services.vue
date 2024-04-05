@@ -82,7 +82,7 @@ const optionsData = computed(() => {
 const paymentsDataTable = computed(() => {
   if (!payments.value) return []
   if (!payments.value.data) return []
-  console.log(payments.value.data)
+
   return payments.value.data.map((payment) => ({
     ...payment,
     tenant: payment.tenant.name,

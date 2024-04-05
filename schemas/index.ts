@@ -12,21 +12,36 @@ export const tenantSchema = z.object({
     rooms: z.array(z.number()),
 })
 
+export const tenantFormSchema = z.object({
+    name: z.string().min(1, { message: 'Campo requerido' }),
+    dayToPay: z.number({ invalid_type_error: "Dia inválido", required_error: "Campo requerido" }).min(1),
+    joinDate: z.date({ invalid_type_error: "Fecha inválida", required_error: "Campo requerido" }),
+    rooms: z.array(z.number()),
+})
+
 export const roomSchema = z.object({
     code: z.string().min(1, { message: 'Campo requerido' }),
     reference: z.string().min(1, { message: 'Campo requerido' }),
-    floor: z.number(),
+    floor: z.number({ invalid_type_error: "Piso inválido", required_error: "Campo requerido" }),
     tenantId: z.number().nullable(),
 })
 
 export const paymentSchema = z.object({
-    tenantId: z.number(),
-    roomId: z.number(),
-    serviceId: z.number(),
-    amount: z.number(),
+    tenantId: z.number({ invalid_type_error: "Campo requerido" }),
+    roomId: z.number({ invalid_type_error: "Campo requerido" }),
+    serviceId: z.number({ invalid_type_error: "Campo requerido" }),
+    amount: z.number({ invalid_type_error: "Campo requerido" }).min(1, { message: 'Campo debe ser mayor o igual que 1' }),
     consume: z.number().nullable(),
-    dateToPay: z.string().min(1, { message: 'Campo requerido' }),
+    dateToPay: z.date(),
     paidMount: z.number().min(0, { message: 'Campo debe ser mayor o igual que 0' }),
+}).superRefine(({ consume, serviceId }, ctx) => {
+    if (consume === null && (serviceId === 1 || serviceId === 2)) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Campo requerido',
+            path: ['consume']
+        })
+    }
 })
 
 export const paginationSchema = z.object({

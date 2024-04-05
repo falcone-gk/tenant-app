@@ -5,29 +5,40 @@
         <label for="tenant">Inquilino:</label>
         <Dropdown id="tenant" v-model="body.tenantId" showClear :options="options.tenantOpts" option-label="label"
           option-value="value" @change="onChangeTenant" />
+        <span class="p-error">{{ getError("tenantId") }}</span>
       </div>
       <div class="form-group">
         <label for="room">Cuarto:</label>
         <Dropdown id="room" v-model="body.roomId" showClear :options="roomAvailables" option-label="label"
           option-value="value" />
+        <span class="p-error">{{ getError("roomId") }}</span>
       </div>
       <div class="form-group">
         <label for="service">Servicio:</label>
         <Dropdown id="service" v-model="body.serviceId" showClear :options="options.serviceOpts" option-label="label"
           option-value="value" />
+        <span class="p-error">{{ getError("serviceId") }}</span>
+      </div>
+      <div class="form-group">
+        <label for="dateToPay">Fecha a pagar:</label>
+        <Calendar date-format="yy-mm-dd" v-model="body.dateToPay" showIcon iconDisplay="input"
+          :disabled="body.tenantId === null" />
       </div>
       <div class="form-group">
         <label for="amount">Monto:</label>
         <InputNumber id="amount" v-model="body.amount" showButtons :min="1" />
+        <span class="p-error">{{ getError("amount") }}</span>
       </div>
-      <div class="form-group">
-        <label for="consume">Consumo:</label>
+      <div v-if="selectedServiceName === 'Luz' || selectedServiceName === 'Agua'" class="form-group">
+        <label for="consume">Consumo ({{ selectedServiceName === 'Luz' ? 'kW' : 'm3' }}) :</label>
         <InputNumber id="consume" v-model="body.consume" showButtons :min="1" />
+        <span class="p-error">{{ getError("consume") }}</span>
       </div>
       <div class="form-group">
         <label for="amountPaid">Monto Pagado:</label>
         <InputNumber id="amountPaid" v-model="body.paidMount" showButtons :min="0" :max="body.amount!"
           :disabled="body.amount === null" />
+        <span class="p-error">{{ getError("paidMount") }}</span>
       </div>
       <Button type="submit" @click.prevent="onSubmit" label="Enviar" />
     </form>
@@ -36,6 +47,7 @@
 
 <script lang="ts" setup>
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions'
+import { paymentSchema } from '~/schemas';
 import type { TenantData } from '~/types/admin';
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef')
@@ -48,7 +60,7 @@ const body = ref({
   amount: null,
   consume: null,
   dateToPay: new Date(),
-  paidMount: null,
+  paidMount: 0,
   isPaid: false
 })
 const options = ref<{
@@ -73,18 +85,38 @@ const roomAvailables = computed(() => {
   return []
 })
 
+const selectedServiceName = computed(() => {
+  if (body.value.serviceId) {
+    const service = _find(options.value.serviceOpts, { value: body.value.serviceId })
+    if (service) return service.label
+    return ''
+  }
+  return ''
+})
+
 const onChangeTenant = () => {
-  const currentTenant = options.value.tenants.find((tenant) => tenant.id === body.value.tenantId)
-  if (!currentTenant) return ''
-  // get current day to pay for tenant as Date
+  if (!body.value.tenantId) return null
+  const currentTenant = _find(options.value.tenants, { id: body.value.tenantId })
+  if (!currentTenant) return null
+
   const date = new Date()
   body.value.dateToPay = (
     new Date(date.getFullYear(), date.getMonth(), currentTenant.dayToPay)
   );
+  body.value.roomId = null
+  body.value.consume = null
 }
 
-const onSubmit = () => {
-  emits('send', body.value)
+const { validate, errors, isValid, clearErrors, getError } = useValidation(
+  paymentSchema, body, {
+  mode: 'lazy',
+});
+
+const onSubmit = async () => {
+  await validate()
+  if (isValid.value) {
+    emits('send', body.value)
+  }
 }
 
 onMounted(() => {
