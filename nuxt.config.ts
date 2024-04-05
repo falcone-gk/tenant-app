@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['nuxt-primevue',],
+  modules: ['nuxt-primevue', 'nuxt-lodash'],
   css: [
     'primevue/resources/themes/aura-light-teal/theme.css',
     'primeicons/primeicons.css',
@@ -12,5 +12,9 @@ export default defineNuxtConfig({
       jwtSecretKey: process.env.JWT_SECRET_TOKEN,
       tokenMaxAge: process.env.TOKEN_MAX_AGE
     }
+  },
+  lodash: {
+    prefix: '_',
+    upperAfterPrefix: false,
   }
 })
