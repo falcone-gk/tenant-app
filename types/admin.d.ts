@@ -18,7 +18,7 @@ export interface RoomDataTable {
 export interface TenantData {
     id: number
     name: string
-    dayToPay: number | null
+    dayToPay: number
     joinDate: Date
     rooms: { id: number, code: string }[]
 }
@@ -29,6 +29,22 @@ export interface TenantDataTable {
     joinDate: string
     dayToPay: number | null
     rooms: string
+}
+
+export interface PaymentData {
+    id: number
+    tenantId: number
+    tenant: { id: number, name: string }
+    roomId: number
+    room: { id: number, code: string }
+    serviceId: number
+    service: { id: number, name: string, unit: string }
+    amount: number
+    consume: number | null,
+    dateToPay: string
+    paidMount: number
+    lastDatePaid: Date | null
+    isPaid: boolean
 }
 
 export interface DataAdmin {
