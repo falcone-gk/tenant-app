@@ -71,6 +71,7 @@ model Tenant {
 model Service {
   id       Int       @id @default(autoincrement())
   name     String    @db.VarChar(50)
+  unit     String    @default("")
   payments Payment[]
 
   @@map("services")
@@ -80,7 +81,7 @@ model Payment {
   id           Int       @id @default(autoincrement())
   amount       Int
   paidMount    Int       @default(0)
-  consume      String    @default("")
+  consume      Int?
   isPaid       Boolean   @default(false)
   lastDatePaid DateTime? @map("last_date_paid")
   dateToPay    DateTime  @default(now()) @map("date_to_pay")

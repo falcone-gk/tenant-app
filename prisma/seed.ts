@@ -87,11 +87,13 @@ async function main() {
     const servicesData = [
         {
             id: 1,
-            name: 'Luz'
+            name: 'Luz',
+            unit: 'kw'
         },
         {
             id: 2,
-            name: 'Agua'
+            name: 'Agua',
+            unit: 'm3'
         },
         {
             id: 3,
@@ -115,9 +117,11 @@ async function main() {
             create: {
                 id: service.id,
                 name: service.name,
+                unit: service.unit ? service.unit : ""
             },
             update: {
                 name: service.name,
+                unit: service.unit ? service.unit : ""
             }
         })
         console.log(`- Servicio ${service.id} '${service.name}' has been created or updated.`)
