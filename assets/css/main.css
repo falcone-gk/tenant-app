@@ -99,6 +99,11 @@ body {
   gap: 0.2rem;
 }
 
+.p-error {
+  color: #f87171;
+  font-size: small;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
