@@ -19,7 +19,7 @@
       <div class="form-group">
         <label for="rooms">Cuartos:</label>
         <MultiSelect id="rooms" style="width: 20rem;" display="comma" :selectAll="false" :showToggleAll="false"
-          v-model="body.rooms" :options="roomsOptions" :maxSelectedLabels="2"
+          v-model="body.rooms" :options="selectRooms" :maxSelectedLabels="2"
           :selectedItemsLabel="`${body.rooms.length} cuartos seleccionados`" optionLabel="label" optionValue="value" />
         <span class="p-error">{{ getError("rooms") }}</span>
       </div>
@@ -36,13 +36,26 @@ import { tenantFormSchema } from '~/schemas';
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef')
 
 const emits = defineEmits(['send'])
-const body = ref({
+const body = ref<{
+  name: string,
+  dayToPay: number | null,
+  joinDate: Date,
+  rooms: number[]
+}>({
   name: '',
   dayToPay: null,
   joinDate: new Date(),
   rooms: []
 })
-const roomsOptions = ref([])
+const roomsOptions = ref<{ label: string, value: number, isAvailable: boolean }[]>([])
+
+// Room options to select only available
+// in case of update we get the rooms from the body (tenant selected)
+const selectRooms = computed((() => {
+  return roomsOptions.value.filter((room) => {
+    return room.isAvailable || body.value.rooms.includes(room.value)
+  })
+}))
 
 onMounted(() => {
   const { bodyData, extraData } = dialogRef?.value.data
