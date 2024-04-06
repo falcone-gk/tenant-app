@@ -24,6 +24,12 @@ export default defineEventHandler({
         }
       }
     })
-    return createResponse<RoomData[]>(event, 'success', 200, tenants)
+    const customTenant = tenants.map((tenant) => {
+      return {
+        ...tenant,
+        isAvailable: tenant.tenantId === null
+      }
+    })
+    return createResponse<RoomData[]>(event, 'success', 200, customTenant)
   }
 })

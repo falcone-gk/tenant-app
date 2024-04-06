@@ -33,7 +33,11 @@ type RoomResponse = ApiResponse<RoomData[]>
 
 const { data: roomsOpt } = await useFetch('/api/rooms', {
   transform: (data: RoomResponse) => {
-    return data.data?.map((room) => ({ label: room.code, value: room.id }))
+    return data.data?.map((room) => ({
+      label: room.code,
+      value: room.id,
+      isAvailable: room.isAvailable
+    }))
   }
 })
 
