@@ -108,3 +108,15 @@ body {
   margin-left: auto;
   margin-right: auto;
 }
+
+.row {
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.row > * {
+  flex: 1;
+}
