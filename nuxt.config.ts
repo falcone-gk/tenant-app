@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['nuxt-primevue', 'nuxt-lodash'],
+  modules: ['nuxt-primevue', 'nuxt-lodash', 'nuxt-viewport'],
   css: [
     'primevue/resources/themes/aura-light-teal/theme.css',
     'primeicons/primeicons.css',

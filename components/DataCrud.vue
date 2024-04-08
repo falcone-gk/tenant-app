@@ -6,14 +6,15 @@
         <template #header>
           <div class="table-header">
             <div class="left-btns">
-              <Button class="add-btn" type="button" icon="pi pi-plus" label="Agregar" outlined
+              <Button class="add-btn" type="button" icon="pi pi-plus"
+                :label="viewport.isLessThan('tablet') ? undefined : 'Actualizar'" outlined
                 @click="showDialog('create')" />
-              <Button type="button" icon="pi pi-pencil" label="Editar" outlined severity="info"
-                :disabled="selectedIndex === -1" @click="showDialog('update')" />
+              <Button type="button" icon="pi pi-pencil" :label="viewport.isLessThan('tablet') ? undefined : 'Editar'"
+                outlined severity="info" :disabled="selectedIndex === -1" @click="showDialog('update')" />
             </div>
             <div>
-              <Button type="button" icon="pi pi-trash" label="Eliminar" severity="danger" outlined
-                :disabled="selectedIndex === -1" @click="confirmDeleteTenant" />
+              <Button type="button" icon="pi pi-trash" :label="viewport.isLessThan('tablet') ? undefined : 'Eliminar'"
+                severity="danger" outlined :disabled="selectedIndex === -1" @click="confirmDeleteTenant" />
             </div>
           </div>
         </template>
@@ -39,6 +40,7 @@ const props = defineProps<{
 }>()
 
 const emits = defineEmits(['onSuccess', 'onError'])
+const viewport = useViewport()
 
 const body = ref()
 // TODO: Unselect row when deleted button is clicked
