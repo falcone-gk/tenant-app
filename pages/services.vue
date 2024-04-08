@@ -4,10 +4,30 @@
       <h1>Pago de servicios</h1>
     </div>
     <div>
-      <LoadingScreen v-if="status !== 'success'" :status="status" />
-      <div v-else>
-        <DataCrud title="Servicios" :data="payments ? payments.data : []" :data-table="paymentsDataTable"
-          api-route="/api/services/payments" @on-success="refresh" :columns="servicesColumns" :form="markRaw(Service)"
+      <div class="row">
+        <div class="form-group">
+          <label for="tenant">Inquilino:</label>
+          <Dropdown id="tenant" v-model="filterTenant" :options="optionsData.tenantOpts ? optionsData.tenantOpts : []"
+            option-label="label" option-value="value" show-clear />
+        </div>
+        <div class="form-group">
+          <label for="service">Servicio:</label>
+          <Dropdown id="service" v-model="filterService"
+            :options="optionsData.serviceOpts ? optionsData.serviceOpts : []" option-label="label" option-value="value"
+            show-clear />
+        </div>
+        <div class="form-group">
+          <label for="startDate">Inicio de Fecha</label>
+          <Calendar id="startDate" v-model="startDate" dateFormat="yy-mm-dd" show-icon />
+        </div>
+        <div class="form-group">
+          <label for="endDate">Fin de fecha</label>
+          <Calendar id="endDate" v-model="endDate" dateFormat="yy-mm-dd" show-icon />
+        </div>
+      </div>
+      <div>
+        <DataCrud title="Servicios" :data="payments ? payments.data : []" :data-table="paymentsDataTable || []"
+          api-route="/api/services/payments" @on-success="refresh" :columns="servicesColumns" :form="markRaw(Payment)"
           :extra="optionsData" />
       </div>
     </div>
@@ -16,13 +36,26 @@
 
 <script lang="ts" setup>
 import type { PaymentData } from '~/types/admin'
-const Service = defineAsyncComponent(() => import('~/components/dialog/Service.vue'))
+const Payment = defineAsyncComponent(() => import('~/components/dialog/Payment.vue'))
 
 definePageMeta({
   middleware: 'auth'
 })
 
 type PaymentResponse = ApiResponse<PaymentData[]>
+
+const filterTenant = ref(null)
+const filterService = ref(null)
+
+const today = ref(new Date())
+const startDate = ref(new Date(today.value.getFullYear(), today.value.getMonth() - 1, 1))
+const endDate = ref(new Date(today.value.getFullYear(), today.value.getMonth() + 1, 0))
+const filterStartDate = computed(() => {
+  return startDate.value.toLocaleDateString()
+})
+const filterEndDate = computed(() => {
+  return endDate.value.toLocaleDateString()
+})
 
 const servicesColumns = {
   tenant: 'Inquilino',
@@ -35,12 +68,14 @@ const servicesColumns = {
   lastDatePaid: 'Ultimo dia pagado',
   isPaid: 'Pagado completado',
 }
-const { data: payments, status, refresh } = await useLazyFetch<PaymentResponse>('/api/services/payments', {
-  server: false,
+const { data: payments, status, refresh } = await useFetch<PaymentResponse>('/api/services/payments', {
   query: {
-    page: 1,
-    limit: 10
-  }
+    startDate: filterStartDate,
+    endDate: filterEndDate,
+    tenantId: filterTenant,
+    serviceId: filterService,
+  },
+  watch: [filterTenant, filterService, filterStartDate, filterEndDate]
 })
 
 const { data: options } = await useLazyAsyncData('options', async () => {
