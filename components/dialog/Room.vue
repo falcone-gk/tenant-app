@@ -17,8 +17,8 @@
       </div>
       <div class="form-group">
         <label for="tenants">Inquilinos:</label>
-        <Dropdown id="tenants" v-model="body.tenantId" showClear @change="console.log(body.tenant)"
-          :options="tenantOptions" option-label="label" option-value="value" placeholder="Seleccione un inquilino" />
+        <Dropdown id="tenants" v-model="body.tenantId" showClear :options="tenantOptions" option-label="label"
+          option-value="value" placeholder="Seleccione un inquilino" />
       </div>
 
       <Button @click.prevent="onSubmit" type="submit" label="Enviar" />
@@ -29,16 +29,20 @@
 <script lang="ts" setup>
 import type { DynamicDialogInstance } from 'primevue/dynamicdialogoptions'
 import { roomSchema } from '~/schemas';
-import type { RoomData } from '~/types/admin';
 
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef')
 
 const emits = defineEmits(['send'])
-const body = ref<Omit<RoomData, 'id'>>({
+const body = ref<{
+  code: string,
+  reference: string,
+  floor: number | null,
+  tenantId: number | null
+}>({
   code: '',
   reference: '',
   floor: null,
-  tenantId: null
+  tenantId: null,
 })
 
 const tenantOptions = ref([])
