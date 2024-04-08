@@ -18,7 +18,6 @@
           </div>
         </template>
         <template #empty> No hay datos. </template>
-        <Column selectionMode="single" headerStyle="width: 3rem" />
         <Column v-for="([key, value], index) in Object.entries(props.columns)" :key="index" :field="key"
           :header="value" />
       </DataTable>
@@ -98,7 +97,8 @@ const showDialog = (method: 'create' | 'update') => {
     },
     data: {
       bodyData: method === 'update' ? props.data[selectedIndex.value] : null,
-      extraData: props.extra
+      extraData: props.extra,
+      method: method
     }
   })
 }
