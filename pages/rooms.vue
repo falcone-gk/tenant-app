@@ -3,8 +3,7 @@
     <div>
       <h1>Cuartos</h1>
     </div>
-    <LoadingScreen v-if="status !== 'success'" :status="status" />
-    <div v-else>
+    <div>
       <DataCrud title="Cuartos" :data="rooms ? rooms.data : []" :data-table="roomsDataTable" :columns="roomColumns"
         api-route="/api/rooms" :form="markRaw(roomForm)" :extra="{ tenantsOpt: tenantOpts }" @on-success="refresh" />
     </div>
@@ -36,9 +35,7 @@ const { data: tenantOpts } = await useFetch('/api/tenants', {
   }
 })
 
-const { data: rooms, status, refresh } = await useLazyFetch<RoomResponse>('/api/rooms', {
-  server: false
-})
+const { data: rooms, status, refresh } = await useLazyFetch<RoomResponse>('/api/rooms')
 
 const roomsDataTable = computed<RoomDataTable[]>(() => {
   if (!rooms.value) return []
