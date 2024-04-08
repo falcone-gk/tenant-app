@@ -32,19 +32,26 @@ export const paymentSchema = z.object({
     serviceId: z.number({ invalid_type_error: "Campo requerido" }),
     amount: z.number({ invalid_type_error: "Campo requerido" }).min(1, { message: 'Campo debe ser mayor o igual que 1' }),
     consume: z.number().nullable(),
-    dateToPay: z.date(),
+    dateToPay: z.coerce.date(),
+    lastDatePaid: z.coerce.date().nullable(),
     paidMount: z.number().min(0, { message: 'Campo debe ser mayor o igual que 0' }),
-}).superRefine(({ consume, serviceId }, ctx) => {
-    if (consume === null && (serviceId === 1 || serviceId === 2)) {
-        ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: 'Campo requerido',
-            path: ['consume']
-        })
-    }
 })
+// Comment this validation because by now this field mustn't be filled
+/*     .superRefine(({ consume, serviceId }, ctx) => {
+        if (consume === null && (serviceId === 1 || serviceId === 2)) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'Campo requerido',
+                path: ['consume']
+            })
+        }
+    }) */
 
 export const paginationSchema = z.object({
-    page: z.string().refine((val) => /^\d+$/.test(val), { message: 'Solo se permiten números' }),
-    limit: z.string().refine((val) => /^\d+$/.test(val), { message: 'Solo se permiten números' }),
+    //page: z.string().refine((val) => /^\d+$/.test(val), { message: 'Solo se permiten números' }),
+    //limit: z.string().refine((val) => /^\d+$/.test(val), { message: 'Solo se permiten números' }),
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
+    tenantId: z.coerce.number(),
+    serviceId: z.coerce.number()
 })

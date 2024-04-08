@@ -22,7 +22,7 @@ export default defineEventHandler({
         consume: body.consume,
         dateToPay: body.dateToPay,
         paidMount: body.paidMount,
-        // TODO: Add lastDatePaid when new paidMount is higher than past paidMount
+        lastDatePaid: body.lastDatePaid,
         isPaid: body.amount === body.paidMount ? true : false
       },
       select: {
