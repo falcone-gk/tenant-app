@@ -1,21 +1,35 @@
+:root {
+  --header-height: 5rem;
+}
+
 body {
   margin: 0;
   background-color: var(--surface-ground)
-} 
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  height: var(--header-height);
+  width: 100%;
+  background: var(--surface-section);
+  padding: 0 2rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
+}
 
 /** Default Layout styles */
 #content {
-  margin-left: calc(300px + 2rem);
-  margin-top: 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   padding: .5rem 1.5rem;
-  transition: margin-left .2s;
-  min-height: calc(100vh - 4rem);
+  min-height: calc(100vh - var(--header-height));
+  width: 100%;
 }
 
-#sidebar {
+/* #sidebar {
   position: fixed;
   width: 300px;
   height: calc(100vh - 4rem);
@@ -25,13 +39,13 @@ body {
   transition: transform .2s,left .2s;
   border-radius: 12px;
   padding: .5rem 1.5rem;
-}
+} */
 
 #main-content {
   display: flex;
   flex-direction: column;
-  flex: 1;
   border-radius: 5px;
+  width: 100%;
 }
 
 .p-panel-header {
@@ -43,6 +57,9 @@ body {
 }
 
 /** Sidebar Card styles */
+#sidebar {
+  height: 100%;
+}
 
 #sidebar > .p-card {
   height: 100%;
@@ -109,6 +126,11 @@ body {
   margin-right: auto;
 }
 
+.my-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 .row {
   display: flex;
   gap: 2rem;
@@ -119,4 +141,10 @@ body {
 
 .row > * {
   flex: 1;
+}
+
+@media (min-width: 1280px){
+  #main-content {
+    width: 80%
+  }
 }
