@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client'
-import isAuthenticated from '~/server/permission/isAuthenticated'
-import { paymentSchema } from '~/schemas'
+import { PrismaClient } from "@prisma/client"
+import { totalPaymentSchema } from "~/schemas";
+import isAuthenticated from "~/server/permission/isAuthenticated";
 
 const prisma = new PrismaClient()
 
@@ -9,38 +9,23 @@ export default defineEventHandler({
   handler: async (event) => {
 
     const id = getRouterParams(event).id
-    const body = await readValidatedBody(event, paymentSchema.parse)
-    const payment = await prisma.payment.update({
-      where: {
-        id: Number(id)
-      },
+    const body = await readValidatedBody(event, totalPaymentSchema.parse)
+    const payment = await prisma.totalPayment.update({
+      where: { id: Number(id) },
       data: {
-        tenantId: body.tenantId,
-        roomId: body.roomId,
         serviceId: body.serviceId,
         amount: body.amount,
         consume: body.consume,
-        dateToPay: body.dateToPay,
-        paidMount: body.paidMount,
-        lastDatePaid: body.lastDatePaid,
-        isPaid: body.amount === body.paidMount ? true : false
+        outageDate: body.outageDate,
+        registerDate: body.registerDate,
+        isPaid: body.isPaid
       },
       select: {
         id: true,
-        tenantId: true,
-        tenant: {
-          select: {
-            id: true,
-            name: true
-          }
-        },
-        roomId: true,
-        room: {
-          select: {
-            id: true,
-            code: true
-          }
-        },
+        amount: true,
+        consume: true,
+        registerDate: true,
+        isPaid: true,
         serviceId: true,
         service: {
           select: {
@@ -49,14 +34,10 @@ export default defineEventHandler({
             unit: true
           }
         },
-        amount: true,
-        consume: true,
-        dateToPay: true,
-        paidMount: true,
-        lastDatePaid: true,
-        isPaid: true
+        outageDate: true
       }
     })
+
     return createResponse(event, 'success', 200, payment)
   }
 })
