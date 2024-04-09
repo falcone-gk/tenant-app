@@ -42,13 +42,13 @@ model Room {
 }
 
 model Tenant {
-  id       Int          @id @default(autoincrement())
-  name     String       @db.VarChar(150)
-  joinDate DateTime     @default(now()) @map("join_date")
-  dayToPay Int          @map("day_to_pay")
+  id       Int       @id @default(autoincrement())
+  name     String    @db.VarChar(150)
+  joinDate DateTime  @default(now()) @map("join_date")
+  dayToPay Int       @map("day_to_pay")
   rooms    Room[]
   payments Payment[]
-  debts    TenantDebt[]
+  debt     Int       @default(0)
 
   @@map("tenants")
 }
@@ -92,14 +92,4 @@ model TotalPayment {
   serviceId    Int
 
   @@map("total_payments")
-}
-
-model TenantDebt {
-  id         Int       @id @default(autoincrement())
-  amount     Int       @default(0)
-  lastUpdate DateTime? @map("last_update")
-  tenant     Tenant    @relation(fields: [tenantId], references: [id])
-  tenantId   Int       @map("tenant_id")
-
-  @@map("tenant_debts")
 }
