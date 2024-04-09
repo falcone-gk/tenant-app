@@ -25,6 +25,7 @@ const tenantColumns = {
   joinDate: 'Ingresó',
   rooms: 'Cuartos',
   dayToPay: 'Días de pago',
+  debt: 'Deuda'
 }
 
 type TenantResponse = ApiResponse<TenantData[]>
@@ -51,7 +52,8 @@ const tenantsDataTable = computed<TenantDataTable[]>(() => {
     return {
       ...tenants,
       joinDate: calendarFormat(new Date(tenants.joinDate)),
-      rooms: new Intl.ListFormat('es-ES').format(roomsCodes)
+      rooms: new Intl.ListFormat('es-ES').format(roomsCodes),
+      debt: formatCurrency(tenants.debt)
     }
   })
 })
