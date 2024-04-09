@@ -1,42 +1,56 @@
 <template>
   <div>
     <div>
-      <h1>Pago de servicios</h1>
+      <h1>Servicios</h1>
+    </div>
+    <div class="filters">
+      <div class="form-group">
+        <label for="tenant">Inquilino:</label>
+        <Dropdown id="tenant" v-model="filterTenant" :options="optionsData.tenantOpts ? optionsData.tenantOpts : []"
+          option-label="label" option-value="value" show-clear />
+      </div>
+      <div class="form-group">
+        <label for="service">Servicio:</label>
+        <Dropdown id="service" v-model="filterService" :options="optionsData.serviceOpts ? optionsData.serviceOpts : []"
+          option-label="label" option-value="value" show-clear />
+      </div>
+      <div class="form-group">
+        <label for="startDate">Inicio de Fecha</label>
+        <Calendar id="startDate" v-model="startDate" dateFormat="yy-mm-dd" show-icon />
+      </div>
+      <div class="form-group">
+        <label for="endDate">Fin de fecha</label>
+        <Calendar id="endDate" v-model="endDate" dateFormat="yy-mm-dd" show-icon />
+      </div>
     </div>
     <div>
-      <div class="row">
-        <div class="form-group">
-          <label for="tenant">Inquilino:</label>
-          <Dropdown id="tenant" v-model="filterTenant" :options="optionsData.tenantOpts ? optionsData.tenantOpts : []"
-            option-label="label" option-value="value" show-clear />
-        </div>
-        <div class="form-group">
-          <label for="service">Servicio:</label>
-          <Dropdown id="service" v-model="filterService"
-            :options="optionsData.serviceOpts ? optionsData.serviceOpts : []" option-label="label" option-value="value"
-            show-clear />
-        </div>
-        <div class="form-group">
-          <label for="startDate">Inicio de Fecha</label>
-          <Calendar id="startDate" v-model="startDate" dateFormat="yy-mm-dd" show-icon />
-        </div>
-        <div class="form-group">
-          <label for="endDate">Fin de fecha</label>
-          <Calendar id="endDate" v-model="endDate" dateFormat="yy-mm-dd" show-icon />
-        </div>
+      <div>
+        <h2>Pago de servicios (inquilinos)</h2>
       </div>
       <div>
-        <DataCrud title="Servicios" :data="payments ? payments.data : []" :data-table="paymentsDataTable || []"
-          api-route="/api/services/payments" @on-success="refresh" :columns="servicesColumns" :form="markRaw(Payment)"
-          :extra="optionsData" />
+        <DataCrud title="Servicios (inquilinos)" :data="payments ? payments.data : []"
+          :data-table="paymentsDataTable || []" api-route="/api/tenants/payments" @on-success="refreshPayments"
+          :columns="servicesColumns" :form="markRaw(Payment)" :extra="optionsData" />
+      </div>
+    </div>
+    <div>
+      <div>
+        <h2>Pago de servicios (casa)</h2>
+      </div>
+      <div>
+        <DataCrud title="Servicios (casa)" :data="totalPayments ? totalPayments.data : []"
+          :data-table="totalPaymentsDataTable || []" api-route="/api/services/payments"
+          @on-success="refreshTotalPayments" :columns="totalPaymentsColumns" :form="markRaw(TotalPayment)"
+          :extra="optionsData.serviceOpts" />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { PaymentData } from '~/types/admin'
+import type { TotalPaymentData, PaymentData } from '~/types/admin'
 const Payment = defineAsyncComponent(() => import('~/components/dialog/Payment.vue'))
+const TotalPayment = defineAsyncComponent(() => import('~/components/dialog/TotalPayment.vue'))
 
 definePageMeta({
   middleware: 'auth'
@@ -68,7 +82,8 @@ const servicesColumns = {
   lastDatePaid: 'Ultimo dia pagado',
   isPaid: 'Pagado completado',
 }
-const { data: payments, status, refresh } = await useFetch<PaymentResponse>('/api/services/payments', {
+const { data: payments, refresh: refreshPayments } = await useFetch<PaymentResponse>(
+  '/api/tenants/payments', {
   query: {
     startDate: filterStartDate,
     endDate: filterEndDate,
@@ -131,4 +146,51 @@ const paymentsDataTable = computed(() => {
     isPaid: payment.isPaid ? 'Si' : 'No'
   }))
 })
+
+type TotalPaymentResponse = ApiResponse<TotalPaymentData[]>
+
+const { data: totalPayments, refresh: refreshTotalPayments } = await useFetch<TotalPaymentResponse>(
+  '/api/services/payments', {
+  query: {
+    startDate: filterStartDate,
+    endDate: filterEndDate,
+    tenantId: filterTenant,
+    serviceId: filterService,
+  },
+  watch: [filterTenant, filterService, filterStartDate, filterEndDate]
+})
+
+const totalPaymentsColumns = {
+  service: 'Servicio',
+  date: 'Fecha de registro',
+  amount: 'Monto',
+  consume: 'Consumo',
+  outageDate: 'Fecha de corte',
+  isPaid: 'Pago completado',
+}
+
+const totalPaymentsDataTable = computed(() => {
+  if (!totalPayments.value) return []
+  if (!totalPayments.value.data) return []
+
+  return totalPayments.value.data.map((payment) => ({
+    ...payment,
+    service: payment.service.name,
+    date: yearMonthFormat(new Date(payment.registerDate)),
+    amount: 'S/.' + payment.amount,
+    consume: payment.consume ? payment.consume + ' ' + payment.service.unit : '-',
+    outageDate: payment.outageDate ? calendarFormat(new Date(payment.outageDate)) : '-',
+    isPaid: payment.isPaid ? 'Si' : 'No'
+  }))
+})
+
 </script>
+
+<style scoped>
+.filters {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  margin-bottom: 1rem;
+}
+</style>
