@@ -7,8 +7,7 @@
           <div class="table-header">
             <div class="left-btns">
               <Button class="add-btn" type="button" icon="pi pi-plus"
-                :label="viewport.isLessThan('tablet') ? undefined : 'Actualizar'" outlined
-                @click="showDialog('create')" />
+                :label="viewport.isLessThan('tablet') ? undefined : 'Agregar'" outlined @click="showDialog('create')" />
               <Button type="button" icon="pi pi-pencil" :label="viewport.isLessThan('tablet') ? undefined : 'Editar'"
                 outlined severity="info" :disabled="selectedIndex === -1" @click="showDialog('update')" />
             </div>
@@ -116,6 +115,7 @@ const confirmDeleteTenant = () => {
     accept: async () => {
       await deleteData()
       emits('onSuccess')
+      toast.add({ severity: 'success', summary: 'Exito', detail: 'Operación exitosa', life: 3000 })
     }
   })
 }
