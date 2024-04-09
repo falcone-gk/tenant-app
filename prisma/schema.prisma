@@ -18,21 +18,6 @@ enum Role {
   guest
 }
 
-enum Month {
-  ENERO
-  FEBRERO
-  MARZO
-  ABRIL
-  MAYO
-  JUNIO
-  JULIO
-  AGOSTO
-  SEPTIEMBRE
-  OCTUBRE
-  NOVIEMBRE
-  DICIEMBRE
-}
-
 model User {
   id        Int      @id @default(autoincrement())
   username  String   @unique @db.VarChar(25)
@@ -69,10 +54,11 @@ model Tenant {
 }
 
 model Service {
-  id       Int       @id @default(autoincrement())
-  name     String    @db.VarChar(50)
-  unit     String    @default("")
-  payments Payment[]
+  id           Int            @id @default(autoincrement())
+  name         String         @db.VarChar(50)
+  unit         String         @default("")
+  payments     Payment[]
+  TotalPayment TotalPayment[]
 
   @@map("services")
 }
@@ -96,13 +82,14 @@ model Payment {
 }
 
 model TotalPayment {
-  id           Int      @id @default(autoincrement())
-  month        Month
+  id           Int       @id @default(autoincrement())
   registerDate DateTime
   amount       Int
-  consume      String   @default("")
-  isPaid       Boolean  @default(false)
-  outageDate   DateTime
+  consume      Int?
+  isPaid       Boolean   @default(false)
+  outageDate   DateTime?
+  service      Service   @relation(fields: [serviceId], references: [id])
+  serviceId    Int
 
   @@map("total_payments")
 }
