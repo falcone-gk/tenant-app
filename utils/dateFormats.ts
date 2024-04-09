@@ -4,3 +4,15 @@ export const calendarFormat = (date: Date) => {
   const year = date.getFullYear().toString()
   return `${year}-${month}-${day}`
 }
+
+export const yearMonthFormat = (date: Date) => {
+  const year = date.getFullYear().toString()
+  const month = (date.getMonth() + 1)
+  // return month as string name in spanish
+  const monthNames = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ]
+
+  return `${year}-${monthNames[month - 1]}`
+}
