@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form id="form">
+    <form class="form">
       <div class="form-group">
         <label for="code">Código:</label>
         <InputText id="code" v-model="body.code" />

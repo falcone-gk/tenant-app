@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form id="form">
+    <form class="form">
       <div class="form-group">
         <label for="name">Nombre:</label>
         <InputText id="name" v-model="body.name" />

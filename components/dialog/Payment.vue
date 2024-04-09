@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form id="form">
+    <form class="form">
       <div class="form-group">
         <label for="tenant">Inquilino:</label>
         <Dropdown id="tenant" v-model="body.tenantId" showClear :options="options.tenantOpts" option-label="label"

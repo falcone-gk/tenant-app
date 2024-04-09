@@ -45,7 +45,7 @@ const login = async () => {
     <Card>
       <template #title>Iniciar sesión</template>
       <template #content>
-        <form id="form" ref="form">
+        <form class="form" ref="form">
           <div class="form-group">
             <label for="username">Nombre de usuario</label>
             <InputGroup>
