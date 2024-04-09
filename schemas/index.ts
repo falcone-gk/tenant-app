@@ -47,6 +47,15 @@ export const paymentSchema = z.object({
         }
     }) */
 
+export const totalPaymentSchema = z.object({
+    serviceId: z.number({ invalid_type_error: "Campo requerido" }),
+    registerDate: z.coerce.date({ invalid_type_error: "Fecha inválida", required_error: "Campo requerido" }),
+    amount: z.number({ invalid_type_error: "Campo requerido" }).min(1, { message: 'Campo debe ser mayor o igual que 1' }),
+    consume: z.number().nullable(),
+    outageDate: z.coerce.date().nullable(),
+    isPaid: z.boolean()
+})
+
 export const paginationSchema = z.object({
     //page: z.string().refine((val) => /^\d+$/.test(val), { message: 'Solo se permiten números' }),
     //limit: z.string().refine((val) => /^\d+$/.test(val), { message: 'Solo se permiten números' }),
