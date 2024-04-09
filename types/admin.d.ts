@@ -22,6 +22,7 @@ export interface TenantData {
     dayToPay: number
     joinDate: Date
     rooms: { id: number, code: string }[]
+    debt: number
 }
 
 export interface TenantDataTable {

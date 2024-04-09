@@ -28,6 +28,7 @@ export default defineEventHandler({
         name: true,
         joinDate: true,
         dayToPay: true,
+        debt: true,
         rooms: {
           select: {
             id: true,
