@@ -3,7 +3,7 @@
     <CustomSidebar ref="sidebar" />
     <Header @toggle-sidebar="togleSidebar" />
     <section id="content">
-      <main id="main-content" class="mx-auto">
+      <main id="main-content">
         <slot />
       </main>
     </section>
