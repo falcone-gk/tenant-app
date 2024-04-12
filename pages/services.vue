@@ -74,7 +74,7 @@ const filterEndDate = computed(() => {
 const servicesColumns = {
   tenant: 'Inquilino',
   room: 'Cuarto',
-  amount: 'Monto',
+  amount: 'Monto a pagar',
   service: 'Servicio',
   consume: 'Consumo',
   dateToPay: 'Fecha a pagar',
