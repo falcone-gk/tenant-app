@@ -94,11 +94,22 @@ const showDialog = (method: 'create' | 'update') => {
           toast.add({ severity: 'success', summary: 'Exito', detail: 'Operación exitosa', life: 3000 })
           dialogRef.close()
         }
+      },
+      onCustomSend: (status: 'success' | 'error' | 'idle') => {
+        if (status === 'success') {
+          emits('onSuccess')
+          toast.add({ severity: 'success', summary: 'Exito', detail: 'Operación exitosa', life: 3000 })
+          dialogRef.close()
+        } else {
+          emits('onError')
+          toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudo realizar la operación', life: 3000 })
+        }
       }
     },
     data: {
       bodyData: method === 'update' ? props.data[selectedIndex.value] : null,
       extraData: props.extra,
+      selectedRowId: selection.value ? selection.value.id : null,
       method: method
     }
   })
