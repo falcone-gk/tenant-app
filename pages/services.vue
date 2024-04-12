@@ -78,7 +78,7 @@ const servicesColumns = {
   service: 'Servicio',
   consume: 'Consumo',
   dateToPay: 'Fecha a pagar',
-  paidMount: 'Monto pagado',
+  amountPaid: 'Monto pagado',
   lastDatePaid: 'Ultimo dia pagado',
   isPaid: 'Pagado completado',
 }
@@ -139,7 +139,7 @@ const paymentsDataTable = computed(() => {
     room: payment.room.code,
     service: payment.service.name,
     amount: formatCurrency(payment.amount),
-    paidMount: formatCurrency(payment.paidMount),
+    amountPaid: formatCurrency(payment.amountPaid),
     dateToPay: calendarFormat(new Date(payment.dateToPay)),
     lastDatePaid: payment.lastDatePaid ? calendarFormat(new Date(payment.lastDatePaid)) : '-',
     consume: payment.consume ? payment.consume + ' ' + payment.service.unit : '-',

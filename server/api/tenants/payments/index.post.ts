@@ -18,8 +18,8 @@ export default defineEventHandler({
         amount: new Prisma.Decimal(body.amount),
         consume: body.consume,
         dateToPay: body.dateToPay,
-        paidMount: new Prisma.Decimal(body.paidMount),
-        isPaid: body.amount === body.paidMount ? true : false
+        amountPaid: new Prisma.Decimal(body.amountPaid),
+        isPaid: body.amount === body.amountPaid ? true : false
       },
       select: paymentService
     })

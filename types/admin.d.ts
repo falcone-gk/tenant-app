@@ -50,7 +50,7 @@ export interface PaymentData {
     amount: number
     consume: number | null,
     dateToPay: string
-    paidMount: number
+    amountPaid: number
     lastDatePaid: Date | null
     isPaid: boolean
 }

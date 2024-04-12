@@ -27,7 +27,7 @@
       <div class="form-group">
         <label for="amount">Monto:</label>
         <InputNumber id="amount" mode="currency" currency="PEN" v-model="body.amount" showButtons
-          :min="body.paidMount || 1" />
+          :min="body.amountPaid || 1" />
         <span class="p-error">{{ getError("amount") }}</span>
       </div>
       <div v-if="selectedServiceName === 'Luz' || selectedServiceName === 'Agua'" class="form-group">
@@ -37,9 +37,9 @@
       </div>
       <div class="form-group">
         <label for="amountPaid">Monto Pagado:</label>
-        <InputNumber id="amountPaid" mode="currency" currency="PEN" v-model="body.paidMount" showButtons :min="0"
+        <InputNumber id="amountPaid" mode="currency" currency="PEN" v-model="body.amountPaid" showButtons :min="0"
           :max="body.amount!" disabled @update:model-value="onChangeMountPaid" />
-        <span class="p-error">{{ getError("paidMount") }}</span>
+        <span class="p-error">{{ getError("amountPaid") }}</span>
       </div>
       <div class="form-group">
         <label for="lastDatePaid">Fecha de último pago:</label>
@@ -65,7 +65,7 @@ const body = ref<{
   amount: number | null,
   consume: number | null,
   dateToPay: Date | null,
-  paidMount: number,
+  amountPaid: number,
   lastDatePaid: Date | null,
   isPaid: boolean
 }>({
@@ -75,7 +75,7 @@ const body = ref<{
   amount: null,
   consume: null,
   dateToPay: null,
-  paidMount: 0,
+  amountPaid: 0,
   lastDatePaid: null,
   isPaid: false
 })
@@ -140,11 +140,11 @@ const onSubmit = async () => {
 }
 
 const onChangeMountPaid = () => {
-  if (body.value.paidMount === 0) {
+  if (body.value.amountPaid === 0) {
     body.value.lastDatePaid = null
   }
 
-  if (body.value.paidMount > lastPaidAmount.value) {
+  if (body.value.amountPaid > lastPaidAmount.value) {
     body.value.lastDatePaid = new Date()
   }
 }
@@ -158,7 +158,7 @@ onMounted(() => {
       lastDatePaid: bodyData.lastDatePaid ? new Date(bodyData.lastDatePaid) : null
     }
   }
-  lastPaidAmount.value = body.value.paidMount
+  lastPaidAmount.value = body.value.amountPaid
 
   if (extraData) {
     options.value = extraData

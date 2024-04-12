@@ -16,11 +16,11 @@ export default defineEventHandler({
         id: Number(id)
       },
       data: {
-        paidMount: {
+        amountPaid: {
           increment: new Prisma.Decimal(body.newPayment)
         },
         lastDatePaid: new Date(),
-        isPaid: (body.newPayment + body.paidMount) === body.amount
+        isPaid: (body.newPayment + body.amountPaid) === body.amount
       },
       select: paymentService
     })

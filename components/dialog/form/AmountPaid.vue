@@ -14,13 +14,13 @@
       </div>
       <div class="form-group">
         <label for="amountPaid">Monto Pagado:</label>
-        <InputNumber id="amountPaid" mode="currency" currency="PEN" v-model="body.paidMount" showButtons :min="0"
+        <InputNumber id="amountPaid" mode="currency" currency="PEN" v-model="body.amountPaid" showButtons :min="0"
           :max="body.amount!" disabled />
       </div>
       <div class="form-group">
         <label for="newPayment">Pago agregado:</label>
         <InputNumber id="newPayment" mode="currency" currency="PEN" v-model="body.newPayment" showButtons
-          :min="-body.paidMount!" :max="body.amount! - body.paidMount!" />
+          :min="-body.amountPaid!" :max="body.amount! - body.amountPaid!" />
         <span class="p-error">{{ getError("newPayment") }}</span>
       </div>
       <Button type="submit" @click.prevent="onSubmit" label="Enviar" />
@@ -40,13 +40,13 @@ const body = ref<{
   tenant: { id: number, name: string },
   service: { id: number, name: string, unit: string },
   amount: number | null,
-  paidMount: number | null,
+  amountPaid: number | null,
   newPayment: number,
 }>({
   tenant: { id: 0, name: '' },
   service: { id: 0, name: '', unit: '' },
   amount: null,
-  paidMount: null,
+  amountPaid: null,
   newPayment: 0
 })
 
@@ -86,7 +86,7 @@ onMounted(() => {
       tenant: bodyData.tenant,
       service: bodyData.service,
       amount: bodyData.amount,
-      paidMount: bodyData.paidMount
+      amountPaid: bodyData.amountPaid
     }
   }
   paymentId.value = selectedRowId

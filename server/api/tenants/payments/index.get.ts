@@ -40,7 +40,7 @@ export default defineEventHandler({
       return {
         ...payment,
         amount: payment.amount.toNumber(),
-        paidMount: payment.paidMount.toNumber()
+        amountPaid: payment.amountPaid.toNumber()
       }
     })
 

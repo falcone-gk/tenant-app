@@ -27,7 +27,7 @@ export const paymentService = Prisma.validator<Prisma.PaymentSelect>()({
     amount: true,
     consume: true,
     dateToPay: true,
-    paidMount: true,
+    amountPaid: true,
     lastDatePaid: true,
     isPaid: true
 })

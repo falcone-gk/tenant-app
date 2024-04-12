@@ -13,7 +13,7 @@ export default defineEventHandler({
       },
       select: {
         amount: true,
-        paidMount: true,
+        amountPaid: true,
         tenantId: true
       }
     })
@@ -24,7 +24,7 @@ export default defineEventHandler({
       data: {
         debt: {
           decrement: new Prisma.Decimal(
-            payment.amount.toNumber() - payment.paidMount.toNumber()
+            payment.amount.toNumber() - payment.amountPaid.toNumber()
           )
         }
       }
