@@ -36,6 +36,32 @@ export const paymentSchema = z.object({
     lastDatePaid: z.coerce.date().nullable(),
     paidMount: z.number().min(0, { message: 'Campo debe ser mayor o igual que 0' }),
 })
+
+export const addPaySchema = z.object({
+    amount: z.number({ invalid_type_error: "Campo requerido" }).min(1, { message: 'Campo debe ser mayor o igual que 1' }),
+    paidMount: z.number({ invalid_type_error: "Campo requerido" }).min(0, { message: 'Campo debe ser mayor o igual que 0' }),
+    newPayment: z.number({ invalid_type_error: "Campo requerido" })
+}).superRefine(({ amount, paidMount, newPayment }, ctx) => {
+    if (paidMount < (-1) * newPayment) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'La reducción del pago no puede ser mayor al importe ya realizado',
+            path: ['newPayment']
+        })
+    } else if (paidMount + newPayment === 0) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'El pago no puede ser 0',
+            path: ['newPayment']
+        })
+    } else if (amount < paidMount + newPayment) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'El pago no puede ser mayor al importe',
+            path: ['newPayment']
+        })
+    }
+})
 // Comment this validation because by now this field mustn't be filled
 /*     .superRefine(({ consume, serviceId }, ctx) => {
         if (consume === null && (serviceId === 1 || serviceId === 2)) {
