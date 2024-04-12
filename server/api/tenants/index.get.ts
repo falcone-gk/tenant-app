@@ -26,6 +26,14 @@ export default defineEventHandler({
         }
       }
     })
-    return createResponse<TenantData[]>(event, 'success', 200, tenants)
+
+    const tenantResponse = tenants.map((tenant) => {
+      return {
+        ...tenant,
+        debt: tenant.debt.toNumber()
+      }
+    })
+
+    return createResponse<TenantData[]>(event, 'success', 200, tenantResponse)
   }
 })

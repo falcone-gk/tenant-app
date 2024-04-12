@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client"
 import isAuthenticated from "~/server/permission/isAuthenticated"
 import { paginationSchema } from "~/schemas"
+import { paymentService } from "~/server/validators"
 
 const prisma = new PrismaClient()
 
@@ -32,38 +33,17 @@ export default defineEventHandler({
         tenantId: tenantId,
         serviceId: serviceId,
       },
-      select: {
-        id: true,
-        tenantId: true,
-        tenant: {
-          select: {
-            id: true,
-            name: true
-          }
-        },
-        roomId: true,
-        room: {
-          select: {
-            id: true,
-            code: true
-          }
-        },
-        serviceId: true,
-        service: {
-          select: {
-            id: true,
-            name: true,
-            unit: true
-          }
-        },
-        amount: true,
-        consume: true,
-        dateToPay: true,
-        paidMount: true,
-        lastDatePaid: true,
-        isPaid: true
+      select: paymentService
+    })
+
+    const paymentsResponse = payments.map((payment) => {
+      return {
+        ...payment,
+        amount: payment.amount.toNumber(),
+        paidMount: payment.paidMount.toNumber()
       }
     })
-    return createResponse(event, 'success', 200, payments)
+
+    return createResponse(event, 'success', 200, paymentsResponse)
   }
 })

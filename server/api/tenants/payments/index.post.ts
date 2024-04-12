@@ -1,6 +1,7 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Prisma } from '@prisma/client'
 import isAuthenticated from '~/server/permission/isAuthenticated'
 import { paymentSchema } from '~/schemas'
+import { paymentService } from '~/server/validators'
 
 const prisma = new PrismaClient()
 
@@ -14,42 +15,23 @@ export default defineEventHandler({
         tenantId: body.tenantId,
         roomId: body.roomId,
         serviceId: body.serviceId,
-        amount: body.amount,
+        amount: new Prisma.Decimal(body.amount),
         consume: body.consume,
         dateToPay: body.dateToPay,
-        paidMount: body.paidMount,
+        paidMount: new Prisma.Decimal(body.paidMount),
         isPaid: body.amount === body.paidMount ? true : false
       },
-      select: {
-        id: true,
-        tenantId: true,
-        tenant: {
-          select: {
-            id: true,
-            name: true
-          }
-        },
-        roomId: true,
-        room: {
-          select: {
-            id: true,
-            code: true
-          }
-        },
-        serviceId: true,
-        service: {
-          select: {
-            id: true,
-            name: true,
-            unit: true
-          }
-        },
-        amount: true,
-        consume: true,
-        dateToPay: true,
-        paidMount: true,
-        lastDatePaid: true,
-        isPaid: true
+      select: paymentService
+    })
+
+    await prisma.tenant.update({
+      where: {
+        id: body.tenantId
+      },
+      data: {
+        debt: {
+          increment: new Prisma.Decimal(body.amount)
+        }
       }
     })
     return createResponse(event, 'success', 200, payment)
