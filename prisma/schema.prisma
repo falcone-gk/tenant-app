@@ -48,7 +48,7 @@ model Tenant {
   dayToPay Int       @map("day_to_pay")
   rooms    Room[]
   payments Payment[]
-  debt     Int       @default(0)
+  debt     Decimal   @default(0)
 
   @@map("tenants")
 }
@@ -65,8 +65,8 @@ model Service {
 
 model Payment {
   id           Int       @id @default(autoincrement())
-  amount       Int
-  paidMount    Int       @default(0)
+  amount       Decimal
+  paidMount    Decimal   @default(0)
   consume      Int?
   isPaid       Boolean   @default(false)
   lastDatePaid DateTime? @map("last_date_paid")
@@ -84,7 +84,7 @@ model Payment {
 model TotalPayment {
   id           Int       @id @default(autoincrement())
   registerDate DateTime
-  amount       Int
+  amount       Decimal
   consume      Int?
   isPaid       Boolean   @default(false)
   outageDate   DateTime?
