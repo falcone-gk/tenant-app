@@ -72,7 +72,7 @@ const { execute: deleteData } = await useLazyFetch(
   watch: false
 })
 
-const toast = useToast()
+const { showNotification } = useNotification()
 const dialog = useDialog()
 const showDialog = (method: 'create' | 'update') => {
   const dialogRef = dialog.open(props.form, {
@@ -88,21 +88,21 @@ const showDialog = (method: 'create' | 'update') => {
 
         if (updateError.value || createError.value) {
           emits('onError')
-          toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudo realizar la operación', life: 3000 })
+          showNotification('error')
         } else {
           emits('onSuccess')
-          toast.add({ severity: 'success', summary: 'Exito', detail: 'Operación exitosa', life: 3000 })
+          showNotification('success')
           dialogRef.close()
         }
       },
       onCustomSend: (status: 'success' | 'error' | 'idle') => {
         if (status === 'success') {
           emits('onSuccess')
-          toast.add({ severity: 'success', summary: 'Exito', detail: 'Operación exitosa', life: 3000 })
+          showNotification('success')
           dialogRef.close()
         } else {
           emits('onError')
-          toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudo realizar la operación', life: 3000 })
+          showNotification('error')
         }
       }
     },
@@ -126,7 +126,7 @@ const confirmDeleteTenant = () => {
     accept: async () => {
       await deleteData()
       emits('onSuccess')
-      toast.add({ severity: 'success', summary: 'Exito', detail: 'Operación exitosa', life: 3000 })
+      showNotification('success')
     }
   })
 }

@@ -1,5 +1,5 @@
 <template>
-  <Toast />
+  <Toast position="top-center" group="notification" />
   <ConfirmDialog />
   <DynamicDialog />
   <NuxtLayout>

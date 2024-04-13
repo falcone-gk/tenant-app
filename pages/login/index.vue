@@ -7,7 +7,7 @@ import { useToast } from 'primevue/usetoast';
 type LoginUser = z.infer<typeof loginSchema>
 type DataResponse = ApiResponse<UserData>
 
-const toast = useToast()
+const { showNotification } = useNotification()
 const body = reactive<LoginUser>({
   username: '',
   password: ''
@@ -31,7 +31,7 @@ const login = async () => {
   loading.value = false
 
   if (error.value) {
-    toast.add({ severity: 'error', summary: 'Error', detail: 'Credenciales incorrectas', life: 3000 })
+    showNotification('error')
   } else {
     token.value = response.value?.data?.token
     navigateTo('/tenants')

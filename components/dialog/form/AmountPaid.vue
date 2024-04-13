@@ -34,7 +34,6 @@ import { addPaySchema } from '~/schemas';
 
 const emits = defineEmits(['submit'])
 const dialogRef = inject<Ref<DynamicDialogInstance>>('dialogRef')
-const toast = useToast()
 
 const body = ref<{
   tenant: { id: number, name: string },
