@@ -40,7 +40,7 @@ export const paymentSchema = z.object({
 export const addPaySchema = z.object({
     amount: z.number({ invalid_type_error: "Campo requerido" }).min(1, { message: 'Campo debe ser mayor o igual que 1' }),
     amountPaid: z.number({ invalid_type_error: "Campo requerido" }).min(0, { message: 'Campo debe ser mayor o igual que 0' }),
-    newPayment: z.number({ invalid_type_error: "Campo requerido" })
+    newPayment: z.number({ invalid_type_error: "Campo requerido" }).min(1, { message: 'Campo debe ser mayor o igual que 0' }),
 }).superRefine(({ amount, amountPaid, newPayment }, ctx) => {
     if (amountPaid < (-1) * newPayment) {
         ctx.addIssue({
