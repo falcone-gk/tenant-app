@@ -1,10 +1,7 @@
 <template>
   <div class="header">
-    <div>
-      <h1>App Falcón</h1>
-    </div>
     <div class="my-auto">
-      <Button icon="pi pi-bars" outlined @click="emits('toggleSidebar')" />
+      <Button icon="pi pi-bars" @click="emits('toggleSidebar')" />
     </div>
   </div>
 </template>
