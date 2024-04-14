@@ -88,5 +88,6 @@ export const paginationSchema = z.object({
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
     tenantId: z.coerce.number(),
-    serviceId: z.coerce.number()
+    serviceId: z.coerce.number(),
+    isPaid: z.enum(['true', 'false']).transform((value) => value === 'true')
 })

@@ -26,6 +26,7 @@ export default defineEventHandler({
       //skip: skip,
       //take: take,
       where: {
+        isPaid: queries.isPaid,
         OR: [
           { dateToPay: { gte: startDate, lte: endDate } },
           { lastDatePaid: { gte: startDate, lte: endDate } }

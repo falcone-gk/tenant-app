@@ -22,26 +22,32 @@
         <label for="endDate">Fin de fecha</label>
         <Calendar id="endDate" v-model="endDate" dateFormat="yy-mm-dd" show-icon />
       </div>
-    </div>
-    <div>
-      <div>
-        <h2>Pago de servicios (inquilinos)</h2>
-      </div>
-      <div>
-        <DataCrud title="Servicios (inquilinos)" :data="payments ? payments.data : []"
-          :data-table="paymentsDataTable || []" api-route="/api/tenants/payments" @on-success="refreshPayments"
-          :columns="servicesColumns" :form="markRaw(Payment)" :extra="optionsData" />
+      <div class="form-group">
+        <label for="isPaid">Estado</label>
+        <Dropdown id="isPaid" v-model="filterIsPaid" :options="isPaidOpts" option-label="label" option-value="value" />
       </div>
     </div>
-    <div>
+    <div style="display: flex; gap: 1rem; flex-direction: column;">
       <div>
-        <h2>Pago de servicios (casa)</h2>
+        <div>
+          <h2>Pago de servicios (inquilinos)</h2>
+        </div>
+        <div>
+          <DataCrud title="Servicios (inquilinos)" :data="payments ? payments.data : []"
+            :data-table="paymentsDataTable || []" api-route="/api/tenants/payments" @on-success="refreshPayments"
+            :columns="servicesColumns" :form="markRaw(Payment)" :extra="optionsData" />
+        </div>
       </div>
       <div>
-        <DataCrud title="Servicios (casa)" :data="totalPayments ? totalPayments.data : []"
-          :data-table="totalPaymentsDataTable || []" api-route="/api/services/payments"
-          @on-success="refreshTotalPayments" :columns="totalPaymentsColumns" :form="markRaw(TotalPayment)"
-          :extra="optionsData.serviceOpts" />
+        <div>
+          <h2>Pago de servicios (casa)</h2>
+        </div>
+        <div>
+          <DataCrud title="Servicios (casa)" :data="totalPayments ? totalPayments.data : []"
+            :data-table="totalPaymentsDataTable || []" api-route="/api/services/payments"
+            @on-success="refreshTotalPayments" :columns="totalPaymentsColumns" :form="markRaw(TotalPayment)"
+            :extra="optionsData.serviceOpts" />
+        </div>
       </div>
     </div>
   </div>
@@ -60,6 +66,11 @@ type PaymentResponse = ApiResponse<PaymentData[]>
 
 const filterTenant = ref(null)
 const filterService = ref(null)
+const filterIsPaid = ref(false)
+const isPaidOpts = [
+  { label: 'Pagado', value: true },
+  { label: 'No pagado', value: false }
+]
 
 const today = ref(new Date())
 const startDate = ref(new Date(today.value.getFullYear(), today.value.getMonth() - 1, 1))
@@ -89,8 +100,9 @@ const { data: payments, refresh: refreshPayments } = await useFetch<PaymentRespo
     endDate: filterEndDate,
     tenantId: filterTenant,
     serviceId: filterService,
+    isPaid: filterIsPaid,
   },
-  watch: [filterTenant, filterService, filterStartDate, filterEndDate]
+  watch: [filterTenant, filterService, filterStartDate, filterEndDate, filterIsPaid]
 })
 
 const { data: options } = await useLazyAsyncData('options', async () => {
@@ -156,8 +168,9 @@ const { data: totalPayments, refresh: refreshTotalPayments } = await useFetch<To
     endDate: filterEndDate,
     tenantId: filterTenant,
     serviceId: filterService,
+    isPaid: filterIsPaid,
   },
-  watch: [filterTenant, filterService, filterStartDate, filterEndDate]
+  watch: [filterTenant, filterService, filterStartDate, filterEndDate, filterIsPaid]
 })
 
 const totalPaymentsColumns = {
