@@ -31,3 +31,20 @@ export const paymentService = Prisma.validator<Prisma.PaymentSelect>()({
     lastDatePaid: true,
     isPaid: true
 })
+
+export const totalPaymentService = Prisma.validator<Prisma.TotalPaymentSelect>()({
+    id: true,
+    amount: true,
+    consume: true,
+    registerDate: true,
+    isPaid: true,
+    serviceId: true,
+    service: {
+        select: {
+            id: true,
+            name: true,
+            unit: true
+        }
+    },
+    outageDate: true
+})
