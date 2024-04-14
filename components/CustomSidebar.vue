@@ -31,7 +31,7 @@ defineExpose({ isVisible })
 const route = useRoute()
 
 const links = ref([
-  //{ label: 'Administración', icon: 'pi pi-file-edit', route: '/' },
+  { label: 'Inicio', icon: 'pi pi-home', route: '/' },
   { label: 'Inquilinos', icon: 'pi pi-users', route: '/tenants' },
   { label: 'Cuartos', icon: 'pi pi-home', route: '/rooms' },
   { label: 'Servicios', icon: 'pi pi-bolt', route: '/services' },
