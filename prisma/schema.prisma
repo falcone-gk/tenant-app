@@ -85,7 +85,7 @@ model TotalPayment {
   id           Int       @id @default(autoincrement())
   registerDate DateTime
   amount       Decimal   @db.Decimal(9, 2)
-  consume      Int?
+  consume      Decimal?  @db.Decimal(9, 2)
   isPaid       Boolean   @default(false)
   outageDate   DateTime?
   service      Service   @relation(fields: [serviceId], references: [id])
