@@ -1,6 +1,7 @@
-import { PrismaClient } from "@prisma/client"
+import { Prisma, PrismaClient } from "@prisma/client"
 import { totalPaymentSchema } from "~/schemas";
 import isAuthenticated from "~/server/permission/isAuthenticated";
+import { totalPaymentService } from "~/server/validators";
 
 const prisma = new PrismaClient()
 
@@ -14,30 +15,21 @@ export default defineEventHandler({
       where: { id: Number(id) },
       data: {
         serviceId: body.serviceId,
-        amount: body.amount,
-        consume: body.consume,
+        amount: new Prisma.Decimal(body.amount),
+        consume: body.consume ? new Prisma.Decimal(body.consume) : null,
         outageDate: body.outageDate,
         registerDate: body.registerDate,
         isPaid: body.isPaid
       },
-      select: {
-        id: true,
-        amount: true,
-        consume: true,
-        registerDate: true,
-        isPaid: true,
-        serviceId: true,
-        service: {
-          select: {
-            id: true,
-            name: true,
-            unit: true
-          }
-        },
-        outageDate: true
-      }
+      select: totalPaymentService
     })
 
-    return createResponse(event, 'success', 200, payment)
+    const paymentRes = {
+      ...payment,
+      amount: payment.amount.toNumber(),
+      consume: payment.consume ? payment.consume.toNumber() : null
+    }
+
+    return createResponse(event, 'success', 200, paymentRes)
   }
 })

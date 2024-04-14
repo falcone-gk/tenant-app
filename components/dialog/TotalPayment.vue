@@ -14,12 +14,13 @@
       </div>
       <div class="form-group">
         <label for="amount">Monto:</label>
-        <InputNumber id="amount" v-model="body.amount" showButtons :min="1" />
+        <InputNumber id="amount" v-model="body.amount" mode="currency" currency="PEN" showButtons :min="1" />
         <span class="p-error">{{ getError("amount") }}</span>
       </div>
       <div v-if="selectedServiceName === 'Luz' || selectedServiceName === 'Agua'" class="form-group">
         <label for="consume">Consumo ({{ selectedServiceName === 'Luz' ? 'kW' : 'm3' }}) :</label>
-        <InputNumber id="consume" v-model="body.consume" showButtons :min="1" />
+        <InputNumber id="consume" v-model="body.consume" mode="decimal" :min-fraction-digits="2"
+          :max-fraction-digits="2" showButtons :min="1" />
         <span class="p-error">{{ getError("consume") }}</span>
       </div>
       <div class="form-group">
