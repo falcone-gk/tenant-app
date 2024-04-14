@@ -22,12 +22,20 @@
           {{ formatCurrency(slotProps.data.debt) }}
         </template>
       </Column>
+      <!-- Column field to fix an error with colspan not correct -->
       <Column field="no-exists" header="" style="width: 0; padding: 0;" />
       <template #groupfooter="slotProps">
-        <div style="display: flex;">
-          <strong style="margin-left: auto;">
-            <span>Deuda total: {{ formatCurrency(getTotalDebt(slotProps.data.tenant.name))
+        <div class="totals">
+          <strong>
+            <span>Deuda total: {{ formatCurrency(getTotalDebtByTenant(slotProps.data.tenant.name))
               }}</span>
+          </strong>
+        </div>
+      </template>
+      <template #footer>
+        <div class="totals">
+          <strong>
+            <span>Deuda total: {{ formatCurrency(getTotalDebt()) }}</span>
           </strong>
         </div>
       </template>
@@ -47,8 +55,20 @@ const { data } = await useFetch('/api/tenants/debts', {
   }
 })
 const expandedRowGroups = ref([])
-const getTotalDebt = (tenantName: string) => {
+const getTotalDebtByTenant = (tenantName: string) => {
   if (!data.value) return 0
   return data.value?.filter((payment) => payment.tenant.name === tenantName).reduce((a, b) => a + b.debt, 0)
 }
+
+const getTotalDebt = () => {
+  if (!data.value) return 0
+  return data.value?.reduce((a, b) => a + b.debt, 0)
+}
+
 </script>
+<style scoped>
+.totals {
+  display: flex;
+  justify-content: flex-end;
+}
+</style>
