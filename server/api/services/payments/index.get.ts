@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-import { paginationSchema } from "~/schemas"
+import { queryServiceSchema } from "~/schemas"
 import isAuthenticated from "~/server/permission/isAuthenticated"
 import { totalPaymentService } from "~/server/validators"
 
@@ -9,14 +9,14 @@ export default defineEventHandler({
   onRequest: [isAuthenticated],
   handler: async (event) => {
 
-    const queries = await getValidatedQuery(event, paginationSchema.parse)
+    const queries = await getValidatedQuery(event, queryServiceSchema.parse)
     const serviceId = queries.serviceId ? queries.serviceId : undefined
-    const startDate = new Date(
+    const startDate = queries.startDate ? new Date(
       queries.startDate.getFullYear(), queries.startDate.getMonth(), 1
-    )
-    const endDate = new Date(
+    ) : undefined
+    const endDate = queries.endDate ? new Date(
       queries.endDate.getFullYear(), queries.endDate.getMonth() + 1, 0
-    )
+    ) : undefined
 
     const payments = await prisma.totalPayment.findMany({
       orderBy: [{ id: 'asc' }],

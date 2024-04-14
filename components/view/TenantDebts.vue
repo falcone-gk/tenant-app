@@ -44,7 +44,10 @@
 </template>
 
 <script lang="ts" setup>
-const { data } = await useFetch('/api/tenants/debts', {
+const { data } = await useFetch('/api/tenants/payments', {
+  query: {
+    isPaid: false
+  },
   transform: ({ data }) => {
     return data?.map((payment) => {
       return {

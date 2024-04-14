@@ -82,12 +82,12 @@ export const totalPaymentSchema = z.object({
     isPaid: z.boolean()
 })
 
-export const paginationSchema = z.object({
+export const queryServiceSchema = z.object({
     //page: z.string().refine((val) => /^\d+$/.test(val), { message: 'Solo se permiten números' }),
     //limit: z.string().refine((val) => /^\d+$/.test(val), { message: 'Solo se permiten números' }),
-    startDate: z.coerce.date(),
-    endDate: z.coerce.date(),
-    tenantId: z.coerce.number(),
-    serviceId: z.coerce.number(),
-    isPaid: z.enum(['true', 'false']).transform((value) => value === 'true')
+    startDate: z.coerce.date().optional(),
+    endDate: z.coerce.date().optional(),
+    tenantId: z.coerce.number().optional(),
+    serviceId: z.coerce.number().optional(),
+    isPaid: z.enum(['true', 'false']).transform((value) => value === 'true').optional()
 })
