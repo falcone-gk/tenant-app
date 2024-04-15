@@ -34,7 +34,7 @@ const login = async () => {
     showNotification('error')
   } else {
     token.value = response.value?.data?.token
-    navigateTo('/tenants')
+    navigateTo('/')
   }
 
 }
