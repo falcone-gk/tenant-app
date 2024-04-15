@@ -35,7 +35,7 @@
         <div>
           <DataCrud title="Servicios (inquilinos)" :data="payments ? payments.data : []"
             :data-table="paymentsDataTable || []" api-route="/api/tenants/payments" @on-success="refreshPayments"
-            :columns="servicesColumns" :form="markRaw(Payment)" :extra="optionsData" />
+            :columns="servicesColumns" :form="markRaw(Payment)" :extra="optionsData" :loading="loadingPayments" />
         </div>
       </div>
       <div>
@@ -46,7 +46,7 @@
           <DataCrud title="Servicios (casa)" :data="totalPayments ? totalPayments.data : []"
             :data-table="totalPaymentsDataTable || []" api-route="/api/services/payments"
             @on-success="refreshTotalPayments" :columns="totalPaymentsColumns" :form="markRaw(TotalPayment)"
-            :extra="optionsData.serviceOpts" />
+            :extra="optionsData.serviceOpts" :loading="loadingTotalPayments" />
         </div>
       </div>
     </div>
@@ -62,6 +62,7 @@ definePageMeta({
   middleware: 'auth'
 })
 
+const nuxtApp = useNuxtApp()
 type PaymentResponse = ApiResponse<PaymentData[]>
 
 const filterTenant = ref(null)
@@ -93,8 +94,9 @@ const servicesColumns = {
   lastDatePaid: 'Ultimo dia pagado',
   isPaid: 'Pagado completado',
 }
-const { data: payments, refresh: refreshPayments } = await useFetch<PaymentResponse>(
+const { data: payments, pending: loadingPayments, refresh: refreshPayments } = await useLazyFetch<PaymentResponse>(
   '/api/tenants/payments', {
+  server: false,
   query: {
     startDate: filterStartDate,
     endDate: filterEndDate,
@@ -129,7 +131,10 @@ const { data: options } = await useLazyAsyncData('options', async () => {
 
   return { tenants, tenantOpts, roomOpts, serviceOpts }
 }, {
-  server: false
+  server: false,
+  getCachedData: (key) => {
+    return nuxtApp.payload.data[key] || nuxtApp.static.data[key]
+  }
 })
 
 const optionsData = computed(() => {
@@ -169,8 +174,9 @@ const endDateLastDay = computed(() => {
 })
 
 type TotalPaymentResponse = ApiResponse<TotalPaymentData[]>
-const { data: totalPayments, refresh: refreshTotalPayments } = await useFetch<TotalPaymentResponse>(
+const { data: totalPayments, pending: loadingTotalPayments, refresh: refreshTotalPayments } = await useLazyFetch<TotalPaymentResponse>(
   '/api/services/payments', {
+  server: false,
   query: {
     startDate: startDateInitalDay,
     endDate: endDateLastDay,

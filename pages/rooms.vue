@@ -5,7 +5,8 @@
     </div>
     <div>
       <DataCrud title="Cuartos" :data="rooms ? rooms.data : []" :data-table="roomsDataTable" :columns="roomColumns"
-        api-route="/api/rooms" :form="markRaw(roomForm)" :extra="{ tenantsOpt: tenantOpts }" @on-success="refresh" />
+        api-route="/api/rooms" :form="markRaw(roomForm)" :extra="{ tenantsOpt: tenantOpts }" @on-success="refresh"
+        :loading="pending" />
     </div>
   </div>
 </template>
@@ -13,6 +14,7 @@
 <script lang="ts" setup>
 import type { RoomData, RoomDataTable, TenantData } from '~/types/admin';
 
+const nuxtApp = useNuxtApp()
 const roomForm = defineAsyncComponent(() => import('~/components/dialog/Room.vue'))
 
 definePageMeta({
@@ -29,13 +31,20 @@ const roomColumns = {
 type RoomResponse = ApiResponse<RoomData[]>
 type TenantResponse = ApiResponse<TenantData[]>
 
-const { data: tenantOpts } = await useFetch('/api/tenants', {
+const { data: tenantOpts, pending } = await useLazyFetch('/api/tenants', {
+  key: 'tenantsOpts',
+  server: false,
+  getCachedData: (key) => {
+    return nuxtApp.payload.data[key] || nuxtApp.static.data[key]
+  },
   transform: (data: TenantResponse) => {
     return data.data?.map((tenant) => ({ label: tenant.name, value: tenant.id }))
   }
 })
 
-const { data: rooms, status, refresh } = await useLazyFetch<RoomResponse>('/api/rooms')
+const { data: rooms, status, refresh } = await useLazyFetch<RoomResponse>('/api/rooms', {
+  server: false
+})
 
 const roomsDataTable = computed<RoomDataTable[]>(() => {
   if (!rooms.value) return []
