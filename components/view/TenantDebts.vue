@@ -25,7 +25,7 @@
       <!-- Column field to fix an error with colspan not correct -->
       <Column field="no-exists" header="" style="width: 0; padding: 0;" />
       <template #empty>
-        <p>{{ pending ? 'Cargando...' : 'No hay cortes de servicio.' }}</p>
+        <p>{{ pending ? 'Cargando...' : 'No hay deudores.' }}</p>
       </template>
       <template #groupfooter="slotProps">
         <div class="totals">
