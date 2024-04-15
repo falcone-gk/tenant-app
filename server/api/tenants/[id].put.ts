@@ -1,9 +1,9 @@
-import { PrismaClient } from "@prisma/client"
 import { tenantSchema } from "~/schemas"
 import type { TenantData } from '~/types/admin'
 import isAuthenticated from "~/server/permission/isAuthenticated"
+import { pgClient } from "~/server/utils/prismaClient"
 
-const prisma = new PrismaClient()
+const prisma = pgClient()
 
 export default defineEventHandler({
   onRequest: [isAuthenticated],
@@ -38,6 +38,6 @@ export default defineEventHandler({
       }
     })
 
-    return createResponse<TenantData>(event, 'success', 200, tenant)
+    return createResponse(event, 'success', 200, tenant)
   }
 })

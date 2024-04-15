@@ -1,9 +1,9 @@
 import { roomSchema } from "~/schemas"
-import { PrismaClient } from "@prisma/client"
 import { RoomData } from "~/types/admin"
 import isAuthenticated from "~/server/permission/isAuthenticated"
+import { pgClient } from "~/server/utils/prismaClient"
 
-const prisma = new PrismaClient()
+const prisma = pgClient()
 
 export default defineEventHandler({
   onRequest: [isAuthenticated],

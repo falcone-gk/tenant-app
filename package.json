@@ -13,9 +13,11 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^5.12.1",
     "@prisma/client": "^5.11.0",
     "jsonwebtoken": "^9.0.2",
     "nuxt": "^3.11.1",
+    "pg": "^8.11.5",
     "primeicons": "^6.0.1",
     "tsx": "^4.7.1",
     "vue": "^3.4.21",
@@ -23,6 +25,7 @@
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.6",
+    "@types/pg": "^8.11.5",
     "nuxt-lodash": "^2.5.3",
     "nuxt-primevue": "^0.3.1",
     "nuxt-viewport": "^2.1.4",

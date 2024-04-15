@@ -1,7 +1,7 @@
-import { PrismaClient } from "@prisma/client"
 import jwt from 'jsonwebtoken'
+import { pgClient } from "~/server/utils/prismaClient"
 
-const prisma = new PrismaClient()
+const prisma = pgClient()
 
 export default defineEventHandler(async (event) => {
 

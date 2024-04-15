@@ -1,9 +1,9 @@
-import { PrismaClient } from "@prisma/client"
+import { pgClient } from "~/server/utils/prismaClient"
 import { checkPassword } from "~/server/utils/bcrypt"
 import { createResponse } from "~/server/utils/response"
 import jwt from 'jsonwebtoken'
 
-const prisma = new PrismaClient()
+const prisma = pgClient()
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
   if (!user) {
     return createResponse(event, 'fail', 400, undefined, 'Nombre de usuario o contraseña incorrectos')
   }
-  
+
   // check password
   const { password, ...userWithoutPassword } = user
   const isPasswordValid = await checkPassword(body.password, password)

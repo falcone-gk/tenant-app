@@ -1,9 +1,9 @@
-import { PrismaClient } from "@prisma/client"
 import isAuthenticated from "~/server/permission/isAuthenticated"
 import { queryServiceSchema } from "~/schemas"
 import { paymentService } from "~/server/validators"
+import { pgClient } from "~/server/utils/prismaClient"
 
-const prisma = new PrismaClient()
+const prisma = pgClient()
 
 export default defineEventHandler({
   onRequest: [isAuthenticated],

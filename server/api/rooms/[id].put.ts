@@ -1,9 +1,9 @@
 import { roomSchema } from "~/schemas"
-import { PrismaClient } from "@prisma/client"
 import type { RoomData } from "~/types/admin"
 import isAuthenticated from "~/server/permission/isAuthenticated"
+import { pgClient } from "~/server/utils/prismaClient"
 
-const prisma = new PrismaClient()
+const prisma = pgClient()
 
 export default defineEventHandler({
   onRequest: [isAuthenticated],
@@ -19,7 +19,7 @@ export default defineEventHandler({
         code: body.code,
         reference: body.reference,
         floor: body.floor,
-        tenantId: body.tenantId
+        tenantId: body.tenantId,
       },
       select: {
         id: true,
