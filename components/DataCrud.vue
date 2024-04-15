@@ -17,7 +17,7 @@
             </div>
           </div>
         </template>
-        <template #empty> No hay datos. </template>
+        <template #empty> {{ loading ? 'Cargando...' : 'No hay datos' }} </template>
         <Column v-for="([key, value], index) in Object.entries(props.columns)" :key="index" :field="key"
           :header="value" />
       </DataTable>
@@ -35,7 +35,8 @@ const props = defineProps<{
   columns: { [key: string]: string },
   apiRoute: string
   form: any,
-  showTitle?: boolean
+  showTitle?: boolean,
+  loading: boolean
 }>()
 
 const emits = defineEmits(['onSuccess', 'onError'])
