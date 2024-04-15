@@ -3,7 +3,10 @@
     <div>
       <h1>Inicio</h1>
     </div>
-    <ViewTenantDebts />
+    <div style="display: flex; gap: 1rem; flex-direction: column;">
+      <ViewOutageServices />
+      <ViewTenantDebts />
+    </div>
   </div>
 </template>
 
