@@ -159,13 +159,21 @@ const paymentsDataTable = computed(() => {
   }))
 })
 
-type TotalPaymentResponse = ApiResponse<TotalPaymentData[]>
+// Obtenemos como fecha el primer dia del mes del startDate y
+// el ultimo dia del mes del endDate
+const startDateInitalDay = computed(() => {
+  return new Date(startDate.value.getFullYear(), today.value.getMonth(), 1).toLocaleDateString()
+})
+const endDateLastDay = computed(() => {
+  return new Date(endDate.value.getFullYear(), today.value.getMonth() + 1, 0).toLocaleDateString()
+})
 
+type TotalPaymentResponse = ApiResponse<TotalPaymentData[]>
 const { data: totalPayments, refresh: refreshTotalPayments } = await useFetch<TotalPaymentResponse>(
   '/api/services/payments', {
   query: {
-    startDate: filterStartDate,
-    endDate: filterEndDate,
+    startDate: startDateInitalDay,
+    endDate: endDateLastDay,
     tenantId: filterTenant,
     serviceId: filterService,
     isPaid: filterIsPaid,

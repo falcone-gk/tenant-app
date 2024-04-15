@@ -11,23 +11,24 @@ export default defineEventHandler({
 
     const queries = await getValidatedQuery(event, queryServiceSchema.parse)
     const serviceId = queries.serviceId ? queries.serviceId : undefined
-    const startDate = queries.startDate ? new Date(
-      queries.startDate.getFullYear(), queries.startDate.getMonth(), 1
-    ) : undefined
-    const endDate = queries.endDate ? new Date(
-      queries.endDate.getFullYear(), queries.endDate.getMonth() + 1, 0
-    ) : undefined
+    const startDate = queries.startDate ? new Date(queries.startDate) : undefined
+    const endDate = queries.endDate ? new Date(queries.endDate) : undefined
+
+    const whereClause = {
+      isPaid: queries.isPaid,
+      // OR returns empty when dates are undefined
+      ...(queries.startDate || queries.endDate) && {
+        OR: [
+          { registerDate: { gte: startDate, lte: endDate } },
+          { outageDate: { gte: startDate, lte: endDate } }
+        ],
+      },
+      serviceId: serviceId,
+    }
 
     const payments = await prisma.totalPayment.findMany({
       orderBy: [{ id: 'asc' }],
-      where: {
-        isPaid: queries.isPaid,
-        OR: [
-          { registerDate: { gte: startDate, lte: endDate } },
-          { outageDate: { gte: queries.startDate, lte: queries.endDate } }
-        ],
-        serviceId: serviceId,
-      },
+      where: whereClause,
       select: totalPaymentService
     })
 
