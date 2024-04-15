@@ -24,6 +24,9 @@
       </Column>
       <!-- Column field to fix an error with colspan not correct -->
       <Column field="no-exists" header="" style="width: 0; padding: 0;" />
+      <template #empty>
+        <p>{{ pending ? 'Cargando...' : 'No hay cortes de servicio.' }}</p>
+      </template>
       <template #groupfooter="slotProps">
         <div class="totals">
           <strong>
@@ -44,10 +47,11 @@
 </template>
 
 <script lang="ts" setup>
-const { data } = await useFetch('/api/tenants/payments', {
+const { data, pending } = await useLazyFetch('/api/tenants/payments', {
   query: {
     isPaid: false
   },
+  server: false,
   transform: ({ data }) => {
     return data?.map((payment) => {
       return {
