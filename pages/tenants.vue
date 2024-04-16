@@ -32,7 +32,7 @@ const tenantColumns = {
 type TenantResponse = ApiResponse<TenantData[]>
 type RoomResponse = ApiResponse<RoomData[]>
 
-const { data: roomsOpt, pending } = await useLazyFetch('/api/rooms', {
+const { data: roomsOpt, pending } = await useLazyApiFetch('/api/rooms', {
   key: 'roomsOpt',
   server: false,
   getCachedData: (key) => {
@@ -47,7 +47,7 @@ const { data: roomsOpt, pending } = await useLazyFetch('/api/rooms', {
   }
 })
 
-const { data: tenants, status, refresh } = await useLazyFetch<TenantResponse>('/api/tenants')
+const { data: tenants, status, refresh } = await useLazyApiFetch<TenantResponse>('/api/tenants')
 
 const tenantsDataTable = computed<TenantDataTable[]>(() => {
   if (!tenants.value) return []

@@ -45,7 +45,7 @@ import type { TotalPaymentData } from '~/types/admin';
 const today = ref(new Date())
 const startDate = ref(today.value.toLocaleDateString());
 const endDate = ref(new Date(today.value.getFullYear(), today.value.getMonth() + 1, 0).toLocaleDateString());
-const { data, pending } = await useLazyFetch('/api/services/payments', {
+const { data, pending } = await useLazyApiFetch('/api/services/payments', {
   query: {
     isPaid: false,
     starDate: startDate,

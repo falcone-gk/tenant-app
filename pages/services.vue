@@ -94,7 +94,7 @@ const servicesColumns = {
   lastDatePaid: 'Ultimo dia pagado',
   isPaid: 'Pagado completado',
 }
-const { data: payments, pending: loadingPayments, refresh: refreshPayments } = await useLazyFetch<PaymentResponse>(
+const { data: payments, pending: loadingPayments, refresh: refreshPayments } = await useLazyApiFetch<PaymentResponse>(
   '/api/tenants/payments', {
   server: false,
   query: {
@@ -174,7 +174,7 @@ const endDateLastDay = computed(() => {
 })
 
 type TotalPaymentResponse = ApiResponse<TotalPaymentData[]>
-const { data: totalPayments, pending: loadingTotalPayments, refresh: refreshTotalPayments } = await useLazyFetch<TotalPaymentResponse>(
+const { data: totalPayments, pending: loadingTotalPayments, refresh: refreshTotalPayments } = await useLazyApiFetch<TotalPaymentResponse>(
   '/api/services/payments', {
   server: false,
   query: {

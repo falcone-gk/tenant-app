@@ -51,7 +51,7 @@ const body = ref<{
 
 const paymentId = ref(0)
 
-const { status, error: payError, execute } = await useFetch(
+const { status, error: payError, execute } = await useApiFetch(
   () => `/api/tenants/payments/pay/${paymentId.value}`, {
   method: 'POST',
   body: body,

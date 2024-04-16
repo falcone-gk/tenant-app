@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts" setup>
-const { data, pending } = await useLazyFetch('/api/tenants/payments', {
+const { data, pending } = await useLazyApiFetch('/api/tenants/payments', {
   query: {
     isPaid: false
   },

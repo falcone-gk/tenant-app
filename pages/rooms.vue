@@ -31,10 +31,10 @@ const roomColumns = {
 type RoomResponse = ApiResponse<RoomData[]>
 type TenantResponse = ApiResponse<TenantData[]>
 
-const { data: tenantOpts, pending } = await useLazyFetch('/api/tenants', {
+const { data: tenantOpts, pending } = await useLazyApiFetch('/api/tenants', {
   key: 'tenantsOpts',
   server: false,
-  getCachedData: (key) => {
+  getCachedData: (key: any) => {
     return nuxtApp.payload.data[key] || nuxtApp.static.data[key]
   },
   transform: (data: TenantResponse) => {
@@ -42,7 +42,7 @@ const { data: tenantOpts, pending } = await useLazyFetch('/api/tenants', {
   }
 })
 
-const { data: rooms, status, refresh } = await useLazyFetch<RoomResponse>('/api/rooms', {
+const { data: rooms, status, refresh } = await useLazyApiFetch('/api/rooms', {
   server: false
 })
 

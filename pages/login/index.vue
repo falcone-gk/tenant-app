@@ -2,7 +2,6 @@
 import { z } from 'zod'
 import { loginSchema } from '~/schemas'
 import { reactive, ref } from 'vue'
-import { useToast } from 'primevue/usetoast';
 
 type LoginUser = z.infer<typeof loginSchema>
 type DataResponse = ApiResponse<UserData>
@@ -18,7 +17,7 @@ const token = useCookie('token', {
   sameSite: 'strict'
 })
 
-const { data: response, error, execute } = await useLazyFetch<DataResponse>('/api/auth/login', {
+const { data: response, error, execute } = await useLazyApiFetch<DataResponse>('/api/auth/login', {
   method: 'POST',
   body: body,
   server: false,

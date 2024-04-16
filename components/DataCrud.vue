@@ -50,14 +50,14 @@ const selectedIndex = computed(() => {
   return props.data.findIndex((item: any) => item.id === selection.value.id)
 })
 
-const { error: createError, execute: createData } = await useLazyFetch(props.apiRoute, {
+const { error: createError, execute: createData } = await useLazyApiFetch(props.apiRoute, {
   method: 'POST',
   body: body,
   server: false,
   immediate: false,
   watch: false
 })
-const { error: updateError, execute: updateData } = await useLazyFetch(
+const { error: updateError, execute: updateData } = await useLazyApiFetch(
   () => `${props.apiRoute}/${selection.value.id}`, {
   method: 'PUT',
   body: body,
@@ -65,7 +65,7 @@ const { error: updateError, execute: updateData } = await useLazyFetch(
   immediate: false,
   watch: false
 })
-const { execute: deleteData } = await useLazyFetch(
+const { execute: deleteData } = await useLazyApiFetch(
   () => `${props.apiRoute}/${selection.value.id}`, {
   method: 'DELETE',
   server: false,

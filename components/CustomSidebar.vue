@@ -37,7 +37,7 @@ const links = ref([
   { label: 'Servicios', icon: 'pi pi-bolt', route: '/services' },
 ])
 
-const { execute } = await useLazyFetch('/api/auth/logout', {
+const { execute } = await useLazyApiFetch('/api/auth/logout', {
   server: false,
   immediate: false
 })
