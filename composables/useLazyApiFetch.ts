@@ -1,7 +1,7 @@
 type useLazyFetchType = typeof useLazyFetch
 
 export const useLazyApiFetch: useLazyFetchType = (request: any, options?: any) => {
-  return useLazyApiFetch(request, {
+  return useLazyFetch(request, {
     ...options,
 
     async onResponseError({ request, response, options }) {
