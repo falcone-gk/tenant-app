@@ -42,7 +42,7 @@ export default function <T extends ZodTypeAny>(schema: T, data: MaybeRefOrGetter
     isValid.value = result.success
 
     if (!result.success) {
-      errors.value = _groupBy(result.error.issues, 'path')
+      errors.value = groupBy(result.error.issues, 'path')
       validationWatch()
     }
 
@@ -50,7 +50,7 @@ export default function <T extends ZodTypeAny>(schema: T, data: MaybeRefOrGetter
   }
 
   // Function to get the error message for a specific form field, can be used to get errors for nested objects using dot notation path.
-  const getError = (path: string) => _get(errors.value, `${path.replaceAll('.', ',')}.0.message`)
+  const getError = (path: string) => get(errors.value, `${path.replaceAll('.', ',')}.0.message`)
 
   // Activate validation watch based on the chosen mode
   if (opts.mode === 'eager') {

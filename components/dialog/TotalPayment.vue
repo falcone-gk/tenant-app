@@ -66,7 +66,7 @@ const body = ref<{
 const serviceOpts = ref<{ label: string, value: number }[]>([])
 const selectedServiceName = computed(() => {
   if (body.value.serviceId) {
-    const service = _find(serviceOpts.value, { value: body.value.serviceId })
+    const service = find(serviceOpts.value, service => service.value === body.value.serviceId)
     if (service) return service.label
     return ''
   }

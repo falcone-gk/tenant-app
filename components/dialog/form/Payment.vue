@@ -107,7 +107,7 @@ const roomAvailables = computed(() => {
 
 const selectedServiceName = computed(() => {
   if (body.value.serviceId) {
-    const service = _find(options.value.serviceOpts, { value: body.value.serviceId })
+    const service = find(options.value.serviceOpts, service => service.value === body.value.serviceId)
     if (service) return service.label
     return ''
   }
@@ -116,7 +116,7 @@ const selectedServiceName = computed(() => {
 
 const onChangeTenant = () => {
   if (!body.value.tenantId) return null
-  const currentTenant = _find(options.value.tenants, { id: body.value.tenantId })
+  const currentTenant = find(options.value.tenants, tenant => tenant.id === body.value.tenantId)
   if (!currentTenant) return null
 
   const date = new Date()
