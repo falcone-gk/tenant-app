@@ -48,3 +48,19 @@ export const totalPaymentService = Prisma.validator<Prisma.TotalPaymentSelect>()
     },
     outageDate: true
 })
+
+export const RoomSelect = Prisma.validator<Prisma.RoomSelect>()({
+    id: true,
+    code: true,
+    reference: true,
+    floor: true,
+    tenantId: true,
+    tenant: {
+        select: {
+            id: true,
+            name: true
+        }
+    },
+    recordLight: true,
+    recordWater: true
+})

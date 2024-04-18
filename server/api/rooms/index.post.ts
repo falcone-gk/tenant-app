@@ -1,7 +1,7 @@
 import { roomSchema } from "~/schemas"
 import { PrismaClient } from "@prisma/client"
-import { RoomData } from "~/types/admin"
 import isAuthenticated from "~/server/permission/isAuthenticated"
+import { RoomSelect } from "~/server/validators"
 
 const prisma = new PrismaClient()
 
@@ -15,22 +15,13 @@ export default defineEventHandler({
         code: body.code,
         reference: body.reference,
         floor: body.floor,
-        tenantId: body.tenantId
+        tenantId: body.tenantId,
+        recordLight: body.recordLight,
+        recordWater: body.recordWater
       },
-      select: {
-        id: true,
-        code: true,
-        reference: true,
-        floor: true,
-        tenant: {
-          select: {
-            id: true,
-            name: true
-          }
-        }
-      }
+      select: RoomSelect
     })
 
-    return createResponse<RoomData>(event, 'success', 200, room)
+    return createResponse(event, 'success', 200, room)
   }
 })

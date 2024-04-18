@@ -21,15 +21,19 @@ export default defineEventHandler({
             id: true,
             name: true
           }
-        }
+        },
+        recordLight: true,
+        recordWater: true
       }
     })
     const customTenant = tenants.map((tenant) => {
       return {
         ...tenant,
-        isAvailable: tenant.tenantId === null
+        isAvailable: tenant.tenantId === null,
+        recordLight: tenant.recordLight,
+        recordWater: tenant.recordWater
       }
     })
-    return createResponse<RoomData[]>(event, 'success', 200, customTenant)
+    return createResponse(event, 'success', 200, customTenant)
   }
 })

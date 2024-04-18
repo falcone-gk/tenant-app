@@ -17,10 +17,12 @@ export default defineEventHandler({
       },
       select: {
         amount: true,
+        consume: true
       }
     })
 
-    const payment = await prisma.payment.update({
+    // update tenant total debt
+    const newPayment = await prisma.payment.update({
       where: {
         id: Number(id)
       },
@@ -35,19 +37,44 @@ export default defineEventHandler({
       select: paymentService
     })
 
-    await prisma.tenant.update({
-      where: {
-        id: body.tenantId
-      },
-      data: {
-        debt: {
-          increment: new Prisma.Decimal(
-            body.amount - currentPayment.amount.toNumber()
-          )
+    // update tenant debt only if amount changed
+    if (body.amount !== currentPayment.amount.toNumber()) {
+      await prisma.tenant.update({
+        where: {
+          id: body.tenantId
+        },
+        data: {
+          debt: {
+            increment: new Prisma.Decimal(
+              body.amount - currentPayment.amount.toNumber()
+            )
+          }
+        }
+      })
+    }
+
+    // Update room light or water total consume
+    if ((body.serviceId === 1 || body.serviceId === 2) && body.consume) {
+      const updateRecord = {
+        ...(body.serviceId === 1) && {
+          recordLight: {
+            increment: body.consume - (currentPayment.consume || 0)
+          }
+        },
+        ...(body.serviceId === 2) && {
+          recordWater: {
+            increment: body.consume - (currentPayment.consume || 0)
+          }
         }
       }
-    })
+      await prisma.room.update({
+        where: {
+          id: body.roomId
+        },
+        data: updateRecord
+      })
+    }
 
-    return createResponse(event, 'success', 200, payment)
+    return createResponse(event, 'success', 200, newPayment)
   }
 })
