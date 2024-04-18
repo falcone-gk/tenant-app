@@ -5,7 +5,9 @@ export interface RoomData {
     floor: number | null;
     tenant?: { id: number, name: string } | null;
     tenantId?: number | null;
-    isAvailable: boolean
+    isAvailable: boolean,
+    recordLight: number | null,
+    recordWater: number | null
 }
 
 export interface RoomDataTable {
