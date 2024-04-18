@@ -31,13 +31,15 @@ model User {
 }
 
 model Room {
-  id        Int       @id @default(autoincrement())
-  code      String    @unique
-  reference String    @db.VarChar(150)
-  floor     Int
-  tenant    Tenant?   @relation(fields: [tenantId], references: [id])
-  tenantId  Int?      @map("tenant_id")
-  Payment   Payment[]
+  id          Int       @id @default(autoincrement())
+  code        String    @unique
+  reference   String    @db.VarChar(150)
+  floor       Int
+  tenant      Tenant?   @relation(fields: [tenantId], references: [id])
+  tenantId    Int?      @map("tenant_id")
+  Payment     Payment[]
+  recordLight Int       @default(0) @map("record_light")
+  recordWater Int       @default(0) @map("record_water")
 
   @@map("rooms")
 }
