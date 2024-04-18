@@ -24,6 +24,8 @@ export const roomSchema = z.object({
     reference: z.string().min(1, { message: 'Campo requerido' }),
     floor: z.number({ invalid_type_error: "Piso inválido", required_error: "Campo requerido" }),
     tenantId: z.number().nullable(),
+    recordLight: z.number({ invalid_type_error: "Campo requerido" }).min(0, { message: 'Campo debe ser mayor o igual que 0' }),
+    recordWater: z.number({ invalid_type_error: "Campo requerido" }).min(0, { message: 'Campo debe ser mayor o igual que 0' }),
 })
 
 export const paymentSchema = z.object({
@@ -31,7 +33,7 @@ export const paymentSchema = z.object({
     roomId: z.number({ invalid_type_error: "Campo requerido" }),
     serviceId: z.number({ invalid_type_error: "Campo requerido" }),
     amount: z.number({ invalid_type_error: "Campo requerido" }).min(1, { message: 'Campo debe ser mayor o igual que 1' }),
-    consume: z.number().nullable(),
+    consume: z.number().min(1, { message: 'Campo debe ser mayor o igual que 1' }).nullable(),
     dateToPay: z.coerce.date(),
     lastDatePaid: z.coerce.date().nullable(),
     amountPaid: z.number().min(0, { message: 'Campo debe ser mayor o igual que 0' }),
