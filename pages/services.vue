@@ -121,7 +121,9 @@ const { data: options } = await useLazyAsyncData('options', async () => {
 
   const roomOpts = rooms.data?.map((room) => ({
     value: room.id,
-    label: room.code
+    label: room.code,
+    recordLight: room.recordLight,
+    recordWater: room.recordWater
   }))
 
   const serviceOpts = services.data?.map((service) => ({

@@ -31,9 +31,17 @@
         <span class="p-error">{{ getError("amount") }}</span>
       </div>
       <div v-if="selectedServiceName === 'Luz' || selectedServiceName === 'Agua'" class="form-group">
-        <label for="consume">Consumo ({{ selectedServiceName === 'Luz' ? 'kW' : 'm3' }}) :</label>
+        <label for="consume">Consumo ({{ selectedServiceName === 'Luz' ? 'kw' : 'm3' }}) :</label>
         <InputNumber id="consume" v-model="body.consume" showButtons :min="1" />
         <span class="p-error">{{ getError("consume") }}</span>
+      </div>
+      <div v-if="selectedServiceName === 'Luz'" class="form-group">
+        <label for="recordLight">Última lectura de luz (kw)</label>
+        <InputNumber input-id="recordLight" v-model="finalLightRecord" showButtons disabled />
+      </div>
+      <div v-if="selectedServiceName === 'Agua'" class="form-group">
+        <label for="recordWater">Última lectura de agua (m3)</label>
+        <InputNumber input-id="recordWater" v-model="finalWaterRecord" showButtons disabled />
       </div>
       <div class="form-group">
         <label for="amountPaid">Monto Pagado:</label>
@@ -82,7 +90,7 @@ const body = ref<{
 const options = ref<{
   tenants: TenantData[],
   tenantOpts: { value: number, label: string }[],
-  roomOpts: { value: number, label: string }[],
+  roomOpts: { value: number, label: string, recordLight: number, recordWater: number }[],
   serviceOpts: { value: number, label: string }[]
 }>({
   tenants: [],
@@ -92,6 +100,7 @@ const options = ref<{
 })
 
 const lastPaidAmount = ref(0)
+const initialConsume = ref(0)
 
 const apiMethod = ref<'create' | 'update'>()
 
@@ -112,6 +121,20 @@ const selectedServiceName = computed(() => {
     return ''
   }
   return ''
+})
+
+const finalLightRecord = computed(() => {
+  const recordLight = find(
+    options.value.roomOpts, room => room.value === body.value.roomId
+  )?.recordLight || 0
+  return recordLight - initialConsume.value + (body.value.consume || 0)
+})
+
+const finalWaterRecord = computed(() => {
+  const recordWater = find(
+    options.value.roomOpts, room => room.value === body.value.roomId
+  )?.recordWater || 0
+  return recordWater - initialConsume.value + (body.value.consume || 0)
 })
 
 const onChangeTenant = () => {
@@ -135,6 +158,7 @@ const { validate, errors, isValid, clearErrors, getError } = useValidation(
 const onSubmit = async () => {
   await validate()
   if (isValid.value) {
+    console.log(body.value)
     emits('submit', body.value)
   }
 }
@@ -159,6 +183,7 @@ onMounted(() => {
     }
   }
   lastPaidAmount.value = body.value.amountPaid
+  initialConsume.value = body.value.consume || 0
 
   if (extraData) {
     options.value = extraData

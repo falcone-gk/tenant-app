@@ -20,6 +20,18 @@
         <Dropdown id="tenants" v-model="body.tenantId" showClear :options="tenantOptions" option-label="label"
           option-value="value" placeholder="Seleccione un inquilino" />
       </div>
+      <div class="form-group">
+        <label for="recordLight">Registro de consumo de luz</label>
+        <InputNumber id="recordLight" showButtons v-model="body.recordLight" mode="decimal" :min-fraction-digits="2"
+          :max-fraction-digits="2" />
+        <span class="p-error">{{ getError("recordLight") }}</span>
+      </div>
+      <div class="form-group">
+        <label for="recordWater">Registro de consumo de luz</label>
+        <InputNumber id="recordWater" showButtons v-model="body.recordWater" mode="decimal" :min-fraction-digits="2"
+          :max-fraction-digits="2" />
+        <span class="p-error">{{ getError("recordWater") }}</span>
+      </div>
 
       <Button @click.prevent="onSubmit" type="submit" label="Enviar" />
     </form>
@@ -37,12 +49,16 @@ const body = ref<{
   code: string,
   reference: string,
   floor: number | null,
-  tenantId: number | null
+  tenantId: number | null,
+  recordLight: number | null,
+  recordWater: number | null
 }>({
   code: '',
   reference: '',
   floor: null,
   tenantId: null,
+  recordLight: 0,
+  recordWater: 0
 })
 
 const tenantOptions = ref([])

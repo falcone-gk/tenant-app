@@ -26,6 +26,8 @@ const roomColumns = {
   reference: 'Referencia',
   floor: 'Piso',
   tenant: 'Inquilino',
+  recordLight: 'Registro de luz',
+  recordWater: 'Registro de agua'
 }
 
 type RoomResponse = ApiResponse<RoomData[]>
@@ -52,7 +54,9 @@ const roomsDataTable = computed<RoomDataTable[]>(() => {
 
   return rooms.value.data.map((room) => ({
     ...room,
-    tenant: room.tenant ? room.tenant.name : 'Sin inquilino'
+    tenant: room.tenant ? room.tenant.name : 'Sin inquilino',
+    recordLight: room.recordLight + ' kW',
+    recordWater: room.recordWater + ' m3'
   }))
 })
 
