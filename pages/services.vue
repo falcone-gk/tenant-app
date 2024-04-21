@@ -169,10 +169,10 @@ const paymentsDataTable = computed(() => {
 // Obtenemos como fecha el primer dia del mes del startDate y
 // el ultimo dia del mes del endDate
 const startDateInitalDay = computed(() => {
-  return new Date(startDate.value.getFullYear(), today.value.getMonth(), 1).toLocaleDateString()
+  return new Date(startDate.value.getFullYear(), startDate.value.getMonth(), 1).toLocaleDateString()
 })
 const endDateLastDay = computed(() => {
-  return new Date(endDate.value.getFullYear(), today.value.getMonth() + 1, 0).toLocaleDateString()
+  return new Date(endDate.value.getFullYear(), endDate.value.getMonth() + 1, 0).toLocaleDateString()
 })
 
 type TotalPaymentResponse = ApiResponse<TotalPaymentData[]>
