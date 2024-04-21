@@ -21,7 +21,8 @@ export default defineEventHandler({
         dayToPay: body.dayToPay,
         rooms: {
           set: body.rooms.map((value) => { return { id: value } })
-        }
+        },
+        debt: body.debt
       },
       select: {
         id: true,
@@ -38,6 +39,6 @@ export default defineEventHandler({
       }
     })
 
-    return createResponse<TenantData>(event, 'success', 200, tenant)
+    return createResponse(event, 'success', 200, tenant)
   }
 })

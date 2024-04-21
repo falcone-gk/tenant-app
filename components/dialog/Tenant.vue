@@ -23,6 +23,11 @@
           :selectedItemsLabel="`${body.rooms.length} cuartos seleccionados`" optionLabel="label" optionValue="value" />
         <span class="p-error">{{ getError("rooms") }}</span>
       </div>
+      <div class="form-group">
+        <label for="debt">Deuda:</label>
+        <InputNumber input-id="debt" showButtons v-model="body.debt" mode="decimal" :min-fraction-digits="2"
+          :max-fraction-digits="2" />
+      </div>
 
       <Button type="submit" @click.prevent="onSubmit" label="Enviar" />
     </form>
@@ -40,12 +45,14 @@ const body = ref<{
   name: string,
   dayToPay: number | null,
   joinDate: Date,
-  rooms: number[]
+  rooms: number[],
+  debt: number | null
 }>({
   name: '',
   dayToPay: null,
   joinDate: new Date(),
-  rooms: []
+  rooms: [],
+  debt: null
 })
 const roomsOptions = ref<{ label: string, value: number, isAvailable: boolean }[]>([])
 
@@ -66,6 +73,7 @@ onMounted(() => {
       joinDate: new Date(bodyData.joinDate)
     }
   }
+  console.log(body.value)
   roomsOptions.value = extraData.roomsOpt
 })
 

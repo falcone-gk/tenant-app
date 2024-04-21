@@ -27,7 +27,7 @@
         <span class="p-error">{{ getError("recordLight") }}</span>
       </div>
       <div class="form-group">
-        <label for="recordWater">Registro de consumo de luz</label>
+        <label for="recordWater">Registro de consumo de agua</label>
         <InputNumber id="recordWater" showButtons v-model="body.recordWater" mode="decimal" :min-fraction-digits="2"
           :max-fraction-digits="2" />
         <span class="p-error">{{ getError("recordWater") }}</span>

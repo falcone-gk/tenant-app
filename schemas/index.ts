@@ -10,6 +10,7 @@ export const tenantSchema = z.object({
     dayToPay: z.number().min(1, { message: 'Campo debe ser mayor que 1' }).max(31, { message: 'Campo debe ser menor que 31' }),
     joinDate: z.string().min(1, { message: 'Campo requerido' }),
     rooms: z.array(z.number()),
+    debt: z.number({ invalid_type_error: "Campo requerido" }).min(0, { message: 'Campo debe ser mayor o igual que 0' })
 })
 
 export const tenantFormSchema = z.object({
