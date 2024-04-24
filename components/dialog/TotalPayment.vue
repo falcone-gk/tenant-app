@@ -3,7 +3,7 @@
     <form class="form">
       <div class="form-group">
         <label for="service">Servicio:</label>
-        <Dropdown id="service" v-model="body.serviceId" show-clear :options="serviceOpts" option-label="label"
+        <Dropdown v-model="body.serviceId" input-id="service" show-clear :options="serviceOpts" option-label="label"
           option-value="value" />
         <span class="p-error">{{ getError("serviceId") }}</span>
       </div>
@@ -14,12 +14,12 @@
       </div>
       <div class="form-group">
         <label for="amount">Monto:</label>
-        <InputNumber id="amount" v-model="body.amount" mode="currency" currency="PEN" show-buttons :min="1" />
+        <InputNumber v-model="body.amount" input-id="amount" mode="currency" currency="PEN" show-buttons :min="1" />
         <span class="p-error">{{ getError("amount") }}</span>
       </div>
       <div v-if="selectedServiceName === 'Luz' || selectedServiceName === 'Agua'" class="form-group">
         <label for="consume">Consumo ({{ selectedServiceName === 'Luz' ? 'kW' : 'm3' }}) :</label>
-        <InputNumber id="consume" v-model="body.consume" mode="decimal" :min-fraction-digits="2"
+        <InputNumber v-model="body.consume" input-id="consume" mode="decimal" :min-fraction-digits="2"
           :max-fraction-digits="2" show-buttons :min="1" />
         <span class="p-error">{{ getError("consume") }}</span>
       </div>
@@ -32,7 +32,7 @@
         <label for="isPaid">Pago Completado:</label>
         <div class="row">
           <span :class="!body.isPaid ? classes.selected : ''">No</span>
-          <InputSwitch id="isPaid" v-model="body.isPaid" />
+          <InputSwitch v-model="body.isPaid" input-id="isPaid" />
           <span :class="body.isPaid ? classes.selected : ''">Si</span>
         </div>
       </div>

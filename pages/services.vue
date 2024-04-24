@@ -6,25 +6,28 @@
     <div class="filters">
       <div class="form-group">
         <label for="tenant">Inquilino:</label>
-        <Dropdown id="tenant" v-model="filterTenant" :options="optionsData.tenantOpts ? optionsData.tenantOpts : []"
-          option-label="label" option-value="value" show-clear />
+        <Dropdown v-model="filterTenant" input-id="tenant"
+          :options="optionsData.tenantOpts ? optionsData.tenantOpts : []" option-label="label" option-value="value"
+          show-clear />
       </div>
       <div class="form-group">
         <label for="service">Servicio:</label>
-        <Dropdown id="service" v-model="filterService" :options="optionsData.serviceOpts ? optionsData.serviceOpts : []"
-          option-label="label" option-value="value" show-clear />
+        <Dropdown v-model="filterService" input-id="service"
+          :options="optionsData.serviceOpts ? optionsData.serviceOpts : []" option-label="label" option-value="value"
+          show-clear />
       </div>
       <div class="form-group">
         <label for="startDate">Inicio de Fecha</label>
-        <Calendar id="startDate" v-model="startDate" date-format="yy-mm-dd" show-icon />
+        <Calendar v-model="startDate" input-id="startDate" date-format="yy-mm-dd" show-icon />
       </div>
       <div class="form-group">
         <label for="endDate">Fin de fecha</label>
-        <Calendar id="endDate" v-model="endDate" date-format="yy-mm-dd" show-icon />
+        <Calendar v-model="endDate" input-id="endDate" date-format="yy-mm-dd" show-icon />
       </div>
       <div class="form-group">
         <label for="isPaid">Estado</label>
-        <Dropdown id="isPaid" v-model="filterIsPaid" :options="isPaidOpts" option-label="label" option-value="value" />
+        <Dropdown v-model="filterIsPaid" input-id="isPaid" :options="isPaidOpts" option-label="label"
+          option-value="value" />
       </div>
     </div>
     <div style="display: flex; gap: 1rem; flex-direction: column;">

@@ -3,33 +3,33 @@
     <form class="form">
       <div class="form-group">
         <label for="code">Código:</label>
-        <InputText id="code" v-model="body.code" />
+        <InputText v-model="body.code" input-id="code" />
         <span class="p-error">{{ getError("code") }}</span>
       </div>
       <div class="form-group">
         <label for="reference">Referencia:</label>
-        <Textarea id="reference" v-model="body.reference" auto-resize rows="5" cols="30" />
+        <Textarea v-model="body.reference" input-id="reference" auto-resize rows="5" cols="30" />
       </div>
       <div class="form-group">
         <label for="floor">Piso:</label>
-        <InputNumber id="floor" v-model="body.floor" show-buttons :min="1" />
+        <InputNumber v-model="body.floor" input-id="floor" show-buttons :min="1" />
         <span class="p-error">{{ getError("floor") }}</span>
       </div>
       <div class="form-group">
         <label for="tenants">Inquilinos:</label>
-        <Dropdown id="tenants" v-model="body.tenantId" show-clear :options="tenantOptions" option-label="label"
+        <Dropdown v-model="body.tenantId" input-id="tenants" show-clear :options="tenantOptions" option-label="label"
           option-value="value" placeholder="Seleccione un inquilino" />
       </div>
       <div class="form-group">
         <label for="recordLight">Registro de consumo de luz</label>
-        <InputNumber id="recordLight" v-model="body.recordLight" show-buttons mode="decimal" :min-fraction-digits="2"
-          :max-fraction-digits="2" />
+        <InputNumber v-model="body.recordLight" input-id="recordLight" show-buttons mode="decimal"
+          :min-fraction-digits="2" :max-fraction-digits="2" />
         <span class="p-error">{{ getError("recordLight") }}</span>
       </div>
       <div class="form-group">
         <label for="recordWater">Registro de consumo de agua</label>
-        <InputNumber id="recordWater" v-model="body.recordWater" show-buttons mode="decimal" :min-fraction-digits="2"
-          :max-fraction-digits="2" />
+        <InputNumber v-model="body.recordWater" input-id="recordWater" show-buttons mode="decimal"
+          :min-fraction-digits="2" :max-fraction-digits="2" />
         <span class="p-error">{{ getError("recordWater") }}</span>
       </div>
 

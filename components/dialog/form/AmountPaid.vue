@@ -10,16 +10,17 @@
     <form class="form">
       <div class="form-group">
         <label for="amount">Monto:</label>
-        <InputNumber id="amount" v-model="body.amount" mode="currency" currency="PEN" show-buttons :min="0" disabled />
+        <InputNumber v-model="body.amount" input-id="amount" mode="currency" currency="PEN" show-buttons :min="0"
+          disabled />
       </div>
       <div class="form-group">
         <label for="amountPaid">Monto Pagado:</label>
-        <InputNumber id="amountPaid" v-model="body.amountPaid" mode="currency" currency="PEN" show-buttons :min="0"
-          :max="body.amount!" disabled />
+        <InputNumber v-model="body.amountPaid" input-id="amountPaid" mode="currency" currency="PEN" show-buttons
+          :min="0" :max="body.amount!" disabled />
       </div>
       <div class="form-group">
         <label for="newPayment">Pago agregado:</label>
-        <InputNumber id="newPayment" v-model="body.newPayment" mode="currency" currency="PEN" show-buttons
+        <InputNumber v-model="body.newPayment" input-id="newPayment" mode="currency" currency="PEN" show-buttons
           :min="-body.amountPaid!" :max="body.amount! - body.amountPaid!" />
         <span class="p-error">{{ getError("newPayment") }}</span>
       </div>

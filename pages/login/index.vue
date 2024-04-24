@@ -51,7 +51,7 @@ const login = async () => {
               <InputGroupAddon>
                 <i class="pi pi-user" />
               </InputGroupAddon>
-              <InputText id="username" v-model="body.username" placeholder="Username" />
+              <InputText v-model="body.username" input-id="username" placeholder="Username" />
             </InputGroup>
           </div>
 
@@ -61,7 +61,7 @@ const login = async () => {
               <InputGroupAddon>
                 <i class="pi pi-lock" />
               </InputGroupAddon>
-              <InputText id="password" v-model="body.password" type="password" placeholder="**********" />
+              <InputText v-model="body.password" input-id="password" type="password" placeholder="**********" />
             </InputGroup>
           </div>
 

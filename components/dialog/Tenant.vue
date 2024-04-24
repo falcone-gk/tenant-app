@@ -3,7 +3,7 @@
     <form class="form">
       <div class="form-group">
         <label for="name">Nombre:</label>
-        <InputText id="name" v-model="body.name" />
+        <InputText v-model="body.name" input-id="name" />
         <span class="p-error">{{ getError("name") }}</span>
       </div>
       <div class="form-group">
@@ -18,7 +18,7 @@
       </div>
       <div class="form-group">
         <label for="rooms">Cuartos:</label>
-        <MultiSelect id="rooms" v-model="body.rooms" style="width: 20rem;" display="comma" :select-all="false"
+        <MultiSelect v-model="body.rooms" input-id="rooms" style="width: 20rem;" display="comma" :select-all="false"
           :show-toggle-all="false" :options="selectRooms" :max-selected-labels="2"
           :selected-items-label="`${body.rooms.length} cuartos seleccionados`" option-label="label"
           option-value="value" />

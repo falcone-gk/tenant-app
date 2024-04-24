@@ -3,20 +3,20 @@
     <form class="form">
       <div class="form-group">
         <label for="tenant">Inquilino:</label>
-        <Dropdown id="tenant" v-model="body.tenantId" show-clear :options="options.tenantOpts" option-label="label"
-          option-value="value" :disabled="apiMethod === 'update'" @change="onChangeTenant" />
+        <Dropdown v-model="body.tenantId" input-id="tenant" show-clear :options="options.tenantOpts"
+          option-label="label" option-value="value" :disabled="apiMethod === 'update'" @change="onChangeTenant" />
         <span class="p-error">{{ getError("tenantId") }}</span>
       </div>
       <div class="form-group">
         <label for="room">Cuarto:</label>
-        <Dropdown id="room" v-model="body.roomId" show-clear :options="roomAvailables" option-label="label"
+        <Dropdown v-model="body.roomId" input-id="room" show-clear :options="roomAvailables" option-label="label"
           option-value="value" />
         <span class="p-error">{{ getError("roomId") }}</span>
       </div>
       <div class="form-group">
         <label for="service">Servicio:</label>
-        <Dropdown id="service" v-model="body.serviceId" show-clear :options="options.serviceOpts" option-label="label"
-          option-value="value" :disabled="apiMethod === 'update'" />
+        <Dropdown v-model="body.serviceId" input-id="service" show-clear :options="options.serviceOpts"
+          option-label="label" option-value="value" :disabled="apiMethod === 'update'" />
         <span class="p-error">{{ getError("serviceId") }}</span>
       </div>
       <div class="form-group">
@@ -26,13 +26,13 @@
       </div>
       <div class="form-group">
         <label for="amount">Monto:</label>
-        <InputNumber id="amount" v-model="body.amount" mode="currency" currency="PEN" show-buttons
+        <InputNumber v-model="body.amount" input-id="amount" mode="currency" currency="PEN" show-buttons
           :min="body.amountPaid || 1" />
         <span class="p-error">{{ getError("amount") }}</span>
       </div>
       <div v-if="selectedServiceName === 'Luz' || selectedServiceName === 'Agua'" class="form-group">
         <label for="consume">Consumo ({{ selectedServiceName === 'Luz' ? 'kw' : 'm3' }}) :</label>
-        <InputNumber id="consume" v-model="body.consume" show-buttons :min="1" />
+        <InputNumber v-model="body.consume" input-id="consume" show-buttons :min="1" />
         <span class="p-error">{{ getError("consume") }}</span>
       </div>
       <div v-if="selectedServiceName === 'Luz'" class="form-group">
@@ -45,13 +45,14 @@
       </div>
       <div class="form-group">
         <label for="amountPaid">Monto Pagado:</label>
-        <InputNumber id="amountPaid" v-model="body.amountPaid" mode="currency" currency="PEN" show-buttons :min="0"
-          :max="body.amount!" disabled @update:model-value="onChangeMountPaid" />
+        <InputNumber v-model="body.amountPaid" input-id="amountPaid" mode="currency" currency="PEN" show-buttons
+          :min="0" :max="body.amount!" disabled @update:model-value="onChangeMountPaid" />
         <span class="p-error">{{ getError("amountPaid") }}</span>
       </div>
       <div class="form-group">
         <label for="lastDatePaid">Fecha de último pago:</label>
-        <Calendar v-model="body.lastDatePaid" date-format="yy-mm-dd" show-icon icon-display="input" disabled />
+        <Calendar v-model="body.lastDatePaid" input-id="lastDatePaid" date-format="yy-mm-dd" show-icon
+          icon-display="input" disabled />
       </div>
       <Button type="submit" label="Enviar" @click.prevent="onSubmit" />
     </form>
