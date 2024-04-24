@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client"
-import { RoomData } from "~/types/admin"
 import isAuthenticated from "~/server/permission/isAuthenticated"
 
 const prisma = new PrismaClient()

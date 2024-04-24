@@ -10,20 +10,20 @@
     <form class="form">
       <div class="form-group">
         <label for="amount">Monto:</label>
-        <InputNumber id="amount" mode="currency" currency="PEN" v-model="body.amount" showButtons :min="0" disabled />
+        <InputNumber id="amount" v-model="body.amount" mode="currency" currency="PEN" show-buttons :min="0" disabled />
       </div>
       <div class="form-group">
         <label for="amountPaid">Monto Pagado:</label>
-        <InputNumber id="amountPaid" mode="currency" currency="PEN" v-model="body.amountPaid" showButtons :min="0"
+        <InputNumber id="amountPaid" v-model="body.amountPaid" mode="currency" currency="PEN" show-buttons :min="0"
           :max="body.amount!" disabled />
       </div>
       <div class="form-group">
         <label for="newPayment">Pago agregado:</label>
-        <InputNumber id="newPayment" mode="currency" currency="PEN" v-model="body.newPayment" showButtons
+        <InputNumber id="newPayment" v-model="body.newPayment" mode="currency" currency="PEN" show-buttons
           :min="-body.amountPaid!" :max="body.amount! - body.amountPaid!" />
         <span class="p-error">{{ getError("newPayment") }}</span>
       </div>
-      <Button type="submit" @click.prevent="onSubmit" label="Enviar" />
+      <Button type="submit" label="Enviar" @click.prevent="onSubmit" />
     </form>
   </div>
 </template>
@@ -60,7 +60,7 @@ const { status, error: payError, execute } = await useApiFetch(
   watch: false
 })
 
-const { validate, errors, isValid, clearErrors, getError } = useValidation(
+const { validate, isValid, getError } = useValidation(
   addPaySchema, body, {
   mode: 'lazy',
 });
@@ -78,7 +78,7 @@ const onSubmit = async () => {
 }
 
 onMounted(() => {
-  const { bodyData, selectedRowId } = dialogRef?.value.data
+  const { bodyData, selectedRowId } = dialogRef!.value.data
   if (bodyData) {
     body.value = {
       ...body.value,

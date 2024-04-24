@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client"
 import { tenantSchema } from "~/schemas"
-import type { TenantData } from '~/types/admin'
 import isAuthenticated from "~/server/permission/isAuthenticated"
 
 const prisma = new PrismaClient()

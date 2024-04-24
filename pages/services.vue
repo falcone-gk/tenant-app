@@ -16,11 +16,11 @@
       </div>
       <div class="form-group">
         <label for="startDate">Inicio de Fecha</label>
-        <Calendar id="startDate" v-model="startDate" dateFormat="yy-mm-dd" show-icon />
+        <Calendar id="startDate" v-model="startDate" date-format="yy-mm-dd" show-icon />
       </div>
       <div class="form-group">
         <label for="endDate">Fin de fecha</label>
-        <Calendar id="endDate" v-model="endDate" dateFormat="yy-mm-dd" show-icon />
+        <Calendar id="endDate" v-model="endDate" date-format="yy-mm-dd" show-icon />
       </div>
       <div class="form-group">
         <label for="isPaid">Estado</label>
@@ -34,8 +34,8 @@
         </div>
         <div>
           <DataCrud title="Servicios (inquilinos)" :data="payments ? payments.data : []"
-            :data-table="paymentsDataTable || []" api-route="/api/tenants/payments" @on-success="refreshPayments"
-            :columns="servicesColumns" :form="markRaw(Payment)" :extra="optionsData" :loading="loadingPayments" />
+            :data-table="paymentsDataTable || []" api-route="/api/tenants/payments" :columns="servicesColumns"
+            :form="markRaw(Payment)" :extra="optionsData" :loading="loadingPayments" @on-success="refreshPayments" />
         </div>
       </div>
       <div>
@@ -45,8 +45,8 @@
         <div>
           <DataCrud title="Servicios (casa)" :data="totalPayments ? totalPayments.data : []"
             :data-table="totalPaymentsDataTable || []" api-route="/api/services/payments"
-            @on-success="refreshTotalPayments" :columns="totalPaymentsColumns" :form="markRaw(TotalPayment)"
-            :extra="optionsData.serviceOpts" :loading="loadingTotalPayments" />
+            :columns="totalPaymentsColumns" :form="markRaw(TotalPayment)" :extra="optionsData.serviceOpts"
+            :loading="loadingTotalPayments" @on-success="refreshTotalPayments" />
         </div>
       </div>
     </div>

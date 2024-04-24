@@ -1,8 +1,8 @@
 <template>
   <div class="dialog">
-    <TabMenu :model="items"></TabMenu>
-    <DialogFormPayment @submit="onSubmit" v-if="active === 0" />
-    <DialogFormAmountPaid @submit="onCustomSubmit" v-else />
+    <TabMenu :model="items" />
+    <DialogFormPayment v-if="active === 0" @submit="onSubmit" />
+    <DialogFormAmountPaid v-else @submit="onCustomSubmit" />
   </div>
 </template>
 
@@ -35,7 +35,7 @@ const onCustomSubmit = (status: 'success' | 'error' | 'idle') => {
 }
 
 onMounted(() => {
-  const { method } = dialogRef?.value.data
+  const { method } = dialogRef!.value.data
   apiMethod.value = method
 })
 

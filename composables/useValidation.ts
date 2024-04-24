@@ -1,5 +1,5 @@
 // Import necessary libraries
-import { type ZodTypeAny, z } from 'zod'
+import type { ZodTypeAny, z } from 'zod'
 // We use `get` and `groupBy` from `lodash` for brevity
 
 export default function <T extends ZodTypeAny>(schema: T, data: MaybeRefOrGetter<Record<string, unknown>>, options?: { mode: 'eager' | 'lazy' }) {

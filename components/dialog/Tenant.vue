@@ -8,28 +8,29 @@
       </div>
       <div class="form-group">
         <label for="joinDate">Fecha de ingreso:</label>
-        <Calendar date-format="yy-mm-dd" v-model="body.joinDate" showIcon iconDisplay="input" />
+        <Calendar v-model="body.joinDate" date-format="yy-mm-dd" show-icon icon-display="input" />
         <span class="p-error">{{ getError("joinDate") }}</span>
       </div>
       <div class="form-group">
         <label for="dayToPay">Días de pago:</label>
-        <InputNumber v-model="body.dayToPay" showButtons :min="1" :max="30" />
+        <InputNumber v-model="body.dayToPay" show-buttons :min="1" :max="30" />
         <span class="p-error">{{ getError("dayToPay") }}</span>
       </div>
       <div class="form-group">
         <label for="rooms">Cuartos:</label>
-        <MultiSelect id="rooms" style="width: 20rem;" display="comma" :selectAll="false" :showToggleAll="false"
-          v-model="body.rooms" :options="selectRooms" :maxSelectedLabels="2"
-          :selectedItemsLabel="`${body.rooms.length} cuartos seleccionados`" optionLabel="label" optionValue="value" />
+        <MultiSelect id="rooms" v-model="body.rooms" style="width: 20rem;" display="comma" :select-all="false"
+          :show-toggle-all="false" :options="selectRooms" :max-selected-labels="2"
+          :selected-items-label="`${body.rooms.length} cuartos seleccionados`" option-label="label"
+          option-value="value" />
         <span class="p-error">{{ getError("rooms") }}</span>
       </div>
       <div class="form-group">
         <label for="debt">Deuda:</label>
-        <InputNumber input-id="debt" showButtons v-model="body.debt" mode="decimal" :min-fraction-digits="2"
+        <InputNumber v-model="body.debt" input-id="debt" show-buttons mode="decimal" :min-fraction-digits="2"
           :max-fraction-digits="2" />
       </div>
 
-      <Button type="submit" @click.prevent="onSubmit" label="Enviar" />
+      <Button type="submit" label="Enviar" @click.prevent="onSubmit" />
     </form>
   </div>
 </template>
@@ -65,7 +66,7 @@ const selectRooms = computed((() => {
 }))
 
 onMounted(() => {
-  const { bodyData, extraData } = dialogRef?.value.data
+  const { bodyData, extraData } = dialogRef!.value.data
   if (bodyData) {
     body.value = {
       ...bodyData,
@@ -77,7 +78,7 @@ onMounted(() => {
   roomsOptions.value = extraData.roomsOpt
 })
 
-const { validate, errors, isValid, clearErrors, getError } = useValidation(
+const { validate, isValid, getError } = useValidation(
   tenantFormSchema, body, {
   mode: 'lazy',
 });

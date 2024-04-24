@@ -1,4 +1,4 @@
-import { H3Event, EventHandlerRequest } from 'h3'
+import type { H3Event, EventHandlerRequest } from 'h3'
 import type { Status } from '~/types';
 
 export function createResponse<T>(
@@ -7,20 +7,20 @@ export function createResponse<T>(
     statusCode: number,
     data?: T,
     message?: string
-  ): ApiResponse<T> {
+): ApiResponse<T> {
 
-  const response: ApiResponse<T> = {
-      status: status
-  };
+    const response: ApiResponse<T> = {
+        status: status
+    };
 
-  if (data !== undefined) {
-      response.data = data;
-  }
+    if (data !== undefined) {
+        response.data = data;
+    }
 
-  if (message !== undefined) {
-      response.message = message;
-  }
+    if (message !== undefined) {
+        response.message = message;
+    }
 
-  setResponseStatus(event, statusCode);
-  return response;
+    setResponseStatus(event, statusCode);
+    return response;
 }

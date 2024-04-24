@@ -12,28 +12,28 @@
       </div>
       <div class="form-group">
         <label for="floor">Piso:</label>
-        <InputNumber id="floor" v-model="body.floor" showButtons :min="1" />
+        <InputNumber id="floor" v-model="body.floor" show-buttons :min="1" />
         <span class="p-error">{{ getError("floor") }}</span>
       </div>
       <div class="form-group">
         <label for="tenants">Inquilinos:</label>
-        <Dropdown id="tenants" v-model="body.tenantId" showClear :options="tenantOptions" option-label="label"
+        <Dropdown id="tenants" v-model="body.tenantId" show-clear :options="tenantOptions" option-label="label"
           option-value="value" placeholder="Seleccione un inquilino" />
       </div>
       <div class="form-group">
         <label for="recordLight">Registro de consumo de luz</label>
-        <InputNumber id="recordLight" showButtons v-model="body.recordLight" mode="decimal" :min-fraction-digits="2"
+        <InputNumber id="recordLight" v-model="body.recordLight" show-buttons mode="decimal" :min-fraction-digits="2"
           :max-fraction-digits="2" />
         <span class="p-error">{{ getError("recordLight") }}</span>
       </div>
       <div class="form-group">
         <label for="recordWater">Registro de consumo de agua</label>
-        <InputNumber id="recordWater" showButtons v-model="body.recordWater" mode="decimal" :min-fraction-digits="2"
+        <InputNumber id="recordWater" v-model="body.recordWater" show-buttons mode="decimal" :min-fraction-digits="2"
           :max-fraction-digits="2" />
         <span class="p-error">{{ getError("recordWater") }}</span>
       </div>
 
-      <Button @click.prevent="onSubmit" type="submit" label="Enviar" />
+      <Button type="submit" label="Enviar" @click.prevent="onSubmit" />
     </form>
   </div>
 </template>
@@ -63,7 +63,7 @@ const body = ref<{
 
 const tenantOptions = ref([])
 
-const { validate, errors, isValid, clearErrors, getError } = useValidation(
+const { validate, isValid, getError } = useValidation(
   roomSchema, body, {
   mode: 'lazy',
 });
@@ -76,7 +76,7 @@ const onSubmit = async () => {
 }
 
 onMounted(() => {
-  const { bodyData, extraData } = dialogRef?.value.data
+  const { bodyData, extraData } = dialogRef!.value.data
   if (bodyData) {
     body.value = bodyData
   }

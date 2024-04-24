@@ -2,7 +2,8 @@
   <Card>
     <template v-if="props.showTitle === undefined || props.showTitle" #title>{{ props.title }}</template>
     <template #content>
-      <DataTable v-model:selection="selection" selectionMode="single" dataKey="id" :value="props.dataTable" stripedRows>
+      <DataTable v-model:selection="selection" selection-mode="single" data-key="id" :value="props.dataTable"
+        striped-rows>
         <template #header>
           <div class="table-header">
             <div class="left-btns">
@@ -25,7 +26,7 @@
   </Card>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup generic="T">
 
 const props = defineProps<{
   title: string

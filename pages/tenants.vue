@@ -6,7 +6,7 @@
     <div>
       <DataCrud title="Inquilinos" :data="tenants ? tenants.data : []" :data-table="tenantsDataTable"
         :columns="tenantColumns" api-route="/api/tenants" :form="markRaw(tenantForm)" :extra="{ roomsOpt: roomsOpt }"
-        @on-success="refresh" :loading="pending" />
+        :loading="pending" @on-success="refresh" />
     </div>
   </div>
 </template>

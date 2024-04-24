@@ -5,14 +5,14 @@
     </div>
     <div>
       <DataCrud title="Cuartos" :data="rooms ? rooms.data : []" :data-table="roomsDataTable" :columns="roomColumns"
-        api-route="/api/rooms" :form="markRaw(roomForm)" :extra="{ tenantsOpt: tenantOpts }" @on-success="refresh"
-        :loading="pending" />
+        api-route="/api/rooms" :form="markRaw(roomForm)" :extra="{ tenantsOpt: tenantOpts }" :loading="pending"
+        @on-success="refresh" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import type { RoomData, RoomDataTable, TenantData } from '~/types/admin';
+import type { RoomDataTable, TenantData } from '~/types/admin';
 
 const nuxtApp = useNuxtApp()
 const roomForm = defineAsyncComponent(() => import('~/components/dialog/Room.vue'))
@@ -30,13 +30,12 @@ const roomColumns = {
   recordWater: 'Registro de agua'
 }
 
-type RoomResponse = ApiResponse<RoomData[]>
 type TenantResponse = ApiResponse<TenantData[]>
 
 const { data: tenantOpts, pending } = await useLazyApiFetch('/api/tenants', {
   key: 'tenantsOpts',
   server: false,
-  getCachedData: (key: any) => {
+  getCachedData: (key: string) => {
     return nuxtApp.payload.data[key] || nuxtApp.static.data[key]
   },
   transform: (data: TenantResponse) => {

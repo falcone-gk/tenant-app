@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['nuxt-primevue', 'nuxt-viewport'],
+  modules: ['nuxt-primevue', 'nuxt-viewport', "@nuxt/eslint"],
   css: [
     'primevue/resources/themes/aura-light-teal/theme.css',
     'primeicons/primeicons.css',

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { z } from 'zod'
-import { loginSchema } from '~/schemas'
+import type { z } from 'zod'
+import type { loginSchema } from '~/schemas'
 import { reactive, ref } from 'vue'
 
 type LoginUser = z.infer<typeof loginSchema>
@@ -44,12 +44,12 @@ const login = async () => {
     <Card>
       <template #title>Iniciar sesión</template>
       <template #content>
-        <form class="form" ref="form">
+        <form ref="form" class="form">
           <div class="form-group">
             <label for="username">Nombre de usuario</label>
             <InputGroup>
               <InputGroupAddon>
-                <i class="pi pi-user"></i>
+                <i class="pi pi-user" />
               </InputGroupAddon>
               <InputText id="username" v-model="body.username" placeholder="Username" />
             </InputGroup>
@@ -59,13 +59,13 @@ const login = async () => {
             <label for="password">Contraseña</label>
             <InputGroup>
               <InputGroupAddon>
-                <i class="pi pi-lock"></i>
+                <i class="pi pi-lock" />
               </InputGroupAddon>
               <InputText id="password" v-model="body.password" type="password" placeholder="**********" />
             </InputGroup>
           </div>
 
-          <Button type="submit" label="Ingresar" @click.prevent="login" :loading="loading" block />
+          <Button type="submit" label="Ingresar" :loading="loading" block @click.prevent="login" />
         </form>
       </template>
     </Card>

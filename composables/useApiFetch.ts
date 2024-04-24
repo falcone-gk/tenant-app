@@ -4,7 +4,7 @@ export const useApiFetch: useFetchType = <T>(request: any, options?: any) => {
   return useFetch<T>(request, {
     ...options,
 
-    async onResponseError({ request, response, options }) {
+    async onResponseError({ response }) {
       if (response.status === 401) {
         const token = useCookie('token', {
           sameSite: 'strict'

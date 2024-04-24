@@ -1,0 +1,8 @@
+{
+    "extends": [
+        // Solve from `import("@nuxtjs/eslint-config").then(mod => mod.default)`
+        "@nuxtjs",
+        // Solve from `import("eslint-config-vue").then(mod => mod.default.configs["vue3-recommended"])`
+        "plugin:vue/vue3-recommended"
+    ]
+}

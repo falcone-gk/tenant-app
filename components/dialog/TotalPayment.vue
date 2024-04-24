@@ -3,29 +3,29 @@
     <form class="form">
       <div class="form-group">
         <label for="service">Servicio:</label>
-        <Dropdown id="service" v-model="body.serviceId" showClear :options="serviceOpts" option-label="label"
+        <Dropdown id="service" v-model="body.serviceId" show-clear :options="serviceOpts" option-label="label"
           option-value="value" />
         <span class="p-error">{{ getError("serviceId") }}</span>
       </div>
       <div class="form-group">
         <label for="dateToPay">Fecha de registro:</label>
-        <Calendar view="month" date-format="yy-mm" v-model="body.registerDate" showIcon iconDisplay="input" />
+        <Calendar v-model="body.registerDate" view="month" date-format="yy-mm" show-icon icon-display="input" />
         <span class="p-error">{{ getError("registerDate") }}</span>
       </div>
       <div class="form-group">
         <label for="amount">Monto:</label>
-        <InputNumber id="amount" v-model="body.amount" mode="currency" currency="PEN" showButtons :min="1" />
+        <InputNumber id="amount" v-model="body.amount" mode="currency" currency="PEN" show-buttons :min="1" />
         <span class="p-error">{{ getError("amount") }}</span>
       </div>
       <div v-if="selectedServiceName === 'Luz' || selectedServiceName === 'Agua'" class="form-group">
         <label for="consume">Consumo ({{ selectedServiceName === 'Luz' ? 'kW' : 'm3' }}) :</label>
         <InputNumber id="consume" v-model="body.consume" mode="decimal" :min-fraction-digits="2"
-          :max-fraction-digits="2" showButtons :min="1" />
+          :max-fraction-digits="2" show-buttons :min="1" />
         <span class="p-error">{{ getError("consume") }}</span>
       </div>
       <div class="form-group">
         <label for="outageDate">Fecha de corte:</label>
-        <Calendar date-format="yy-mm-dd" v-model="body.outageDate" showIcon iconDisplay="input" />
+        <Calendar v-model="body.outageDate" date-format="yy-mm-dd" show-icon icon-display="input" />
         <span class="p-error">{{ getError("outageDate") }}</span>
       </div>
       <div class="row">
@@ -36,7 +36,7 @@
           <span :class="body.isPaid ? classes.selected : ''">Si</span>
         </div>
       </div>
-      <Button type="submit" @click.prevent="onSubmit" label="Enviar" />
+      <Button type="submit" label="Enviar" @click.prevent="onSubmit" />
     </form>
   </div>
 </template>
@@ -73,7 +73,7 @@ const selectedServiceName = computed(() => {
   return ''
 })
 
-const { validate, errors, isValid, clearErrors, getError } = useValidation(
+const { validate, isValid, getError } = useValidation(
   totalPaymentSchema, body, {
   mode: 'lazy',
 });
@@ -86,7 +86,7 @@ const onSubmit = async () => {
 }
 
 onMounted(() => {
-  const { bodyData, extraData, method } = dialogRef?.value.data
+  const { bodyData, extraData } = dialogRef!.value.data
   if (bodyData) {
     body.value = {
       ...bodyData,

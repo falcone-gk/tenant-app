@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header v-if="viewport.isLessThan('desktopMedium')" @toggle-sidebar="togleSidebar" />
+    <AppHeader v-if="viewport.isLessThan('desktopMedium')" @toggle-sidebar="togleSidebar" />
     <div class="container">
       <CustomSidebar ref="sidebar" />
       <main id="main-content">

@@ -10,9 +10,12 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare; prisma generate"
+    "postinstall": "nuxt prepare; prisma generate",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@nuxt/eslint": "^0.3.9",
     "@prisma/client": "^5.11.0",
     "jsonwebtoken": "^9.0.2",
     "nuxt": "^3.11.1",
@@ -22,7 +25,9 @@
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
+    "@nuxt/eslint-config": "^0.3.9",
     "@types/jsonwebtoken": "^9.0.6",
+    "eslint": "^8.57.0",
     "nuxt-primevue": "^0.3.1",
     "nuxt-viewport": "^2.1.4",
     "prisma": "^5.11.0",

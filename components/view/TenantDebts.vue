@@ -3,8 +3,9 @@
     <template #header>
       <h2>Deudores</h2>
     </template>
-    <DataTable v-model:expandedRowGroups="expandedRowGroups" :value="data" expandableRowGroups rowGroupMode="subheader"
-      groupRowsBy="tenant.name" sortMode="single" sortField="tenant.name" :sortOrder="1" stripedRows>
+    <DataTable v-model:expandedRowGroups="expandedRowGroups" :value="data" expandable-row-groups
+      row-group-mode="subheader" group-rows-by="tenant.name" sort-mode="single" sort-field="tenant.name" :sort-order="1"
+      striped-rows>
       <template #groupheader="slotProps">
         <strong>
           <span>{{ slotProps.data.tenant.name }}</span>

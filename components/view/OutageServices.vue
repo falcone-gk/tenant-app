@@ -3,8 +3,8 @@
     <template #header>
       <h2>Corte de Servicios</h2>
     </template>
-    <DataTable v-model:expandedRowGroups="expandedRowGroups" :value="data" groupRowsBy="service.name"
-      sortField="service.name" rowGroupMode="subheader" expandableRowGroups sortMode="single" :sortOrder="1">
+    <DataTable v-model:expandedRowGroups="expandedRowGroups" :value="data" group-rows-by="service.name"
+      sort-field="service.name" row-group-mode="subheader" expandable-row-groups sort-mode="single" :sort-order="1">
       <template #groupheader="slotProps">
         <strong>
           <span>{{ slotProps.data.service.name }}</span>
@@ -40,8 +40,6 @@
 </template>
 
 <script lang="ts" setup>
-import type { TotalPaymentData } from '~/types/admin';
-
 const today = ref(new Date())
 const startDate = ref(today.value.toLocaleDateString());
 const endDate = ref(new Date(today.value.getFullYear(), today.value.getMonth() + 1, 0).toLocaleDateString());

@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { hashPassword } from "~/server/utils/bcrypt";
 
 const prisma = new PrismaClient();

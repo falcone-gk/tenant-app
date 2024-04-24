@@ -3,57 +3,57 @@
     <form class="form">
       <div class="form-group">
         <label for="tenant">Inquilino:</label>
-        <Dropdown id="tenant" v-model="body.tenantId" showClear :options="options.tenantOpts" option-label="label"
-          option-value="value" @change="onChangeTenant" :disabled="apiMethod === 'update'" />
+        <Dropdown id="tenant" v-model="body.tenantId" show-clear :options="options.tenantOpts" option-label="label"
+          option-value="value" :disabled="apiMethod === 'update'" @change="onChangeTenant" />
         <span class="p-error">{{ getError("tenantId") }}</span>
       </div>
       <div class="form-group">
         <label for="room">Cuarto:</label>
-        <Dropdown id="room" v-model="body.roomId" showClear :options="roomAvailables" option-label="label"
+        <Dropdown id="room" v-model="body.roomId" show-clear :options="roomAvailables" option-label="label"
           option-value="value" />
         <span class="p-error">{{ getError("roomId") }}</span>
       </div>
       <div class="form-group">
         <label for="service">Servicio:</label>
-        <Dropdown id="service" v-model="body.serviceId" showClear :options="options.serviceOpts" option-label="label"
+        <Dropdown id="service" v-model="body.serviceId" show-clear :options="options.serviceOpts" option-label="label"
           option-value="value" :disabled="apiMethod === 'update'" />
         <span class="p-error">{{ getError("serviceId") }}</span>
       </div>
       <div class="form-group">
         <label for="dateToPay">Fecha a pagar:</label>
-        <Calendar date-format="yy-mm-dd" v-model="body.dateToPay" showIcon iconDisplay="input"
+        <Calendar v-model="body.dateToPay" date-format="yy-mm-dd" show-icon icon-display="input"
           :disabled="body.tenantId === null" />
       </div>
       <div class="form-group">
         <label for="amount">Monto:</label>
-        <InputNumber id="amount" mode="currency" currency="PEN" v-model="body.amount" showButtons
+        <InputNumber id="amount" v-model="body.amount" mode="currency" currency="PEN" show-buttons
           :min="body.amountPaid || 1" />
         <span class="p-error">{{ getError("amount") }}</span>
       </div>
       <div v-if="selectedServiceName === 'Luz' || selectedServiceName === 'Agua'" class="form-group">
         <label for="consume">Consumo ({{ selectedServiceName === 'Luz' ? 'kw' : 'm3' }}) :</label>
-        <InputNumber id="consume" v-model="body.consume" showButtons :min="1" />
+        <InputNumber id="consume" v-model="body.consume" show-buttons :min="1" />
         <span class="p-error">{{ getError("consume") }}</span>
       </div>
       <div v-if="selectedServiceName === 'Luz'" class="form-group">
         <label for="recordLight">Última lectura de luz (kw)</label>
-        <InputNumber input-id="recordLight" v-model="finalLightRecord" showButtons disabled />
+        <InputNumber v-model="finalLightRecord" input-id="recordLight" show-buttons disabled />
       </div>
       <div v-if="selectedServiceName === 'Agua'" class="form-group">
         <label for="recordWater">Última lectura de agua (m3)</label>
-        <InputNumber input-id="recordWater" v-model="finalWaterRecord" showButtons disabled />
+        <InputNumber v-model="finalWaterRecord" input-id="recordWater" show-buttons disabled />
       </div>
       <div class="form-group">
         <label for="amountPaid">Monto Pagado:</label>
-        <InputNumber id="amountPaid" mode="currency" currency="PEN" v-model="body.amountPaid" showButtons :min="0"
+        <InputNumber id="amountPaid" v-model="body.amountPaid" mode="currency" currency="PEN" show-buttons :min="0"
           :max="body.amount!" disabled @update:model-value="onChangeMountPaid" />
         <span class="p-error">{{ getError("amountPaid") }}</span>
       </div>
       <div class="form-group">
         <label for="lastDatePaid">Fecha de último pago:</label>
-        <Calendar date-format="yy-mm-dd" v-model="body.lastDatePaid" showIcon iconDisplay="input" disabled />
+        <Calendar v-model="body.lastDatePaid" date-format="yy-mm-dd" show-icon icon-display="input" disabled />
       </div>
-      <Button type="submit" @click.prevent="onSubmit" label="Enviar" />
+      <Button type="submit" label="Enviar" @click.prevent="onSubmit" />
     </form>
   </div>
 </template>
@@ -150,7 +150,7 @@ const onChangeTenant = () => {
   body.value.consume = null
 }
 
-const { validate, errors, isValid, clearErrors, getError } = useValidation(
+const { validate, isValid, getError } = useValidation(
   paymentSchema, body, {
   mode: 'lazy',
 });
@@ -174,7 +174,7 @@ const onChangeMountPaid = () => {
 }
 
 onMounted(() => {
-  const { bodyData, extraData, method } = dialogRef?.value.data
+  const { bodyData, extraData, method } = dialogRef!.value.data
   if (bodyData) {
     body.value = {
       ...bodyData,
