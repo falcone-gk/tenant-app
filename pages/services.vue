@@ -65,7 +65,7 @@ definePageMeta({
   middleware: 'auth'
 })
 
-const nuxtApp = useNuxtApp()
+// const nuxtApp = useNuxtApp()
 type PaymentResponse = ApiResponse<PaymentData[]>
 
 const filterTenant = ref(null)
@@ -97,7 +97,7 @@ const servicesColumns = {
   lastDatePaid: 'Ultimo dia pagado',
   isPaid: 'Pagado completado',
 }
-const { data: payments, pending: loadingPayments, refresh: refreshPayments } = await useLazyApiFetch<PaymentResponse>(
+const { data: payments, pending: loadingPayments, refresh: refreshPayments } = useLazyApiFetch<PaymentResponse>(
   '/api/tenants/payments', {
   server: false,
   query: {
@@ -110,7 +110,7 @@ const { data: payments, pending: loadingPayments, refresh: refreshPayments } = a
   watch: [filterTenant, filterService, filterStartDate, filterEndDate, filterIsPaid]
 })
 
-const { data: options } = await useLazyAsyncData('options', async () => {
+const { data: options } = useLazyAsyncData('options', async () => {
   const [tenants, rooms, services] = await Promise.all([
     $fetch('/api/tenants'),
     $fetch('/api/rooms'),
@@ -179,7 +179,7 @@ const endDateLastDay = computed(() => {
 })
 
 type TotalPaymentResponse = ApiResponse<TotalPaymentData[]>
-const { data: totalPayments, pending: loadingTotalPayments, refresh: refreshTotalPayments } = await useLazyApiFetch<TotalPaymentResponse>(
+const { data: totalPayments, pending: loadingTotalPayments, refresh: refreshTotalPayments } = useLazyApiFetch<TotalPaymentResponse>(
   '/api/services/payments', {
   server: false,
   query: {

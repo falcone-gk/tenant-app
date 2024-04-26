@@ -14,7 +14,7 @@
 <script lang="ts" setup>
 import type { RoomDataTable, TenantData } from '~/types/admin';
 
-const nuxtApp = useNuxtApp()
+//const nuxtApp = useNuxtApp()
 const roomForm = defineAsyncComponent(() => import('~/components/dialog/Room.vue'))
 
 definePageMeta({
@@ -32,7 +32,7 @@ const roomColumns = {
 
 type TenantResponse = ApiResponse<TenantData[]>
 
-const { data: tenantOpts, pending } = await useLazyApiFetch('/api/tenants', {
+const { data: tenantOpts, pending } = useLazyApiFetch('/api/tenants', {
   key: 'tenantsOpts',
   server: false,
   /* getCachedData: (key: string) => {
@@ -43,7 +43,7 @@ const { data: tenantOpts, pending } = await useLazyApiFetch('/api/tenants', {
   }
 })
 
-const { data: rooms, status, refresh } = await useLazyApiFetch('/api/rooms', {
+const { data: rooms, refresh } = useLazyApiFetch('/api/rooms', {
   server: false
 })
 

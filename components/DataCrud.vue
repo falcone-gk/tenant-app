@@ -26,7 +26,7 @@
   </Card>
 </template>
 
-<script lang="ts" setup generic="T">
+<script lang="ts" setup>
 
 const props = defineProps<{
   title: string
@@ -54,7 +54,7 @@ const selectedIndex = computed(() => {
 const { error: createError, execute: createData } = await useLazyApiFetch(props.apiRoute, {
   method: 'POST',
   body: body,
-  server: false,
+  //server: false,
   immediate: false,
   watch: false
 })
@@ -62,14 +62,14 @@ const { error: updateError, execute: updateData } = await useLazyApiFetch(
   () => `${props.apiRoute}/${selection.value.id}`, {
   method: 'PUT',
   body: body,
-  server: false,
+  //server: false,
   immediate: false,
   watch: false
 })
 const { execute: deleteData } = await useLazyApiFetch(
   () => `${props.apiRoute}/${selection.value.id}`, {
   method: 'DELETE',
-  server: false,
+  //server: false,
   immediate: false,
   watch: false
 })
