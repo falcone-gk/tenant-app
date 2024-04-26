@@ -1,4 +1,5 @@
 <template>
+  <NuxtLoadingIndicator />
   <Toast position="top-center" group="notification" />
   <ConfirmDialog />
   <DynamicDialog />
