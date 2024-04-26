@@ -35,9 +35,9 @@ type RoomResponse = ApiResponse<RoomData[]>
 const { data: roomsOpt, pending } = await useLazyApiFetch('/api/rooms', {
   key: 'roomsOpt',
   server: false,
-  getCachedData: (key) => {
+  /* getCachedData: (key) => {
     return nuxtApp.payload.data[key] || nuxtApp.static.data[key]
-  },
+  }, */
   transform: (data: RoomResponse) => {
     return data.data?.map((room) => ({
       label: room.code,

@@ -137,9 +137,9 @@ const { data: options } = await useLazyAsyncData('options', async () => {
   return { tenants, tenantOpts, roomOpts, serviceOpts }
 }, {
   server: false,
-  getCachedData: (key) => {
+  /* getCachedData: (key) => {
     return nuxtApp.payload.data[key] || nuxtApp.static.data[key]
-  }
+  } */
 })
 
 const optionsData = computed(() => {

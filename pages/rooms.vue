@@ -35,9 +35,9 @@ type TenantResponse = ApiResponse<TenantData[]>
 const { data: tenantOpts, pending } = await useLazyApiFetch('/api/tenants', {
   key: 'tenantsOpts',
   server: false,
-  getCachedData: (key: string) => {
+  /* getCachedData: (key: string) => {
     return nuxtApp.payload.data[key] || nuxtApp.static.data[key]
-  },
+  }, */
   transform: (data: TenantResponse) => {
     return data.data?.map((tenant) => ({ label: tenant.name, value: tenant.id }))
   }
