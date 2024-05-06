@@ -33,7 +33,7 @@ export const paymentSchema = z.object({
     tenantId: z.number({ invalid_type_error: "Campo requerido" }),
     roomId: z.number({ invalid_type_error: "Campo requerido" }),
     serviceId: z.number({ invalid_type_error: "Campo requerido" }),
-    amount: z.number({ invalid_type_error: "Campo requerido" }).min(1, { message: 'Campo debe ser mayor o igual que 1' }),
+    amount: z.number({ invalid_type_error: "Campo requerido" }).min(0.1, { message: 'Campo debe ser mayor o igual que 1' }),
     consume: z.number().min(1, { message: 'Campo debe ser mayor o igual que 1' }).nullable(),
     dateToPay: z.coerce.date(),
     lastDatePaid: z.coerce.date().nullable(),
