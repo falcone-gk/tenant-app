@@ -2,8 +2,8 @@
   <Card>
     <template v-if="props.showTitle === undefined || props.showTitle" #title>{{ props.title }}</template>
     <template #content>
-      <DataTable v-model:selection="selection" selection-mode="single" data-key="id" :value="props.dataTable"
-        striped-rows>
+      <DataTable v-model:selection="selection" selection-mode="single" data-key="id" :value="props.dataTable" striped-rows
+        scrollable scroll-height="400px" :loading="props.loading">
         <template #header>
           <div class="table-header">
             <div class="left-btns">
@@ -18,7 +18,7 @@
             </div>
           </div>
         </template>
-        <template #empty> {{ loading ? 'Cargando...' : 'No hay datos' }} </template>
+        <template #empty>No hay datos</template>
         <Column v-for="([key, value], index) in Object.entries(props.columns)" :key="index" :field="key"
           :header="value" />
       </DataTable>

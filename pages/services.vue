@@ -185,11 +185,10 @@ const { data: totalPayments, pending: loadingTotalPayments, refresh: refreshTota
   query: {
     startDate: startDateInitalDay,
     endDate: endDateLastDay,
-    tenantId: filterTenant,
     serviceId: filterService,
     isPaid: filterIsPaid,
   },
-  watch: [filterTenant, filterService, filterStartDate, filterEndDate, filterIsPaid]
+  watch: [filterService, filterStartDate, filterEndDate, filterIsPaid]
 })
 
 const totalPaymentsColumns = {
