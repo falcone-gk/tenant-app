@@ -3,8 +3,8 @@
     <form class="form">
       <div class="form-group">
         <label for="tenant">Inquilino:</label>
-        <Dropdown v-model="body.tenantId" input-id="tenant" show-clear :options="options.tenantOpts"
-          option-label="label" option-value="value" :disabled="apiMethod === 'update'" @change="onChangeTenant" />
+        <Dropdown v-model="body.tenantId" input-id="tenant" show-clear :options="options.tenantOpts" option-label="label"
+          option-value="value" :disabled="apiMethod === 'update'" @change="onChangeTenant" />
         <span class="p-error">{{ getError("tenantId") }}</span>
       </div>
       <div class="form-group">
@@ -27,7 +27,7 @@
       <div class="form-group">
         <label for="amount">Monto:</label>
         <InputNumber v-model="body.amount" input-id="amount" mode="currency" currency="PEN" show-buttons
-          :min="body.amountPaid || 1" />
+          :min="body.amountPaid || 0.1" />
         <span class="p-error">{{ getError("amount") }}</span>
       </div>
       <div v-if="selectedServiceName === 'Luz' || selectedServiceName === 'Agua'" class="form-group">
@@ -45,8 +45,8 @@
       </div>
       <div class="form-group">
         <label for="amountPaid">Monto Pagado:</label>
-        <InputNumber v-model="body.amountPaid" input-id="amountPaid" mode="currency" currency="PEN" show-buttons
-          :min="0" :max="body.amount!" disabled @update:model-value="onChangeMountPaid" />
+        <InputNumber v-model="body.amountPaid" input-id="amountPaid" mode="currency" currency="PEN" show-buttons :min="0"
+          :max="body.amount!" disabled @update:model-value="onChangeMountPaid" />
         <span class="p-error">{{ getError("amountPaid") }}</span>
       </div>
       <div class="form-group">
